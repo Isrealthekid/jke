@@ -94,6 +94,7 @@ export default function FullscreenMenu() {
             backgroundColor: "#0a0a0a",
             display: "flex",
             flexDirection: "column",
+            paddingTop: 64,
           }}
         >
           {/* ---- Main content area ---- */}
@@ -132,11 +133,11 @@ export default function FullscreenMenu() {
                       display: "block",
                       position: "relative",
                       fontFamily: "var(--font-display)",
-                      fontSize: "clamp(52px, 8vw, 100px)",
+                      fontSize: "clamp(40px, 7vw, 90px)",
                       lineHeight: 1.1,
                       color: "#f5f4f0",
                       textDecoration: "none",
-                      paddingBottom: 8,
+                      paddingBottom: 4,
                     }}
                   >
                     {/* Link text */}
