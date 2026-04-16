@@ -12,7 +12,7 @@ const config: Config = {
         brand: {
           black: "#0a0a0a",
           white: "#f5f4f0",
-          accent: "#c8ff00",
+          accent: "#008cff",
         },
       },
       fontFamily: {

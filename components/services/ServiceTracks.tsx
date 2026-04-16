@@ -162,7 +162,7 @@ export default function ServiceTracks() {
                     transition: "color 0.2s",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.color = "#c8ff00";
+                    (e.currentTarget as HTMLElement).style.color = "#008cff";
                   }}
                   onMouseLeave={(e) => {
                     (e.currentTarget as HTMLElement).style.color = "#f5f4f0";
@@ -328,7 +328,7 @@ export default function ServiceTracks() {
                           fontSize: 13,
                           letterSpacing: "0.08em",
                           textTransform: "uppercase",
-                          color: "#c8ff00",
+                          color: "#008cff",
                           textDecoration: "none",
                           display: "flex",
                           alignItems: "center",

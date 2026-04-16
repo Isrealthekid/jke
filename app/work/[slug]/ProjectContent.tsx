@@ -93,7 +93,7 @@ export default function ProjectContent({ project }: { project: Project }) {
                   fontSize: 13,
                   letterSpacing: "0.06em",
                   textTransform: "uppercase",
-                  color: "#c8ff00",
+                  color: "#008cff",
                 }}
               >
                 Watch Full Project &rarr;
@@ -221,7 +221,7 @@ export default function ProjectContent({ project }: { project: Project }) {
                         style={{
                           fontFamily: "var(--font-display)",
                           fontSize: "clamp(40px, 5vw, 64px)",
-                          color: "#c8ff00",
+                          color: "#008cff",
                           lineHeight: 1,
                         }}
                       >

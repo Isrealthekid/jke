@@ -55,7 +55,7 @@ export default function SocialProof() {
               <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
                 &middot;
               </span>
-              <span style={{ color: "#c8ff00" }}>{item.metric}</span>
+              <span style={{ color: "#008cff" }}>{item.metric}</span>
             </span>
           ))}
         </div>
@@ -72,7 +72,7 @@ export default function SocialProof() {
               <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
                 &middot;
               </span>
-              <span style={{ color: "#c8ff00" }}>{item.count}</span>
+              <span style={{ color: "#008cff" }}>{item.count}</span>
             </span>
           ))}
         </div>

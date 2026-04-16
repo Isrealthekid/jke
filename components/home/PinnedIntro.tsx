@@ -251,7 +251,7 @@ export default function PinnedIntro() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 48,
-                color: "#c8ff00",
+                color: "#008cff",
               }}
             >
               50+
@@ -316,7 +316,7 @@ export default function PinnedIntro() {
             style={{
               width: "100%",
               height: "0%",
-              backgroundColor: "#c8ff00",
+              backgroundColor: "#008cff",
               transition: "height 0.05s linear",
             }}
           />
@@ -379,7 +379,7 @@ export default function PinnedIntro() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(48px, 5vw, 72px)",
-                color: "#c8ff00",
+                color: "#008cff",
                 opacity: 0,
               }}
             >

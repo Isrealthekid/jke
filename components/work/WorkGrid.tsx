@@ -222,7 +222,7 @@ function WorkTile({
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
-                color: "#c8ff00",
+                color: "#008cff",
                 letterSpacing: "0.08em",
                 textTransform: "uppercase",
               }}

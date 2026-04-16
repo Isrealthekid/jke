@@ -134,7 +134,7 @@ export default function LoadingScreen() {
           style={{
             width: "100%",
             height: "100%",
-            backgroundColor: "#c8ff00",
+            backgroundColor: "#008cff",
             transformOrigin: "left center",
             transform: "scaleX(0)",
           }}

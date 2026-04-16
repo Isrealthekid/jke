@@ -77,7 +77,7 @@ export default function ToolsGrid() {
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
               el.style.borderColor = "rgba(200,255,0,0.4)";
-              el.style.color = "#c8ff00";
+              el.style.color = "#008cff";
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;

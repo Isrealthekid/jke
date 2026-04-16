@@ -188,7 +188,7 @@ function WorkCard({
                 fontSize: 12,
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
-                color: "#c8ff00",
+                color: "#008cff",
                 display: "flex",
                 alignItems: "center",
                 gap: 6,
@@ -316,7 +316,7 @@ export default function SelectedWorks() {
         <div style={{ width: "100%", height: 1, backgroundColor: "rgba(245,244,240,0.08)" }}>
           <div
             ref={progressRef}
-            style={{ width: "100%", height: "100%", backgroundColor: "#c8ff00", transformOrigin: "left center", transform: "scaleX(0)" }}
+            style={{ width: "100%", height: "100%", backgroundColor: "#008cff", transformOrigin: "left center", transform: "scaleX(0)" }}
           />
         </div>
       </div>

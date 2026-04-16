@@ -165,7 +165,7 @@ export default function PricingCards() {
               }}
             >
               {tier.featured && (
-                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 100, backgroundColor: "#c8ff00", fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 12 }}>
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 100, backgroundColor: "#008cff", fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 12 }}>
                   Popular
                 </span>
               )}
@@ -177,7 +177,7 @@ export default function PricingCards() {
                   <li key={item} style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(245,244,240,0.6)", paddingLeft: 12, borderLeft: "2px solid rgba(200,255,0,0.3)" }}>{item}</li>
                 ))}
               </ul>
-              <Link href={tier.ctaHref} style={{ display: "block", textAlign: "center", padding: "12px 0", borderRadius: 100, backgroundColor: "#c8ff00", color: "#0a0a0a", fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", textDecoration: "none" }}>
+              <Link href={tier.ctaHref} style={{ display: "block", textAlign: "center", padding: "12px 0", borderRadius: 100, backgroundColor: "#008cff", color: "#0a0a0a", fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", textDecoration: "none" }}>
                 {tier.cta} →
               </Link>
             </div>
@@ -257,7 +257,7 @@ export default function PricingCards() {
                       right: 16,
                       padding: "4px 10px",
                       borderRadius: 100,
-                      backgroundColor: "#c8ff00",
+                      backgroundColor: "#008cff",
                       fontFamily: "var(--font-body)",
                       fontSize: 10,
                       fontWeight: 600,
@@ -361,7 +361,7 @@ export default function PricingCards() {
                     justifyContent: "center",
                     padding: "12px 0",
                     borderRadius: 100,
-                    backgroundColor: "#c8ff00",
+                    backgroundColor: "#008cff",
                     color: "#0a0a0a",
                     fontFamily: "var(--font-body)",
                     fontSize: 12,

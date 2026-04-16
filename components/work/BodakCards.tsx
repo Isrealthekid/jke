@@ -327,7 +327,7 @@ export default function BodakCards() {
                     fontSize: 13,
                     letterSpacing: "0.08em",
                     textTransform: "uppercase",
-                    color: "#c8ff00",
+                    color: "#008cff",
                     textDecoration: "none",
                     display: "flex",
                     alignItems: "center",

@@ -102,7 +102,7 @@ export default function KineticStatement() {
                 className="ks-word-inner"
                 style={{
                   display: "inline-block",
-                  color: isLast ? "#c8ff00" : "#f5f4f0",
+                  color: isLast ? "#008cff" : "#f5f4f0",
                   willChange: "transform",
                 }}
               >
