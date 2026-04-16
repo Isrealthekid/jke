@@ -1,71 +1,70 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 
 const DURATION = 1800; // ms
 
 export default function LoadingScreen() {
-  const [show, setShow] = useState(false);
-  const [removing, setRemoving] = useState(false);
+  const [visible, setVisible] = useState<boolean | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const letterJRef = useRef<HTMLSpanElement>(null);
   const letterKRef = useRef<HTMLSpanElement>(null);
 
+  // Check session storage on mount
   useEffect(() => {
-    // Only show once per session
-    if (typeof window === "undefined") return;
     const hasLoaded = sessionStorage.getItem("jke-loaded");
-    if (hasLoaded) return;
-
-    setShow(true);
-
-    // Animate letters in
-    const tl = gsap.timeline({ delay: 0.15 });
-
-    if (letterJRef.current && letterKRef.current) {
-      tl.fromTo(
-        [letterJRef.current, letterKRef.current],
-        { yPercent: 100, opacity: 0 },
-        {
-          yPercent: 0,
-          opacity: 1,
-          stagger: 0.12,
-          duration: 0.6,
-          ease: "power3.out",
-        }
-      );
-    }
-
-    // Animate progress bar
-    if (progressRef.current) {
-      gsap.to(progressRef.current, {
-        scaleX: 1,
-        duration: DURATION / 1000,
-        ease: "power2.inOut",
-      });
-    }
-
-    // After duration: wipe up and unmount
-    const timeout = setTimeout(() => {
-      if (containerRef.current) {
-        gsap.to(containerRef.current, {
-          yPercent: -100,
-          duration: 0.6,
-          ease: "power3.inOut",
-          onComplete: () => {
-            setRemoving(true);
-            sessionStorage.setItem("jke-loaded", "true");
-          },
-        });
-      }
-    }, DURATION);
-
-    return () => clearTimeout(timeout);
+    setVisible(!hasLoaded);
   }, []);
 
-  if (!show || removing) return null;
+  // Run animations only after visible is true and DOM is mounted
+  const animateOut = useCallback(() => {
+    if (!containerRef.current) return;
+    gsap.to(containerRef.current, {
+      yPercent: -100,
+      duration: 0.6,
+      ease: "power3.inOut",
+      onComplete: () => {
+        setVisible(false);
+        sessionStorage.setItem("jke-loaded", "true");
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!visible) return;
+    if (!letterJRef.current || !letterKRef.current || !progressRef.current)
+      return;
+
+    // Animate letters
+    gsap.fromTo(
+      [letterJRef.current, letterKRef.current],
+      { yPercent: 100, opacity: 0 },
+      {
+        yPercent: 0,
+        opacity: 1,
+        stagger: 0.12,
+        duration: 0.6,
+        ease: "power3.out",
+        delay: 0.15,
+      }
+    );
+
+    // Animate progress bar
+    gsap.to(progressRef.current, {
+      scaleX: 1,
+      duration: DURATION / 1000,
+      ease: "power2.inOut",
+    });
+
+    // Wipe up after duration
+    const timeout = setTimeout(animateOut, DURATION);
+    return () => clearTimeout(timeout);
+  }, [visible, animateOut]);
+
+  // Don't render anything until we know the session state
+  if (visible === null || visible === false) return null;
 
   return (
     <div
@@ -82,14 +81,7 @@ export default function LoadingScreen() {
         pointerEvents: "all",
       }}
     >
-      {/* Letters */}
-      <div
-        style={{
-          display: "flex",
-          gap: 4,
-          overflow: "hidden",
-        }}
-      >
+      <div style={{ display: "flex", gap: 4, overflow: "hidden" }}>
         <span
           ref={letterJRef}
           style={{
@@ -118,7 +110,6 @@ export default function LoadingScreen() {
         </span>
       </div>
 
-      {/* Progress bar */}
       <div
         style={{
           width: 120,

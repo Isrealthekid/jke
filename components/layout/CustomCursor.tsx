@@ -115,16 +115,22 @@ export default function CustomCursor() {
     window.addEventListener("mousemove", onMouseMove);
 
     // Apply hover listeners and get cleanup fn
-    const cleanupHover = applyHoverListeners();
+    let cleanupHover = applyHoverListeners();
 
-    // Re-bind hover listeners when DOM changes (page transitions, etc.)
+    // Re-bind hover listeners when DOM changes (page transitions)
+    // Debounce to avoid firing hundreds of times during GSAP animations
+    let debounceTimer: ReturnType<typeof setTimeout>;
     const observer = new MutationObserver(() => {
-      cleanupHover?.();
-      applyHoverListeners();
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        cleanupHover?.();
+        cleanupHover = applyHoverListeners();
+      }, 300);
     });
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: false });
 
     return () => {
+      clearTimeout(debounceTimer);
       window.removeEventListener("mousemove", onMouseMove);
       cleanupHover?.();
       observer.disconnect();

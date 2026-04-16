@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
@@ -12,9 +12,7 @@ export default function HeroReel() {
   const scrollLineRef = useRef<HTMLDivElement>(null);
   const timecodeRef = useRef<HTMLSpanElement>(null);
 
-  /* ---- Live timecode counter ---- */
-  const [, setFrame] = useState(0);
-
+  /* ---- Live timecode counter (direct DOM, no React re-renders) ---- */
   useEffect(() => {
     let frameCount = 0;
     let rafId: number;
@@ -31,7 +29,6 @@ export default function HeroReel() {
         timecodeRef.current.textContent = `${hrs}:${mins}:${secs}:${frames}`;
       }
 
-      setFrame(frameCount);
       rafId = requestAnimationFrame(tick);
     }
 

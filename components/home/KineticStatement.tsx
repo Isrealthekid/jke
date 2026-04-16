@@ -7,6 +7,13 @@ import { gsap } from "@/lib/gsap";
 const STATEMENT = "I make things people watch twice.";
 const WORDS = STATEMENT.split(" ");
 
+/* Register custom ease once at module level */
+if (typeof window !== "undefined") {
+  gsap.registerEase("custom", (progress: number) => {
+    return cubicBezier(0.22, 1, 0.36, 1, progress);
+  });
+}
+
 export default function KineticStatement() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const subtitleRef = useRef<HTMLSpanElement>(null);
@@ -35,15 +42,6 @@ export default function KineticStatement() {
           },
         }
       );
-
-      // Register custom ease matching [0.22, 1, 0.36, 1]
-      // GSAP doesn't take arrays in fromTo ease, so use a CustomEase-compatible string
-      // power3.out is close but let's use the exact cubic-bezier via gsap
-      gsap.registerEase("custom", (progress: number) => {
-        // Cubic bezier approximation for [0.22, 1, 0.36, 1]
-        // Using the standard formula
-        return cubicBezier(0.22, 1, 0.36, 1, progress);
-      });
 
       // Subtitle fade in with delay
       if (subtitleRef.current) {
