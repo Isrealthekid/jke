@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+@theme inline {
+  --color-brand-black: #0a0a0a;
+  --color-brand-white: #f5f4f0;
+  --color-brand-accent: #c8ff00;
+
+  --font-display: "Bebas Neue", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+html,
+body {
+  background-color: #0a0a0a;
+  color: #f5f4f0;
+}
+
+/* Smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Hide custom cursor elements on touch devices */
+@media (pointer: coarse) {
+  body {
+    cursor: auto !important;
+  }
+}
