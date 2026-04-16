@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const BIO_TEXT =
   "JK Egbuson is a Lagos-based social media manager, video editor and filmmaker with over 5 years of experience crafting visual stories for brands and individuals. From documentary films to viral social campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
@@ -12,6 +13,7 @@ const BIO_TEXT =
 const WORDS = BIO_TEXT.split(" ");
 
 export default function SplitBio() {
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -21,21 +23,23 @@ export default function SplitBio() {
       const image = imageRef.current;
       if (!section || !image) return;
 
-      // Photo parallax
-      gsap.fromTo(
-        image,
-        { yPercent: -10 },
-        {
-          yPercent: 10,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        }
-      );
+      // Photo parallax — desktop only
+      if (!isMobile) {
+        gsap.fromTo(
+          image,
+          { yPercent: -10 },
+          {
+            yPercent: 10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          }
+        );
+      }
 
       // Word-by-word reveal tied to scroll
       const wordEls = section.querySelectorAll(".bio-word");
@@ -56,7 +60,7 @@ export default function SplitBio() {
         );
       });
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isMobile] }
   );
 
   return (
@@ -80,7 +84,7 @@ export default function SplitBio() {
           borderRadius: 4,
         }}
       >
-        <div ref={imageRef} style={{ position: "absolute", inset: "-15%", height: "130%" }}>
+        <div ref={imageRef} style={{ position: "absolute", inset: isMobile ? 0 : "-15%", height: isMobile ? "100%" : "130%" }}>
           <Image
             src={PLACEHOLDER_IMAGES[0]}
             alt="JK Egbuson"

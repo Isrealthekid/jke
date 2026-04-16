@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ---- Role data — drives the 3 phases ---- */
 const roles = [
@@ -14,6 +15,7 @@ const roles = [
 ];
 
 export default function PinnedIntro() {
+  const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -32,6 +34,25 @@ export default function PinnedIntro() {
       const wrapper = wrapperRef.current;
       const pin = pinRef.current;
       if (!wrapper || !pin) return;
+
+      // On mobile: simple fade-in for each role, no pin
+      if (isMobile) {
+        const mobileRoles = pin.querySelectorAll(".mobile-role");
+        mobileRoles.forEach((role) => {
+          gsap.fromTo(
+            role,
+            { y: 20, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.6,
+              ease: "power3.out",
+              scrollTrigger: { trigger: role, start: "top 85%" },
+            }
+          );
+        });
+        return;
+      }
 
       const roleRefs = [role0Ref.current, role1Ref.current, role2Ref.current];
       const imgRefs = [img0Ref.current, img1Ref.current, img2Ref.current];
@@ -166,8 +187,105 @@ export default function PinnedIntro() {
         );
       }
     },
-    { scope: wrapperRef }
+    { scope: wrapperRef, dependencies: [isMobile] }
   );
+
+  // ---- MOBILE LAYOUT ----
+  if (isMobile) {
+    return (
+      <div ref={wrapperRef}>
+        <div ref={pinRef} style={{ backgroundColor: "#0a0a0a" }}>
+          {roles.map((role, i) => (
+            <div
+              key={role.label}
+              className="mobile-role"
+              style={{
+                padding: "64px 24px",
+                borderBottom: "1px solid rgba(245,244,240,0.06)",
+                opacity: 0,
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: 14,
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  color: "rgba(245,244,240,0.4)",
+                }}
+              >
+                I create content that
+              </span>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: 40,
+                  color: "#f5f4f0",
+                  marginTop: 8,
+                  lineHeight: 1.1,
+                }}
+              >
+                {role.label}
+              </h3>
+              <div
+                style={{
+                  position: "relative",
+                  aspectRatio: "16/9",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                  marginTop: 24,
+                }}
+              >
+                <Image
+                  src={role.image}
+                  alt={role.label}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="100vw"
+                />
+              </div>
+            </div>
+          ))}
+          <div style={{ padding: "48px 24px", textAlign: "center" }}>
+            <span
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 48,
+                color: "#c8ff00",
+              }}
+            >
+              50+
+            </span>
+            <span
+              style={{
+                display: "block",
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "rgba(245,244,240,0.4)",
+                marginTop: 4,
+              }}
+            >
+              Projects Delivered
+            </span>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: 13,
+                color: "rgba(245,244,240,0.5)",
+                marginTop: 24,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              Based in Lagos &middot; Available Worldwide
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div ref={wrapperRef} style={{ height: "300vh" }}>

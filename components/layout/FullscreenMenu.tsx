@@ -105,18 +105,18 @@ export default function FullscreenMenu() {
               overflow: "hidden",
             }}
           >
-            {/* Left column — nav links (60%) */}
+            {/* Left column — nav links (60% desktop, 100% mobile) */}
             <motion.nav
               variants={linksContainerVariants}
               initial="closed"
               animate="open"
               exit="closed"
+              className="w-full md:w-[60%]"
               style={{
-                width: "60%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
-                paddingLeft: 48,
+                paddingLeft: "clamp(24px, 5vw, 48px)",
                 paddingRight: 24,
                 gap: 4,
               }}
@@ -164,12 +164,12 @@ export default function FullscreenMenu() {
               ))}
             </motion.nav>
 
-            {/* Right column — preview image (40%) */}
+            {/* Right column — preview image (40%, hidden on mobile) */}
             <div
+              className="hidden md:flex"
               style={{
                 width: "40%",
                 position: "relative",
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 overflow: "hidden",
@@ -222,7 +222,9 @@ export default function FullscreenMenu() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              padding: "24px 48px",
+              flexWrap: "wrap",
+              gap: 16,
+              padding: "24px clamp(20px, 5vw, 48px)",
               borderTop: "1px solid rgba(245,244,240,0.08)",
             }}
           >

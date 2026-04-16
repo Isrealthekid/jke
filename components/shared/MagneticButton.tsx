@@ -3,6 +3,7 @@
 import { useRef, useCallback } from "react";
 import Link from "next/link";
 import { gsap } from "@/lib/gsap";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -21,6 +22,7 @@ export default function MagneticButton({
   style,
   onClick,
 }: MagneticButtonProps) {
+  const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLSpanElement>(null);
 
@@ -88,8 +90,8 @@ export default function MagneticButton({
   return (
     <div
       ref={wrapperRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
       className={className}
       style={{ display: "inline-block", willChange: "transform", ...style }}
     >

@@ -1,13 +1,17 @@
 "use client";
 
 import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
   delay?: number;
   direction?: "up" | "down" | "left" | "right";
+  distance?: number;
+  duration?: number;
+  once?: boolean;
 }
 
 export default function ScrollReveal({
@@ -15,26 +19,49 @@ export default function ScrollReveal({
   className = "",
   delay = 0,
   direction = "up",
+  distance = 40,
+  duration = 0.8,
+  once = true,
 }: ScrollRevealProps) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const ref = useRef<HTMLDivElement>(null);
 
-  const directionMap = {
-    up: { y: 40 },
-    down: { y: -40 },
-    left: { x: 40 },
-    right: { x: -40 },
-  };
+  useGSAP(
+    () => {
+      const el = ref.current;
+      if (!el) return;
+
+      const directionMap = {
+        up: { y: distance, x: 0 },
+        down: { y: -distance, x: 0 },
+        left: { x: distance, y: 0 },
+        right: { x: -distance, y: 0 },
+      };
+
+      const from = { opacity: 0, ...directionMap[direction] };
+      const to = {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        duration,
+        delay,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: el,
+          start: "top 85%",
+          toggleActions: once
+            ? "play none none none"
+            : "play reverse play reverse",
+        },
+      };
+
+      gsap.fromTo(el, from, to);
+    },
+    { scope: ref }
+  );
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, ...directionMap[direction] }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
-      transition={{ duration: 0.6, delay, ease: [0.76, 0, 0.24, 1] }}
-      className={className}
-    >
+    <div ref={ref} className={className} style={{ opacity: 0 }}>
       {children}
-    </motion.div>
+    </div>
   );
 }

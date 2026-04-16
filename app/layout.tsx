@@ -7,6 +7,7 @@ import CustomCursor from "@/components/layout/CustomCursor";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
 import PageTransition from "@/components/layout/PageTransition";
+import LoadingScreen from "@/components/layout/LoadingScreen";
 import "./globals.css";
 
 const bebasNeue = Bebas_Neue({
@@ -21,8 +22,22 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "JKE Studio",
-  description: "Creative studio — Design. Motion. Experience.",
+  title: {
+    default: "JK Egbuson — Social Media, Video & Film",
+    template: "%s",
+  },
+  description:
+    "Lagos-based social media manager, video editor, and filmmaker crafting visual stories for brands and individuals.",
+  metadataBase: new URL("https://jkegbuson.com"),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: "JK Egbuson",
+  },
+  twitter: {
+    card: "summary_large_image",
+    creator: "@jkegbuson",
+  },
 };
 
 export default function RootLayout({
@@ -40,6 +55,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark">
           <MenuProvider>
             <SmoothScrollProvider>
+              <LoadingScreen />
               <CustomCursor />
               <Navbar />
               <ThemeToggle />

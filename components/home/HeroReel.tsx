@@ -138,8 +138,8 @@ export default function HeroReel() {
           zIndex: 5,
         }}
       >
-        {/* Top-left: FPS + Resolution */}
-        <div style={{ position: "absolute", top: 24, left: 32 }}>
+        {/* Top-left: FPS + Resolution (desktop only) */}
+        <div className="hidden md:block" style={{ position: "absolute", top: 24, left: 32 }}>
           <span style={hudTextStyle}>FPS 24</span>
           <br />
           <span style={hudTextStyle}>4K UHD</span>
@@ -181,8 +181,8 @@ export default function HeroReel() {
           </span>
         </div>
 
-        {/* Bottom-left: Name */}
-        <div style={{ position: "absolute", bottom: 24, left: 32 }}>
+        {/* Bottom-left: Name (desktop only) */}
+        <div className="hidden md:block" style={{ position: "absolute", bottom: 24, left: 32 }}>
           <span
             style={{
               fontFamily: "var(--font-display)",
@@ -197,8 +197,8 @@ export default function HeroReel() {
           </span>
         </div>
 
-        {/* Bottom-right: Standby */}
-        <div style={{ position: "absolute", bottom: 24, right: 32 }}>
+        {/* Bottom-right: Standby (desktop only) */}
+        <div className="hidden md:block" style={{ position: "absolute", bottom: 24, right: 32 }}>
           <span
             style={{
               ...hudTextStyle,

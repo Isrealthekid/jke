@@ -6,6 +6,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "@/lib/gsap";
 import { projects } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 import FilterBar from "./FilterBar";
 
 /* ================================================================== */
@@ -78,6 +79,7 @@ function WorkTile({
         gridColumn: isWide ? "span 8" : "span 4",
         perspective: 1000,
       }}
+      className="max-md:!col-span-1"
     >
       <div
         ref={initCard}
@@ -86,12 +88,13 @@ function WorkTile({
         onMouseLeave={handleMouseLeave}
         style={{
           position: "relative",
-          aspectRatio: isWide ? "16/9" : "3/4",
+          aspectRatio: "4/3",
           overflow: "hidden",
           borderRadius: 4,
           transformStyle: "preserve-3d",
           willChange: "transform",
         }}
+        className={isWide ? "md:!aspect-[16/9]" : "md:!aspect-[3/4]"}
       >
         <Link
           href={`/work/${project.slug}`}
@@ -237,6 +240,7 @@ function WorkTile({
 /*  WorkGrid                                                           */
 /* ================================================================== */
 export default function WorkGrid() {
+  const isMobile = useIsMobile();
   const [activeFilter, setActiveFilter] = useState("All");
 
   const categories = [
@@ -262,9 +266,9 @@ export default function WorkGrid() {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(12, 1fr)",
-          gap: 16,
-          marginTop: 40,
+          gridTemplateColumns: isMobile ? "1fr" : "repeat(12, 1fr)",
+          gap: isMobile ? 20 : 16,
+          marginTop: 32,
         }}
       >
         <AnimatePresence mode="popLayout">

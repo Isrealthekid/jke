@@ -15,7 +15,23 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  return { title: project ? `${project.title} — JK Egbuson` : "Project" };
+  if (!project) return { title: "Project — JK Egbuson" };
+
+  return {
+    title: `JK Egbuson — ${project.title}`,
+    description: project.description,
+    openGraph: {
+      title: `JK Egbuson — ${project.title}`,
+      description: project.description,
+      images: [{ url: project.thumbnail, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image" as const,
+      title: `JK Egbuson — ${project.title}`,
+      description: project.description,
+      images: [project.thumbnail],
+    },
+  };
 }
 
 export default async function ProjectPage({ params }: Props) {

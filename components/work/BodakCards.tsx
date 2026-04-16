@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ---- Card data ---- */
 const categories = [
@@ -41,6 +42,7 @@ function getProjectCount(category: string): number {
 }
 
 export default function BodakCards() {
+  const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +50,7 @@ export default function BodakCards() {
     () => {
       const wrapper = wrapperRef.current;
       const sticky = stickyRef.current;
-      if (!wrapper || !sticky) return;
+      if (!wrapper || !sticky || isMobile) return;
 
       const cards = sticky.querySelectorAll<HTMLElement>(".bodak-card");
       if (cards.length !== 3) return;
@@ -132,9 +134,43 @@ export default function BodakCards() {
         },
       });
     },
-    { scope: wrapperRef }
+    { scope: wrapperRef, dependencies: [isMobile] }
   );
 
+  // ---- MOBILE: simple stacked cards ----
+  if (isMobile) {
+    return (
+      <div style={{ padding: "48px 20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {categories.map((cat) => (
+            <Link
+              key={cat.title}
+              href={`/work?filter=${encodeURIComponent(cat.filter)}`}
+              style={{
+                display: "block",
+                position: "relative",
+                borderRadius: 12,
+                overflow: "hidden",
+                aspectRatio: "16/9",
+                textDecoration: "none",
+              }}
+            >
+              <Image src={cat.image} alt={cat.title} fill style={{ objectFit: "cover" }} sizes="100vw" />
+              <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }} />
+              <div style={{ position: "absolute", bottom: 20, left: 20 }}>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "#f5f4f0", margin: 0 }}>{cat.title}</h3>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(245,244,240,0.6)" }}>
+                  {getProjectCount(cat.filter)} projects
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ---- DESKTOP: Bodak scroll animation ----
   return (
     <div ref={wrapperRef} style={{ height: "400vh", position: "relative" }}>
       <div

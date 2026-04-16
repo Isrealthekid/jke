@@ -71,7 +71,7 @@ export default function KineticStatement() {
     <section
       ref={sectionRef}
       style={{
-        padding: "160px 48px",
+        padding: "clamp(80px, 12vw, 160px) clamp(20px, 5vw, 48px)",
         backgroundColor: "#0a0a0a",
       }}
     >

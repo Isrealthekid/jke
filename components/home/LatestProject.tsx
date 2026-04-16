@@ -6,8 +6,10 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { projects } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 export default function LatestProject() {
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
 
@@ -20,17 +22,19 @@ export default function LatestProject() {
       const image = imageRef.current;
       if (!section || !image) return;
 
-      // Parallax — image moves at 0.6× scroll speed
-      gsap.to(image, {
-        yPercent: -20,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
+      // Parallax — desktop only (mobile gets fixed background)
+      if (!isMobile) {
+        gsap.to(image, {
+          yPercent: -20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
 
       // Content entrance stagger
       const items = section.querySelectorAll(".lp-reveal");
@@ -43,14 +47,11 @@ export default function LatestProject() {
           stagger: 0.15,
           duration: 0.7,
           ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-          },
+          scrollTrigger: { trigger: section, start: "top 70%" },
         }
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isMobile] }
   );
 
   return (
@@ -59,7 +60,7 @@ export default function LatestProject() {
       style={{
         position: "relative",
         width: "100%",
-        height: "90vh",
+        height: isMobile ? "80vh" : "90vh",
         overflow: "hidden",
       }}
     >
@@ -68,8 +69,8 @@ export default function LatestProject() {
         ref={imageRef}
         style={{
           position: "absolute",
-          inset: "-20% 0",
-          height: "140%",
+          inset: isMobile ? 0 : "-20% 0",
+          height: isMobile ? "100%" : "140%",
         }}
       >
         <Image

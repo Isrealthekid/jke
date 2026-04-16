@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import Lenis from "@studio-freight/lenis";
-import { ScrollTrigger } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const LenisContext = createContext<Lenis | null>(null);
 
@@ -23,7 +23,7 @@ export default function SmoothScrollProvider({
   children: ReactNode;
 }) {
   const [lenis, setLenis] = useState<Lenis | null>(null);
-  const rafId = useRef<number>(0);
+  const rafRef = useRef<((time: number) => void) | null>(null);
 
   useEffect(() => {
     const instance = new Lenis({
@@ -34,16 +34,22 @@ export default function SmoothScrollProvider({
 
     setLenis(instance);
 
-    function raf(time: number) {
-      instance.raf(time);
-      ScrollTrigger.update();
-      rafId.current = requestAnimationFrame(raf);
-    }
+    // Sync Lenis scroll position with GSAP ScrollTrigger
+    instance.on("scroll", ScrollTrigger.update);
 
-    rafId.current = requestAnimationFrame(raf);
+    // Use GSAP ticker as the single animation loop
+    const tickerCallback = (time: number) => {
+      instance.raf(time * 1000);
+    };
+    rafRef.current = tickerCallback;
+
+    gsap.ticker.add(tickerCallback);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(rafId.current);
+      if (rafRef.current) {
+        gsap.ticker.remove(rafRef.current);
+      }
       instance.destroy();
     };
   }, []);

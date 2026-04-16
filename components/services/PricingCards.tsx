@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 const tiers = [
   {
@@ -61,6 +62,7 @@ const tiers = [
 ];
 
 export default function PricingCards() {
+  const isMobile = useIsMobile();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
 
@@ -68,7 +70,7 @@ export default function PricingCards() {
     () => {
       const wrapper = wrapperRef.current;
       const sticky = stickyRef.current;
-      if (!wrapper || !sticky) return;
+      if (!wrapper || !sticky || isMobile) return;
 
       const cards = sticky.querySelectorAll<HTMLElement>(".pricing-card");
       if (cards.length !== 3) return;
@@ -142,9 +144,50 @@ export default function PricingCards() {
         },
       });
     },
-    { scope: wrapperRef }
+    { scope: wrapperRef, dependencies: [isMobile] }
   );
 
+  // ---- MOBILE: stacked pricing cards ----
+  if (isMobile) {
+    return (
+      <div style={{ padding: "48px 20px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+          {tiers.map((tier) => (
+            <div
+              key={tier.name}
+              style={{
+                borderRadius: 12,
+                border: tier.featured
+                  ? "1px solid rgba(200,255,0,0.3)"
+                  : "1px solid rgba(245,244,240,0.08)",
+                backgroundColor: "#111",
+                padding: 24,
+              }}
+            >
+              {tier.featured && (
+                <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 100, backgroundColor: "#c8ff00", fontFamily: "var(--font-body)", fontSize: 10, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase", color: "#0a0a0a", marginBottom: 12 }}>
+                  Popular
+                </span>
+              )}
+              <span style={{ fontSize: 24 }}>{tier.icon}</span>
+              <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, color: "#f5f4f0", margin: "8px 0 4px" }}>{tier.name}</h3>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(245,244,240,0.5)", margin: "0 0 16px" }}>{tier.tagline}</p>
+              <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px", display: "flex", flexDirection: "column", gap: 8 }}>
+                {tier.includes.map((item) => (
+                  <li key={item} style={{ fontFamily: "var(--font-body)", fontSize: 13, color: "rgba(245,244,240,0.6)", paddingLeft: 12, borderLeft: "2px solid rgba(200,255,0,0.3)" }}>{item}</li>
+                ))}
+              </ul>
+              <Link href={tier.ctaHref} style={{ display: "block", textAlign: "center", padding: "12px 0", borderRadius: 100, backgroundColor: "#c8ff00", color: "#0a0a0a", fontFamily: "var(--font-body)", fontSize: 12, fontWeight: 600, letterSpacing: "0.06em", textTransform: "uppercase", textDecoration: "none" }}>
+                {tier.cta} →
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // ---- DESKTOP: Bodak scroll animation ----
   return (
     <div ref={wrapperRef} style={{ height: "400vh", position: "relative" }}>
       <div

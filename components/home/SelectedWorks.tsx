@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { projects } from "@/data/projects";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ================================================================== */
 /*  Individual card with 3D tilt                                       */
@@ -207,6 +208,7 @@ function WorkCard({
 /*  SelectedWorks — horizontal scroll section                          */
 /* ================================================================== */
 export default function SelectedWorks() {
+  const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
@@ -215,7 +217,7 @@ export default function SelectedWorks() {
     () => {
       const track = trackRef.current;
       const section = sectionRef.current;
-      if (!track || !section) return;
+      if (!track || !section || isMobile) return;
 
       gsap.to(track, {
         x: () => -(track.scrollWidth - window.innerWidth),
@@ -235,9 +237,41 @@ export default function SelectedWorks() {
         },
       });
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [isMobile] }
   );
 
+  // ---- MOBILE: vertical stacked cards ----
+  if (isMobile) {
+    return (
+      <section style={{ backgroundColor: "#0a0a0a", padding: "64px 20px" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
+          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
+            Selected Work
+          </span>
+          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
+            ({String(projects.length).padStart(2, "0")})
+          </span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          {projects.map((project) => (
+            <Link key={project.slug} href={`/work/${project.slug}`} style={{ display: "block", textDecoration: "none" }}>
+              <div style={{ position: "relative", aspectRatio: "4/3", borderRadius: 4, overflow: "hidden" }}>
+                <Image src={project.thumbnail} alt={project.title} fill style={{ objectFit: "cover" }} sizes="100vw" />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)" }} />
+                <div style={{ position: "absolute", bottom: 16, left: 16, right: 16 }}>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#f5f4f0", opacity: 0.6 }}>{project.category}</span>
+                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "#f5f4f0", margin: "4px 0 0" }}>{project.title}</h3>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.5)" }}>{project.year} &middot; {project.role}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // ---- DESKTOP: horizontal scroll ----
   return (
     <section
       ref={sectionRef}
@@ -269,46 +303,20 @@ export default function SelectedWorks() {
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <span
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 11,
-                letterSpacing: "0.15em",
-                textTransform: "uppercase",
-                color: "rgba(245,244,240,0.5)",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
               Selected Work
             </span>
-            <span
-              style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 11,
-                color: "rgba(245,244,240,0.3)",
-              }}
-            >
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
               ({String(projects.length).padStart(2, "0")})
             </span>
           </div>
         </div>
 
         {/* Horizontal progress bar */}
-        <div
-          style={{
-            width: "100%",
-            height: 1,
-            backgroundColor: "rgba(245,244,240,0.08)",
-          }}
-        >
+        <div style={{ width: "100%", height: 1, backgroundColor: "rgba(245,244,240,0.08)" }}>
           <div
             ref={progressRef}
-            style={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#c8ff00",
-              transformOrigin: "left center",
-              transform: "scaleX(0)",
-            }}
+            style={{ width: "100%", height: "100%", backgroundColor: "#c8ff00", transformOrigin: "left center", transform: "scaleX(0)" }}
           />
         </div>
       </div>
