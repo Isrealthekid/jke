@@ -1,28 +1,81 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { clients } from "@/data/clients";
+const brands = [
+  "GTBank",
+  "Flutterwave",
+  "MTN",
+  "Paystack",
+  "Moniepoint",
+  "TikTok",
+  "Native Magazine",
+  "Access Bank",
+  "Alte Radio",
+  "World Economic Forum",
+];
 
 export default function ClientLogos() {
+  const doubled = [...brands, ...brands];
+
   return (
     <section>
-      <h3 className="mb-12 text-center font-body text-sm uppercase tracking-widest text-brand-white/40">
-        Trusted By
-      </h3>
-      <div className="grid grid-cols-3 gap-8 md:grid-cols-6">
-        {clients.map((client, i) => (
-          <motion.div
-            key={client.name}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05, duration: 0.4 }}
-            className="flex items-center justify-center py-4 font-body text-sm text-brand-white/30"
-          >
-            {client.name}
-          </motion.div>
-        ))}
+      <p
+        style={{
+          textAlign: "center",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          color: "rgba(245,244,240,0.3)",
+          marginBottom: 40,
+        }}
+      >
+        Brands I&rsquo;ve Worked With
+      </p>
+
+      <div style={{ overflow: "hidden" }}>
+        <div className="brand-marquee-track">
+          {doubled.map((brand, i) => (
+            <span key={i} className="brand-marquee-item">
+              {brand}
+            </span>
+          ))}
+        </div>
       </div>
+
+      <style jsx>{`
+        .brand-marquee-track {
+          display: flex;
+          width: max-content;
+          animation: brand-scroll 25s linear infinite;
+        }
+
+        .brand-marquee-track:hover {
+          animation-play-state: paused;
+        }
+
+        .brand-marquee-item {
+          flex-shrink: 0;
+          padding: 0 40px;
+          font-family: var(--font-display);
+          font-size: clamp(20px, 3vw, 36px);
+          color: rgba(245, 244, 240, 0.15);
+          white-space: nowrap;
+          transition: color 0.3s;
+        }
+
+        .brand-marquee-item:hover {
+          color: rgba(245, 244, 240, 0.5);
+        }
+
+        @keyframes brand-scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+      `}</style>
     </section>
   );
 }

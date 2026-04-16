@@ -1,33 +1,86 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 
 const stats = [
-  { value: "2020", label: "Founded" },
-  { value: "12", label: "Team Members" },
+  { value: "5+", label: "Years" },
   { value: "50+", label: "Projects" },
-  { value: "100%", label: "Passion" },
+  { value: "3", label: "Disciplines" },
 ];
 
 export default function StatsCards() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const cards = containerRef.current?.querySelectorAll(".stat-card");
+      if (!cards) return;
+
+      gsap.fromTo(
+        cards,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.6,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top 80%",
+          },
+        }
+      );
+    },
+    { scope: containerRef }
+  );
+
   return (
-    <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-      {stats.map((stat, i) => (
-        <motion.div
+    <div
+      ref={containerRef}
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: 16,
+      }}
+    >
+      {stats.map((stat) => (
+        <div
           key={stat.label}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1, duration: 0.5 }}
-          className="border border-brand-white/10 p-8 text-center"
+          className="stat-card"
+          style={{
+            border: "1px solid rgba(245,244,240,0.1)",
+            padding: "40px 24px",
+            textAlign: "center",
+            opacity: 0,
+          }}
         >
-          <span className="font-display text-4xl text-brand-accent">
+          <span
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(36px, 5vw, 56px)",
+              color: "#c8ff00",
+              lineHeight: 1,
+            }}
+          >
             {stat.value}
           </span>
-          <p className="mt-2 font-body text-xs uppercase tracking-widest text-brand-white/60">
+          <span
+            style={{
+              display: "block",
+              fontFamily: "var(--font-body)",
+              fontSize: 11,
+              letterSpacing: "0.15em",
+              textTransform: "uppercase",
+              color: "rgba(245,244,240,0.4)",
+              marginTop: 12,
+            }}
+          >
             {stat.label}
-          </p>
-        </motion.div>
+          </span>
+        </div>
       ))}
     </div>
   );
