@@ -4,8 +4,8 @@ import { useRef } from "react";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { PLACEHOLDER_IMAGES } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
+import joy1 from "@/app/images/joy1.webp";
 
 const BIO_TEXT =
   "JK Egbuson is a Lagos-based social media manager, video editor and filmmaker with over 5 years of experience crafting visual stories for brands and individuals. From documentary films to viral social campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
@@ -41,24 +41,25 @@ export default function SplitBio() {
         );
       }
 
-      // Word-by-word reveal tied to scroll
+      // Word-by-word reveal — fires once when the section enters the viewport.
+      // Initial "hidden" state is set by GSAP (not inline) so if JS fails,
+      // the text falls back to being fully visible instead of stuck clipped.
       const wordEls = section.querySelectorAll(".bio-word");
-      wordEls.forEach((word, i) => {
-        gsap.fromTo(
-          word,
-          { clipPath: "inset(0 100% 0 0)" },
-          {
-            clipPath: "inset(0 0% 0 0)",
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: () => `top+=${80 + i * 12}px top`,
-              end: () => `top+=${80 + i * 12 + 60}px top`,
-              scrub: 0.5,
-            },
-          }
-        );
-      });
+      gsap.fromTo(
+        wordEls,
+        { clipPath: "inset(0 100% 0 0)" },
+        {
+          clipPath: "inset(0 0% 0 0)",
+          stagger: 0.025,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        }
+      );
     },
     { scope: sectionRef, dependencies: [isMobile] }
   );
@@ -77,6 +78,7 @@ export default function SplitBio() {
     >
       {/* LEFT — Portrait photo */}
       <div
+        className="bio-portrait"
         style={{
           position: "relative",
           aspectRatio: "3/4",
@@ -86,13 +88,10 @@ export default function SplitBio() {
       >
         <div ref={imageRef} style={{ position: "absolute", inset: isMobile ? 0 : "-15%", height: isMobile ? "100%" : "130%" }}>
           <Image
-            src={PLACEHOLDER_IMAGES[0]}
-            alt="JK Egbuson"
+            src={joy1}
+            alt="Joie Egbuson"
             fill
-            style={{
-              objectFit: "cover",
-              filter: "saturate(0.8)",
-            }}
+            style={{ objectFit: "cover" }}
             sizes="(min-width: 768px) 50vw, 100vw"
             priority
           />
@@ -117,14 +116,15 @@ export default function SplitBio() {
 
         <p
           style={{
-            fontFamily: "var(--font-body)",
-            fontSize: 20,
-            lineHeight: 1.8,
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(32px, 4.2vw, 64px)",
+            lineHeight: 1.1,
+            letterSpacing: "0.01em",
             color: "#f5f4f0",
             margin: 0,
             display: "flex",
             flexWrap: "wrap",
-            gap: "0 0.3em",
+            gap: "0 0.25em",
           }}
         >
           {WORDS.map((word, i) => (
@@ -133,7 +133,6 @@ export default function SplitBio() {
               className="bio-word"
               style={{
                 display: "inline-block",
-                clipPath: "inset(0 100% 0 0)",
               }}
             >
               {word}
@@ -142,7 +141,7 @@ export default function SplitBio() {
         </p>
       </div>
 
-      {/* Responsive grid override */}
+      {/* Responsive grid override + portrait hover filter */}
       <style jsx global>{`
         @media (min-width: 768px) {
           .md\\:!grid-cols-2 {
@@ -151,6 +150,14 @@ export default function SplitBio() {
           .md\\:!gap-\\[80px\\] {
             gap: 80px !important;
           }
+        }
+
+        .bio-portrait img {
+          filter: grayscale(100%);
+          transition: filter 0.5s ease;
+        }
+        .bio-portrait:hover img {
+          filter: grayscale(0%);
         }
       `}</style>
     </section>
