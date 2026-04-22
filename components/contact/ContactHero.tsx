@@ -4,11 +4,9 @@ import ChannelCards from "./ChannelCards";
 import ContactForm from "./ContactForm";
 
 const socials = [
-  { platform: "Instagram", handle: "@jkegbuson_", href: "https://instagram.com/jkegbuson_" },
-  { platform: "TikTok", handle: "@jkegbuson", href: "https://tiktok.com/@jkegbuson" },
-  { platform: "LinkedIn", handle: "JK Egbuson", href: "https://linkedin.com" },
-  { platform: "Twitter", handle: "@jkegbuson", href: "https://twitter.com/jkegbuson" },
-  { platform: "YouTube", handle: "JK Egbuson", href: "https://youtube.com" },
+  { platform: "Instagram", handle: "@joie.egbuson", href: "https://www.instagram.com/joie.egbuson/" },
+  { platform: "YouTube", handle: "@JoieTVProductions", href: "https://www.youtube.com/@JoieTVProductions" },
+  { platform: "LinkedIn", handle: "Joykarenate Egbuson", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
 ];
 
 export default function ContactHero() {
