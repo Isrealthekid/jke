@@ -54,18 +54,39 @@ export default function ProjectHero({ project }: { project: Project }) {
     >
       {/* Poster / Video */}
       {showVideo && project.videoUrl ? (
-        <iframe
-          src={`${project.videoUrl}?autoplay=1`}
+        <div
           style={{
             position: "absolute",
             inset: 0,
-            width: "100%",
-            height: "100%",
-            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "clamp(16px, 4vw, 48px)",
+            backgroundColor: "#000",
           }}
-          allow="autoplay; fullscreen"
-          allowFullScreen
-        />
+        >
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              maxHeight: "100%",
+              aspectRatio: "16 / 9",
+            }}
+          >
+            <iframe
+              src={`${project.videoUrl}?autoplay=1`}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+              allow="autoplay; fullscreen"
+              allowFullScreen
+            />
+          </div>
+        </div>
       ) : (
         <>
           <Image
