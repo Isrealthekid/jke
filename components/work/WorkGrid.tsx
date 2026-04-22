@@ -9,18 +9,26 @@ import { projects } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
 import FilterBar from "./FilterBar";
 
+// Turn a /embed/{id} URL into an ambient autoplay+loop embed.
+function ambientEmbed(embedUrl: string): string {
+  const match = embedUrl.match(/embed\/([^?/]+)/);
+  const id = match ? match[1] : "";
+  return `${embedUrl}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`;
+}
+
 /* ================================================================== */
 /*  Work tile with 3D tilt + hover title bar                           */
 /* ================================================================== */
 function WorkTile({
   project,
   index,
-  isWide,
 }: {
   project: (typeof projects)[number];
   index: number;
-  isWide: boolean;
 }) {
+  // Vertical content (shorts / reels) takes a narrow 9:16 tile;
+  // everything else (films, video edits) takes a wide 16:9 tile.
+  const isVertical = project.category === "Social Content";
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -76,7 +84,7 @@ function WorkTile({
       exit={{ opacity: 0, scale: 0.92 }}
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       style={{
-        gridColumn: isWide ? "span 8" : "span 4",
+        gridColumn: isVertical ? "span 4" : "span 8",
         perspective: 1000,
       }}
       className="max-md:!col-span-1"
@@ -88,13 +96,13 @@ function WorkTile({
         onMouseLeave={handleMouseLeave}
         style={{
           position: "relative",
-          aspectRatio: "4/3",
+          aspectRatio: isVertical ? "9 / 16" : "16 / 9",
           overflow: "hidden",
           borderRadius: 4,
           transformStyle: "preserve-3d",
           willChange: "transform",
+          backgroundColor: "#000",
         }}
-        className={isWide ? "md:!aspect-[16/9]" : "md:!aspect-[3/4]"}
       >
         <Link
           href={`/work/${project.slug}`}
@@ -118,7 +126,7 @@ function WorkTile({
             {num}
           </span>
 
-          {/* Image */}
+          {/* Video / Thumbnail */}
           <div
             ref={imgRef}
             style={{
@@ -127,13 +135,30 @@ function WorkTile({
               willChange: "transform",
             }}
           >
-            <Image
-              src={project.thumbnail}
-              alt={project.title}
-              fill
-              style={{ objectFit: "cover" }}
-              sizes={isWide ? "66vw" : "33vw"}
-            />
+            {project.videoUrl ? (
+              <iframe
+                src={ambientEmbed(project.videoUrl)}
+                title={project.title}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  pointerEvents: "none",
+                }}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={project.thumbnail}
+                alt={project.title}
+                fill
+                style={{ objectFit: "cover" }}
+                sizes={isVertical ? "33vw" : "66vw"}
+              />
+            )}
           </div>
 
           {/* Bottom gradient */}
@@ -267,23 +292,19 @@ export default function WorkGrid() {
         style={{
           display: "grid",
           gridTemplateColumns: isMobile ? "1fr" : "repeat(12, 1fr)",
+          gridAutoFlow: "dense",
           gap: isMobile ? 20 : 16,
           marginTop: 32,
+          alignItems: "start",
         }}
       >
         <AnimatePresence mode="popLayout">
           {filtered.map((project, i) => {
-            // Alternating: row 0 = wide+narrow, row 1 = narrow+wide, ...
-            const row = Math.floor(i / 2);
-            const isFirst = i % 2 === 0;
-            const isWide = row % 2 === 0 ? isFirst : !isFirst;
-
             return (
               <WorkTile
                 key={project.slug}
                 project={project}
                 index={i}
-                isWide={isWide}
               />
             );
           })}
