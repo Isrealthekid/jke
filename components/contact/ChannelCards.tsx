@@ -25,29 +25,29 @@ export default function ChannelCards() {
     {
       label: "Email",
       frontIcon: "✉",
-      backValue: "hello@jkegbuson.com",
+      backValue: "jkarenateegbuson@gmail.com",
       backNote: "Best for project enquiries",
       action: () => {
-        navigator.clipboard.writeText("hello@jkegbuson.com");
+        navigator.clipboard.writeText("jkarenateegbuson@gmail.com");
         showToast();
       },
     },
     {
       label: "Instagram",
       frontIcon: "◎",
-      backValue: "@jkegbuson_",
+      backValue: "@joie.egbuson",
       backNote: "Best for quick chats & collabs",
       action: () => {
-        window.open("https://instagram.com/jkegbuson_", "_blank");
+        window.open("https://www.instagram.com/joie.egbuson/", "_blank");
       },
     },
     {
-      label: "WhatsApp",
-      frontIcon: "☎",
-      backValue: "Message directly",
-      backNote: "Best for urgent projects",
+      label: "YouTube",
+      frontIcon: "▶",
+      backValue: "@JoieTVProductions",
+      backNote: "Watch the latest films & edits",
       action: () => {
-        window.open("https://wa.me/2348000000000", "_blank");
+        window.open("https://www.youtube.com/@JoieTVProductions", "_blank");
       },
     },
   ];
