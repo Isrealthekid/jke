@@ -4,6 +4,9 @@ export const PLACEHOLDER_IMAGES = [
   "https://images.unsplash.com/photo-1775601258810-9d0c4152d75a?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 ] as const;
 
+const ytThumb = (id: string) => `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+const ytEmbed = (id: string) => `https://www.youtube.com/embed/${id}`;
+
 export interface Project {
   slug: string;
   title: string;
@@ -21,312 +24,316 @@ export interface Project {
   duration: string;
   tools: string[];
   videoUrl?: string;
+  externalUrl?: string;
   metrics?: { label: string; value: string }[];
 }
 
 export const projects: Project[] = [
   {
-    slug: "the-outsiders",
-    title: "The Outsiders",
+    slug: "i-love-you",
+    title: "I Love You",
     category: "Film",
-    thumbnail: PLACEHOLDER_IMAGES[0],
-    year: "2025",
-    description: "A short film exploring identity and belonging in Lagos.",
+    thumbnail: ytThumb("dDHvTvbNeW4"),
+    year: "2024",
+    description: "A short film about love — messy, complicated, and beautiful.",
     overview:
-      "The Outsiders is a 12-minute short film that follows three young creatives navigating the tension between tradition and modernity in Lagos. Shot over 5 days across Lekki, Victoria Island, and the mainland.",
+      "I Love You is a short film that sits inside the mess and the beauty of loving someone. Whether you've been in love, lost it, or are still searching, this story will relate in more ways than one.",
     brief:
-      "Create a visually stunning short film that captures the spirit of young Lagos — the hustle, the beauty, the contradictions. The film needed to feel cinematic yet intimate, like a love letter to the city.",
+      "Tell a love story that doesn't feel like a love story — no grand gestures, just the small, honest, uncomfortable moments that make love real.",
     approach:
-      "We shot on BMPCC 6K with vintage anamorphic lenses to get that warm, filmic quality. Every location was scouted for natural light. The edit rhythm mirrors the pace of Lagos itself — frenetic energy cut with moments of stillness.",
+      "Shot and cut to feel intimate first and cinematic second. The pacing leans into silences; the sound design carries the emotion where the dialogue steps back.",
     result:
-      "Selected for 3 international film festivals. Over 4.2M views across platforms within the first month. The film was featured on CNN Africa and picked up by a major streaming platform.",
-    images: [PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[2]],
-    client: "Self-Initiated",
+      "Released on Joie TV Productions. A personal favourite for viewers working through their own love stories.",
+    images: [
+      ytThumb("dDHvTvbNeW4"),
+      PLACEHOLDER_IMAGES[1],
+      PLACEHOLDER_IMAGES[2],
+    ],
+    client: "Joie TV Productions",
     role: "Director & Editor",
-    duration: "12 min",
-    tools: ["BMPCC 6K", "DaVinci Resolve", "After Effects"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    metrics: [
-      { label: "Views", value: "4.2M" },
-      { label: "Festival Selections", value: "3" },
-    ],
+    duration: "Short Film",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("dDHvTvbNeW4"),
+    externalUrl: "https://www.youtube.com/watch?v=dDHvTvbNeW4",
   },
   {
-    slug: "gtbank-fashion",
-    title: "GTBank Fashion Weekend",
-    category: "Video Edit",
-    thumbnail: PLACEHOLDER_IMAGES[1],
-    year: "2025",
-    description: "Recap film for GTBank's annual fashion weekend event.",
-    overview:
-      "A high-energy recap film capturing the essence of Africa's biggest fashion event. 48 hours of footage condensed into a 3-minute visual experience.",
-    brief:
-      "Produce a recap video that captures the energy, diversity, and cultural significance of GTBank Fashion Weekend. Must work across Instagram, YouTube, and broadcast.",
-    approach:
-      "Multi-camera setup with 4 operators. Real-time syncing to a curated soundtrack. We used a mix of gimbal, drone, and handheld to create texture variety.",
-    result:
-      "2.1M impressions in the first week. The video became GTBank's most-shared branded content of the year.",
-    images: [PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[0]],
-    client: "GTBank",
-    role: "Lead Editor",
-    duration: "3 min",
-    tools: ["Premiere Pro", "After Effects", "DaVinci Resolve"],
-    metrics: [
-      { label: "Impressions", value: "2.1M" },
-      { label: "Shares", value: "34K" },
-    ],
-  },
-  {
-    slug: "flutterwave-send",
-    title: "Flutterwave Send",
-    category: "Social Content",
-    thumbnail: PLACEHOLDER_IMAGES[2],
-    year: "2024",
-    description: "Social media campaign for Flutterwave's Send product launch.",
-    overview:
-      "A 30-piece social content campaign built to drive awareness and downloads for Flutterwave Send, their person-to-person payment feature targeting the diaspora.",
-    brief:
-      "Create thumb-stopping social content that explains a financial product without being boring. Target: Nigerian diaspora in UK, US, Canada. Must feel native to each platform.",
-    approach:
-      "We created platform-specific content — vertical storytelling for TikTok, carousel deep-dives for Instagram, and quick explainers for Twitter. Each piece was A/B tested for hook effectiveness.",
-    result:
-      "Campaign drove 340% increase in app downloads during launch week. Content was repurposed by influencers organically.",
-    images: [PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[1]],
-    client: "Flutterwave",
-    role: "Content Director",
-    duration: "6 weeks",
-    tools: ["Figma", "Premiere Pro", "CapCut"],
-    metrics: [
-      { label: "Downloads Increase", value: "340%" },
-      { label: "Organic Shares", value: "12K" },
-    ],
-  },
-  {
-    slug: "native-mag-cover",
-    title: "Native Mag Cover Shoot",
+    slug: "resonance",
+    title: "Resonance",
     category: "Film",
-    thumbnail: PLACEHOLDER_IMAGES[1],
+    thumbnail: ytThumb("TbVFPjYVFY0"),
     year: "2024",
-    description: "Behind-the-scenes film for Native Magazine's cover shoot.",
+    description:
+      "A short film about how the past, present, and future connect in ways we can't always explain.",
     overview:
-      "An intimate BTS film documenting Native Magazine's cover shoot with Tems. Raw, unscripted, and beautifully lit.",
+      "Resonance is about the ripples people leave behind and the way certain memories never really fade. It's a meditation on time — the things we carry, and the things we pass on.",
     brief:
-      "Capture the energy and creative process behind the shoot. The film should feel like you're in the room — no narration, just vibes.",
+      "Build a film that feels like a memory — non-linear, emotional, a little uncertain. Let the edit do the heavy lifting.",
     approach:
-      "Single camera, natural light, minimal crew. We let moments breathe and trusted the edit to find the story. Shot on a Sony FX6 with vintage Contax Zeiss glass.",
+      "Edited to layer timelines over each other, letting moments echo instead of explaining them. Grading leans soft and warm to push the sense of recollection.",
     result:
-      "1.8M views on YouTube. The film helped establish Native's video-first content strategy.",
-    images: [PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[1]],
-    client: "Native Magazine",
-    role: "Director of Photography",
-    duration: "8 min",
-    tools: ["Sony FX6", "DaVinci Resolve"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    metrics: [
-      { label: "Views", value: "1.8M" },
-      { label: "Watch Time", value: "6.2min avg" },
+      "Released on Joie TV Productions as a reflective follow-up to earlier narrative work.",
+    images: [
+      ytThumb("TbVFPjYVFY0"),
+      PLACEHOLDER_IMAGES[0],
+      PLACEHOLDER_IMAGES[2],
     ],
-  },
-  {
-    slug: "mtn-pulse",
-    title: "MTN Pulse Campaign",
-    category: "Social Content",
-    thumbnail: PLACEHOLDER_IMAGES[0],
-    year: "2024",
-    description: "Youth-focused social campaign for MTN Pulse data plans.",
-    overview:
-      "A Gen-Z targeted social campaign using meme culture and trending audio to drive awareness of MTN's affordable data plans.",
-    brief:
-      "Make MTN cool for 18-24 year olds. The content needs to feel organic — not like an ad. Must leverage trending formats on TikTok and Instagram Reels.",
-    approach:
-      "We embedded with 5 micro-creators across Lagos, Abuja, and PH. Each creator had creative freedom within our brand guardrails. Content was rapid-fire: 3 posts per day for 2 weeks.",
-    result:
-      "Campaign reached 1.2M unique users. MTN Pulse subscriptions increased 28% during the campaign period.",
-    images: [PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[2]],
-    client: "MTN Nigeria",
-    role: "Creative Strategist",
-    duration: "2 weeks",
-    tools: ["CapCut", "Canva", "Premiere Pro"],
-    metrics: [
-      { label: "Reach", value: "1.2M" },
-      { label: "Subscriptions", value: "+28%" },
-    ],
-  },
-  {
-    slug: "afrobeats-doc",
-    title: "Afrobeats: The Movement",
-    category: "Film",
-    thumbnail: PLACEHOLDER_IMAGES[2],
-    year: "2024",
-    description: "A documentary exploring the global rise of Afrobeats.",
-    overview:
-      "A 25-minute documentary featuring interviews with producers, artists, and cultural commentators on how Afrobeats became the world's fastest-growing genre.",
-    brief:
-      "Tell the Afrobeats story through the lens of the people who built it. Not a history lesson — a living, breathing portrait of a movement.",
-    approach:
-      "Interviews shot in studios across Lagos and London. We intercut with archival footage, concert recordings, and animated data visualizations. The grade leans warm and nostalgic.",
-    result:
-      "Premiered at AFRIFF. Acquired by a major streaming service for global distribution.",
-    images: [PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[0]],
-    client: "Self-Initiated",
+    client: "Joie TV Productions",
     role: "Director & Editor",
-    duration: "25 min",
-    tools: ["RED Komodo", "DaVinci Resolve", "After Effects"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    metrics: [
-      { label: "Festival Premiere", value: "AFRIFF" },
-      { label: "Countries", value: "12" },
-    ],
+    duration: "Short Film",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("TbVFPjYVFY0"),
+    externalUrl: "https://www.youtube.com/watch?v=TbVFPjYVFY0",
   },
   {
-    slug: "paystack-rebrand",
-    title: "Paystack Rebrand Video",
-    category: "Video Edit",
-    thumbnail: PLACEHOLDER_IMAGES[0],
-    year: "2023",
-    description: "Brand reveal video for Paystack's visual identity refresh.",
-    overview:
-      "A sleek 90-second brand reveal film showcasing Paystack's new visual identity — new logo, colour system, and motion language.",
-    brief:
-      "Create a launch video that introduces the new brand with confidence. It should feel premium, modern, and unmistakably African tech.",
-    approach:
-      "Motion-heavy approach: every frame is designed in Figma, animated in After Effects, and composited in Premiere. We used a custom type animation system that mirrors the new brand's geometric language.",
-    result:
-      "3.5M impressions across launch channels. The video set the tone for Paystack's entire rebrand rollout.",
-    images: [PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[2]],
-    client: "Paystack",
-    role: "Motion Director",
-    duration: "90 sec",
-    tools: ["After Effects", "Figma", "Premiere Pro"],
-    metrics: [
-      { label: "Impressions", value: "3.5M" },
-      { label: "Engagement Rate", value: "8.4%" },
-    ],
-  },
-  {
-    slug: "moniepoint-stories",
-    title: "Moniepoint Stories",
-    category: "Social Content",
-    thumbnail: PLACEHOLDER_IMAGES[2],
-    year: "2023",
-    description: "Human-interest content series for Moniepoint's social channels.",
-    overview:
-      "A 12-part content series profiling small business owners across Nigeria who use Moniepoint. Each story is 60 seconds of pure emotion.",
-    brief:
-      "Humanize Moniepoint's brand by telling the stories of their actual users. No actors — real people, real businesses, real impact.",
-    approach:
-      "We traveled to 6 cities over 3 weeks. Each story was shot in a single morning — arrive early, observe, capture. Minimal direction, maximum authenticity.",
-    result:
-      "Series averaged 280K views per episode. Three stories were picked up by national press.",
-    images: [PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[1]],
-    client: "Moniepoint",
-    role: "Content Director",
-    duration: "12 episodes",
-    tools: ["Sony A7IV", "Premiere Pro", "Lightroom"],
-    metrics: [
-      { label: "Avg Views", value: "280K" },
-      { label: "Press Pickups", value: "3" },
-    ],
-  },
-  {
-    slug: "wef-lagos",
-    title: "WEF Lagos Highlight",
-    category: "Video Edit",
-    thumbnail: PLACEHOLDER_IMAGES[1],
-    year: "2023",
-    description: "Official highlight reel for the World Economic Forum Lagos summit.",
-    overview:
-      "A 5-minute highlight film capturing the energy and ideas of WEF's first Lagos summit. Speeches, networking, city vibes.",
-    brief:
-      "Create a prestigious highlight film worthy of the WEF brand. Must balance content (speeches, panels) with atmosphere (Lagos energy, networking moments).",
-    approach:
-      "5-camera setup with dedicated operators for stage, crowd, B-roll, and aerials. Same-day rough cut delivered for social; full film delivered within 72 hours.",
-    result:
-      "Featured on WEF's global channels. Over 890K views in the first month.",
-    images: [PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[1]],
-    client: "World Economic Forum",
-    role: "Lead Editor",
-    duration: "5 min",
-    tools: ["Premiere Pro", "DaVinci Resolve", "After Effects"],
-    metrics: [
-      { label: "Views", value: "890K" },
-      { label: "Turnaround", value: "72hrs" },
-    ],
-  },
-  {
-    slug: "tiktok-creator",
-    title: "TikTok Creator Fund",
-    category: "Social Content",
-    thumbnail: PLACEHOLDER_IMAGES[0],
-    year: "2023",
-    description: "Launch campaign for TikTok's creator fund in Sub-Saharan Africa.",
-    overview:
-      "A cross-platform campaign announcing TikTok's creator monetization program in Africa. Equal parts hype video and educational content.",
-    brief:
-      "Announce the creator fund in a way that feels exciting, not corporate. Target existing creators on the platform — speak their language.",
-    approach:
-      "We recruited 10 of TikTok's biggest African creators to co-create the launch content. Each creator made their own announcement in their style; we produced the hero video tying it all together.",
-    result:
-      "4.8M views on the hero video. Creator fund applications exceeded target by 3x in the first week.",
-    images: [PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[0]],
-    client: "TikTok",
-    role: "Campaign Director",
-    duration: "4 weeks",
-    tools: ["CapCut", "Premiere Pro", "After Effects"],
-    metrics: [
-      { label: "Hero Views", value: "4.8M" },
-      { label: "Applications", value: "3x target" },
-    ],
-  },
-  {
-    slug: "alte-radio",
-    title: "Alte Radio Sessions",
+    slug: "wake-up-eat-sleep-repeat",
+    title: "Wake Up, Eat, Sleep, Repeat",
     category: "Film",
-    thumbnail: PLACEHOLDER_IMAGES[2],
-    year: "2023",
-    description: "Live performance series filmed at an underground Lagos venue.",
+    thumbnail: ytThumb("QxYfDjL8zcI"),
+    year: "2024",
+    description:
+      "A short film mirroring the depth of everyday life — the routine, the fatigue, the small moments that keep us going.",
     overview:
-      "A 6-part live performance series capturing emerging alternative artists in an intimate warehouse setting. Lo-fi production, high-fi talent.",
+      "A short film for anyone who has ever felt stuck in the daily cycle but still finds a way to keep moving forward. Watch, reflect, and maybe break the cycle.",
     brief:
-      "Create a Tiny Desk-style series but make it Lagos. Raw audio, cinematic visuals, underground energy.",
+      "Take something as mundane as a daily routine and make it feel cinematic without losing its honesty.",
     approach:
-      "Single-take performances, 3 cameras, live audio mix. We lit each session to match the artist's mood — warm ambers for R&B, cold blues for electronic.",
+      "Repetition is the main character. Cuts are built around repeating frames and sounds so the routine is felt, not just shown — then broken, deliberately, at the moments that matter.",
     result:
-      "Series became a cult favourite. Combined 2.4M views. Two featured artists got signed to major labels within 6 months.",
-    images: [PLACEHOLDER_IMAGES[0], PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[2]],
-    client: "Alte Radio",
-    role: "Director & Cinematographer",
-    duration: "6 episodes",
-    tools: ["Sony FX6", "DaVinci Resolve", "Pro Tools"],
-    videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
-    metrics: [
-      { label: "Combined Views", value: "2.4M" },
-      { label: "Artist Signings", value: "2" },
+      "Struck a chord with viewers navigating burnout and the grind — the film's comment section became its own conversation.",
+    images: [
+      ytThumb("QxYfDjL8zcI"),
+      PLACEHOLDER_IMAGES[0],
+      PLACEHOLDER_IMAGES[1],
     ],
+    client: "Joie TV Productions",
+    role: "Director & Editor",
+    duration: "Short Film",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("QxYfDjL8zcI"),
+    externalUrl: "https://www.youtube.com/watch?v=QxYfDjL8zcI",
   },
   {
-    slug: "access-bank-ar",
-    title: "Access Bank AR Experience",
-    category: "Video Edit",
-    thumbnail: PLACEHOLDER_IMAGES[1],
-    year: "2022",
-    description: "Augmented reality promo video for Access Bank's mobile app.",
+    slug: "knock-knock",
+    title: "Knock Knock",
+    category: "Film",
+    thumbnail: ytThumb("3edRZ78dIuI"),
+    year: "2023",
+    description:
+      "A short horror film about the dangers of being in the dorm room alone.",
     overview:
-      "A technical showpiece combining live-action footage with AR overlays to demonstrate Access Bank's new mobile banking features.",
+      "Knock Knock is a tight, atmospheric horror short built on a very ordinary fear — being alone in a space that suddenly isn't yours anymore.",
     brief:
-      "Create a futuristic promo that shows the new AR features in action. Must feel cutting-edge but still approachable for a mass audience.",
+      "Deliver horror on a student budget: no gore, no spectacle — just tension, space, and sound doing the work.",
     approach:
-      "Shot on green screen with tracked AR elements composited in After Effects. We used Cinema 4D for the 3D UI mockups and matched lighting between real and virtual elements.",
+      "Long takes, tight framing, and a deliberately restrained sound palette. The edit resists the urge to cut away, letting dread build in real time.",
     result:
-      "Video drove 156K app downloads in launch week. Won Best Financial Services Video at the Marketing World Awards.",
-    images: [PLACEHOLDER_IMAGES[2], PLACEHOLDER_IMAGES[1], PLACEHOLDER_IMAGES[0]],
-    client: "Access Bank",
-    role: "VFX & Edit",
-    duration: "2 min",
-    tools: ["After Effects", "Cinema 4D", "Premiere Pro"],
-    metrics: [
-      { label: "App Downloads", value: "156K" },
-      { label: "Award", value: "MWA Winner" },
+      "One of the breakout pieces on Joie TV Productions and a regular entry point for new viewers into the channel's narrative work.",
+    images: [
+      ytThumb("3edRZ78dIuI"),
+      PLACEHOLDER_IMAGES[1],
+      PLACEHOLDER_IMAGES[2],
     ],
+    client: "Joie TV Productions",
+    role: "Director & Editor",
+    duration: "Short Film",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("3edRZ78dIuI"),
+    externalUrl: "https://www.youtube.com/watch?v=3edRZ78dIuI",
+  },
+  {
+    slug: "women-leaders-unscripted-trailer",
+    title: "Women Leaders Unscripted — Trailer",
+    category: "Video Edit",
+    thumbnail: ytThumb("2B3ZORKuDJ0"),
+    year: "2025",
+    description:
+      "Launch trailer for Women Leaders Unscripted — a podcast bringing together Africa's most inspiring female voices.",
+    overview:
+      "Women Leaders Unscripted is a podcast series of real, raw, and unscripted conversations about leadership, growth, resilience, and transformation. The trailer had to introduce the series' tone in under a minute: no scripts, no filters, just truth and courage.",
+    brief:
+      "Edit a launch trailer that signals the intent of the series — bold African voices, stripped-back conversation, cinematic treatment. Hook viewers in the first three seconds.",
+    approach:
+      "Pulled the most charged lines from across recorded sessions and layered them against atmospheric beats. Cuts are quick where the energy rises and held where the statements need to land.",
+    result:
+      "Set the visual and pacing language used across the rest of the Women Leaders Unscripted series.",
+    images: [
+      ytThumb("2B3ZORKuDJ0"),
+      ytThumb("-OKPBPCKP1w"),
+      ytThumb("iJw89fpioOQ"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Trailer",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("2B3ZORKuDJ0"),
+    externalUrl: "https://youtu.be/2B3ZORKuDJ0",
+  },
+  {
+    slug: "women-leaders-unscripted-debola",
+    title: "The Beginning — Debola Deji-Kurunmi",
+    category: "Video Edit",
+    thumbnail: ytThumb("-OKPBPCKP1w"),
+    year: "2025",
+    description:
+      "Debola Deji-Kurunmi opens Women Leaders Unscripted with reflections on courage, calling, and leading from truth.",
+    overview:
+      "The launch trailer for Debola Deji-Kurunmi's episode — author, coach, and nation-builder — introducing her chapter of Women Leaders Unscripted and the kind of leadership that transforms lives.",
+    brief:
+      "Cut a launch piece that captures Debola's voice and presence without over-editing. It should feel like an invitation, not a promo.",
+    approach:
+      "Long interview takes with minimal intercuts, punctuated by clean title cards. The grade stays neutral and warm; the audio is front and centre.",
+    result:
+      "Became the entry point for the Women Leaders Unscripted series, anchoring the tone for every episode that followed.",
+    images: [
+      ytThumb("-OKPBPCKP1w"),
+      ytThumb("2B3ZORKuDJ0"),
+      ytThumb("iJw89fpioOQ"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Launch Video",
+    tools: ["Adobe Premiere Pro", "DaVinci Resolve"],
+    videoUrl: ytEmbed("-OKPBPCKP1w"),
+    externalUrl: "https://www.youtube.com/watch?v=-OKPBPCKP1w",
+  },
+  {
+    slug: "why-you-feel-stuck",
+    title: "Why You Feel Stuck",
+    category: "Social Content",
+    thumbnail: ytThumb("iJw89fpioOQ"),
+    year: "2025",
+    description:
+      "A vertical short from Episode 1 of Women Leaders Unscripted with Debola Deji-Kurunmi — it's not money.",
+    overview:
+      "A punchy vertical edit pulled from the first episode of Women Leaders Unscripted. Built for YouTube Shorts and Reels — hook on frame one, payoff before the scroll.",
+    brief:
+      "Extract a stand-alone moment from the long-form episode that works as a vertical short without losing context.",
+    approach:
+      "Reframed and recut for 9:16, tightened pacing, added captions and rhythm cuts on emphasis beats. Kept the speaker's line intact — the edit just clears the path.",
+    result:
+      "A short-form entry point driving traffic back into the long-form episode.",
+    images: [
+      ytThumb("iJw89fpioOQ"),
+      ytThumb("-OKPBPCKP1w"),
+      ytThumb("2B3ZORKuDJ0"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Short",
+    tools: ["Adobe Premiere Pro", "CapCut"],
+    videoUrl: ytEmbed("iJw89fpioOQ"),
+    externalUrl: "https://youtube.com/shorts/iJw89fpioOQ",
+  },
+  {
+    slug: "francesca-uriri-silicon-valley",
+    title: "Francesca Uriri — Building a Career in Silicon Valley",
+    category: "Social Content",
+    thumbnail: ytThumb("1IziFZo3SNI"),
+    year: "2025",
+    description:
+      "Season 1 finale short with Francesca Uriri on building a global career from Nigeria to Silicon Valley.",
+    overview:
+      "A vertical short cut from the Season 1 finale of Women Leaders Unscripted. Francesca Uriri — media executive, tech leader, and founder of Leading Ladies Africa — opens up about thriving as an immigrant professional and channelling ambition without losing yourself.",
+    brief:
+      "Pull a stand-alone moment from a long-form finale episode that works as a vertical short without losing the weight of the story.",
+    approach:
+      "Reframed to 9:16, tightened pacing, and beat-cut the line breaks to land Francesca's most charged statements first. Captions sit low so the face reads clearly on mobile.",
+    result:
+      "A short-form entry point for the Season 1 finale, designed to convert scroll-stoppers into full-episode viewers.",
+    images: [
+      ytThumb("1IziFZo3SNI"),
+      ytThumb("E6b4ITQMcI4"),
+      ytThumb("2B3ZORKuDJ0"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Short",
+    tools: ["Adobe Premiere Pro", "CapCut"],
+    videoUrl: ytEmbed("1IziFZo3SNI"),
+    externalUrl: "https://youtube.com/shorts/1IziFZo3SNI",
+  },
+  {
+    slug: "francesca-uriri-healing",
+    title: "Francesca Uriri — Navigating Loss & Choosing Healing",
+    category: "Social Content",
+    thumbnail: ytThumb("E6b4ITQMcI4"),
+    year: "2025",
+    description:
+      "A companion short from the Season 1 finale — Francesca Uriri on grief, leadership, and healing in high-performance environments.",
+    overview:
+      "A second vertical cut from Francesca Uriri's Season 1 finale appearance. This clip leans into the quieter half of the conversation — navigating grief while still showing up to lead, and the courage it takes to redefine success on your own terms.",
+    brief:
+      "Separate the softer, more reflective beats from the career-focused clip so each short has its own emotional register.",
+    approach:
+      "Slower pacing, longer holds on Francesca's face, and a more restrained caption style. Lets the silences do more of the work.",
+    result:
+      "Paired with the Silicon Valley cut to give the finale two distinct short-form entry points — one for ambition, one for healing.",
+    images: [
+      ytThumb("E6b4ITQMcI4"),
+      ytThumb("1IziFZo3SNI"),
+      ytThumb("-OKPBPCKP1w"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Short",
+    tools: ["Adobe Premiere Pro", "CapCut"],
+    videoUrl: ytEmbed("E6b4ITQMcI4"),
+    externalUrl: "https://youtube.com/shorts/E6b4ITQMcI4",
+  },
+  {
+    slug: "yemi-chukwurah-china-supply-chain",
+    title: "Yemi Chukwurah — Mastering China's Supply Chain",
+    category: "Social Content",
+    thumbnail: ytThumb("NDqZ3hzOtmc"),
+    year: "2025",
+    description:
+      "Episode 10 short with Yemi Chukwurah on building across borders and winning inside China's manufacturing economy.",
+    overview:
+      "A vertical cut from Episode 10 of Women Leaders Unscripted. Yemi Chukwurah breaks down what it really takes for a Nigerian entrepreneur to negotiate with Chinese suppliers, navigate cultural and operational barriers, and scale beyond local markets.",
+    brief:
+      "Distil a detail-heavy business conversation into a short that feels like a masterclass, not a lecture.",
+    approach:
+      "Opened on Yemi's strongest thesis line, then layered supporting beats with on-screen text for quick comprehension. Kept cuts on emphasis so the rhythm matches how she speaks.",
+    result:
+      "A high-information short designed to funnel serious entrepreneurs into the full long-form episode.",
+    images: [
+      ytThumb("NDqZ3hzOtmc"),
+      ytThumb("WoCZa0TUz4E"),
+      ytThumb("2B3ZORKuDJ0"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Short",
+    tools: ["Adobe Premiere Pro", "CapCut"],
+    videoUrl: ytEmbed("NDqZ3hzOtmc"),
+    externalUrl: "https://youtube.com/shorts/NDqZ3hzOtmc",
+  },
+  {
+    slug: "patricia-obozuwa-workplace-politics",
+    title: "Patricia Obozuwa — Navigating Workplace Politics",
+    category: "Social Content",
+    thumbnail: ytThumb("WoCZa0TUz4E"),
+    year: "2025",
+    description:
+      "Episode 9 short with Patricia Obozuwa on workplace politics and being \"the only\" in the room.",
+    overview:
+      "A vertical cut from Episode 9 of Women Leaders Unscripted. Patricia Obozuwa — global business leader, board member, and former CMO — shares candid insight on the unspoken rules of workplace politics and how women can build influence, credibility, and long-term success in high-stakes environments.",
+    brief:
+      "Take a practical, experience-heavy conversation and surface the single most actionable insight for a short audience.",
+    approach:
+      "Led with the hook — \"being the only\" — and cut around Patricia's most quotable reframes. Clean captions, zero visual noise, so the words carry.",
+    result:
+      "A clip that consistently drives comments and saves — the format most likely to convert passive scrollers into subscribers.",
+    images: [
+      ytThumb("WoCZa0TUz4E"),
+      ytThumb("NDqZ3hzOtmc"),
+      ytThumb("-OKPBPCKP1w"),
+    ],
+    client: "Women Leaders Unscripted",
+    role: "Editor",
+    duration: "Short",
+    tools: ["Adobe Premiere Pro", "CapCut"],
+    videoUrl: ytEmbed("WoCZa0TUz4E"),
+    externalUrl: "https://youtube.com/shorts/WoCZa0TUz4E",
   },
 ];

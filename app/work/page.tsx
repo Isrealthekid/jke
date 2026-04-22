@@ -23,8 +23,8 @@ export const metadata: Metadata = {
 export default function WorkPage() {
   return (
     <main style={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
-      <div style={{ padding: "clamp(100px, 12vw, 120px) clamp(20px, 5vw, 48px) 0" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8 }}>
+      <div style={{ padding: "clamp(100px, 12vw, 140px) clamp(20px, 5vw, 48px) clamp(40px, 6vw, 80px)" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 16 }}>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
             Work
           </span>
@@ -32,6 +32,18 @@ export default function WorkPage() {
             ({String(projects.length).padStart(2, "0")})
           </span>
         </div>
+        <h1
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(96px, 20vw, 280px)",
+            color: "#f5f4f0",
+            lineHeight: 0.9,
+            letterSpacing: "-0.01em",
+            margin: 0,
+          }}
+        >
+          Works
+        </h1>
       </div>
       <BodakCards />
       <div style={{ padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px) clamp(64px, 10vw, 120px)" }}>
