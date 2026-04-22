@@ -2,19 +2,22 @@
 
 /* ---- Row data ---- */
 const row1Items = [
-  { brand: "GTBank", metric: "2.1M impressions" },
-  { brand: "Flutterwave", metric: "Campaign" },
-  { brand: "TikTok", metric: "4.8M views" },
-  { brand: "MTN", metric: "1.2M reach" },
-  { brand: "Moniepoint", metric: "Brand Film" },
-  { brand: "Paystack", metric: "3.5M impressions" },
+  "koppoh",
+  "Leading Ladies Africa",
+  "Alpha African Advisory",
+  "Realised Gains",
+  "Princess and Pearls Swift Company",
+  "Quiz Me",
+  "Redeemer's University Theatre Art Department",
+  "Women Aligned for Growth",
+  "Healthy Living Services",
+  "Mimi Paul Collective",
 ];
 
 const row2Items = [
-  { platform: "Instagram", count: "280K" },
-  { platform: "TikTok", count: "368K" },
-  { platform: "YouTube", count: "133K" },
-  { platform: "Twitter", count: "155K" },
+  { platform: "Instagram", handle: "@joie.egbuson" },
+  { platform: "YouTube", handle: "@JoieTVProductions" },
+  { platform: "LinkedIn", handle: "Joykarenate Egbuson" },
 ];
 
 export default function SocialProof() {
@@ -44,24 +47,18 @@ export default function SocialProof() {
         Brands &amp; Platforms
       </p>
 
-      {/* Row 1 — left direction, 30s */}
+      {/* Row 1 — brands I've worked with (left, 40s) */}
       <div className="marquee-row marquee-row-1" style={{ marginBottom: 20 }}>
         <div className="marquee-track-left">
-          {[...row1Items, ...row1Items].map((item, i) => (
+          {[...row1Items, ...row1Items].map((brand, i) => (
             <span key={i} className="marquee-item">
-              <span style={{ fontWeight: 500, color: "#f5f4f0" }}>
-                {item.brand}
-              </span>
-              <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
-                &middot;
-              </span>
-              <span style={{ color: "#008cff" }}>{item.metric}</span>
+              <span style={{ fontWeight: 500, color: "#f5f4f0" }}>{brand}</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* Row 2 — right direction, 20s */}
+      {/* Row 2 — platforms (right, 25s) */}
       <div className="marquee-row marquee-row-2">
         <div className="marquee-track-right">
           {[...row2Items, ...row2Items].map((item, i) => (
@@ -72,7 +69,7 @@ export default function SocialProof() {
               <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
                 &middot;
               </span>
-              <span style={{ color: "#008cff" }}>{item.count}</span>
+              <span style={{ color: "#008cff" }}>{item.handle}</span>
             </span>
           ))}
         </div>
@@ -96,10 +93,10 @@ export default function SocialProof() {
         }
 
         .marquee-track-left {
-          animation: marquee-left 30s linear infinite;
+          animation: marquee-left 40s linear infinite;
         }
         .marquee-track-right {
-          animation: marquee-right 20s linear infinite;
+          animation: marquee-right 25s linear infinite;
         }
 
         .marquee-item {
