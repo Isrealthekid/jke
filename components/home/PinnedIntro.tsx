@@ -1,18 +1,19 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { PLACEHOLDER_IMAGES } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ---- Role data — drives the 3 phases ---- */
 const roles = [
-  { label: "Social Media Management", image: PLACEHOLDER_IMAGES[0] },
-  { label: "Video Production", image: PLACEHOLDER_IMAGES[1] },
-  { label: "Filmmaking", image: PLACEHOLDER_IMAGES[2] },
+  { label: "Social Media Management", videoId: "2B3ZORKuDJ0" }, // Women Leaders Unscripted — Trailer
+  { label: "Video Production", videoId: "-OKPBPCKP1w" },         // The Beginning — Debola Deji-Kurunmi
+  { label: "Filmmaking", videoId: "dDHvTvbNeW4" },               // I Love You — Short Film
 ];
+
+const ytEmbedSrc = (id: string) =>
+  `https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&playsinline=1&rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`;
 
 export default function PinnedIntro() {
   const isMobile = useIsMobile();
@@ -234,14 +235,21 @@ export default function PinnedIntro() {
                   borderRadius: 4,
                   overflow: "hidden",
                   marginTop: 24,
+                  backgroundColor: "#000",
                 }}
               >
-                <Image
-                  src={role.image}
-                  alt={role.label}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  sizes="100vw"
+                <iframe
+                  src={ytEmbedSrc(role.videoId)}
+                  title={role.label}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                  }}
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
                 />
               </div>
             </div>
@@ -424,12 +432,13 @@ export default function PinnedIntro() {
           </div>
         </div>
 
-        {/* ---- Right column (60%) — crossfading images ---- */}
+        {/* ---- Right column (60%) — crossfading 16:9 video embeds ---- */}
         <div
           style={{
             width: "60%",
             position: "relative",
             overflow: "hidden",
+            backgroundColor: "#0a0a0a",
           }}
         >
           {roles.map((role, i) => (
@@ -440,17 +449,39 @@ export default function PinnedIntro() {
                 position: "absolute",
                 inset: 0,
                 opacity: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: 40,
                 transition: "opacity 0.1s ease",
               }}
             >
-              <Image
-                src={role.image}
-                alt={role.label}
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="60vw"
-                priority={i === 0}
-              />
+              <div
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  maxHeight: "100%",
+                  aspectRatio: "16 / 9",
+                  backgroundColor: "#000",
+                  borderRadius: 4,
+                  overflow: "hidden",
+                  boxShadow: "0 30px 80px rgba(0,0,0,0.4)",
+                }}
+              >
+                <iframe
+                  src={ytEmbedSrc(role.videoId)}
+                  title={role.label}
+                  style={{
+                    position: "absolute",
+                    inset: 0,
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                  }}
+                  allow="autoplay; encrypted-media; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
               {/* Gradient for text readability at edges */}
               <div
                 style={{
@@ -458,6 +489,7 @@ export default function PinnedIntro() {
                   inset: 0,
                   background:
                     "linear-gradient(to right, rgba(10,10,10,0.6) 0%, transparent 40%)",
+                  pointerEvents: "none",
                 }}
               />
             </div>
