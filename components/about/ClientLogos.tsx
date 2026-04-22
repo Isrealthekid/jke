@@ -1,16 +1,16 @@
 "use client";
 
 const brands = [
-  "GTBank",
-  "Flutterwave",
-  "MTN",
-  "Paystack",
-  "Moniepoint",
-  "TikTok",
-  "Native Magazine",
-  "Access Bank",
-  "Alte Radio",
-  "World Economic Forum",
+  "koppoh",
+  "Leading Ladies Africa",
+  "Alpha African Advisory",
+  "Realised Gains",
+  "Princess and Pearls Swift Company",
+  "Quiz Me",
+  "Redeemer's University Theatre Art Department",
+  "Women Aligned for Growth",
+  "Healthy Living Services",
+  "Mimi Paul Collective",
 ];
 
 export default function ClientLogos() {

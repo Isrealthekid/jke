@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, projectType, budget, message } = body;
+    const { name, email, message } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -17,8 +17,6 @@ export async function POST(request: Request) {
     console.log("Contact form submission:", {
       name,
       email,
-      projectType,
-      budget,
       message,
       timestamp: new Date().toISOString(),
     });

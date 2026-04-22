@@ -6,8 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 interface FormData {
   name: string;
   email: string;
-  projectType: string;
-  budget: string;
   message: string;
 }
 
@@ -15,8 +13,6 @@ export default function ContactForm() {
   const [form, setForm] = useState<FormData>({
     name: "",
     email: "",
-    projectType: "",
-    budget: "",
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
@@ -137,44 +133,6 @@ export default function ContactForm() {
               onChange={(v) => update("email", v)}
               required
             />
-
-            {/* Project type select */}
-            <div style={{ position: "relative" }}>
-              <label style={selectLabelStyle}>Project Type</label>
-              <select
-                value={form.projectType}
-                onChange={(e) => update("projectType", e.target.value)}
-                required
-                style={selectStyle}
-              >
-                <option value="" disabled>
-                  Select a type
-                </option>
-                <option value="social-media">Social Media</option>
-                <option value="video">Video</option>
-                <option value="film">Film</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            {/* Budget select */}
-            <div style={{ position: "relative" }}>
-              <label style={selectLabelStyle}>Budget Range</label>
-              <select
-                value={form.budget}
-                onChange={(e) => update("budget", e.target.value)}
-                style={selectStyle}
-              >
-                <option value="" disabled>
-                  Select a range
-                </option>
-                <option value="under-500k">Under ₦500K / $500</option>
-                <option value="500k-2m">₦500K – ₦2M / $500 – $2K</option>
-                <option value="2m-5m">₦2M – ₦5M / $2K – $5K</option>
-                <option value="5m-plus">₦5M+ / $5K+</option>
-                <option value="discuss">Let&rsquo;s discuss</option>
-              </select>
-            </div>
 
             {/* Message */}
             <FloatField
@@ -317,30 +275,3 @@ function FloatField({
   );
 }
 
-const selectLabelStyle: React.CSSProperties = {
-  display: "block",
-  fontFamily: "var(--font-body)",
-  fontSize: 10,
-  letterSpacing: "0.1em",
-  textTransform: "uppercase",
-  color: "rgba(245,244,240,0.35)",
-  marginBottom: 6,
-};
-
-const selectStyle: React.CSSProperties = {
-  width: "100%",
-  backgroundColor: "#111",
-  border: "1px solid rgba(255,255,255,0.1)",
-  borderRadius: 4,
-  padding: "12px 16px",
-  fontFamily: "var(--font-body)",
-  fontSize: 15,
-  color: "#f5f4f0",
-  outline: "none",
-  cursor: "none",
-  appearance: "none",
-  backgroundImage:
-    "url(\"data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666' stroke-width='1.2'/%3E%3C/svg%3E\")",
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "right 16px center",
-};
