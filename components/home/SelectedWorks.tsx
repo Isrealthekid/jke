@@ -8,6 +8,13 @@ import { gsap } from "@/lib/gsap";
 import { projects } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
 
+// Turn a /embed/{id} URL into an ambient autoplay+loop embed.
+function ambientEmbed(embedUrl: string): string {
+  const match = embedUrl.match(/embed\/([^?/]+)/);
+  const id = match ? match[1] : "";
+  return `${embedUrl}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&playsinline=1&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3`;
+}
+
 /* ================================================================== */
 /*  Individual card with 3D tilt                                       */
 /* ================================================================== */
@@ -86,20 +93,21 @@ function WorkCard({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         style={{
-          width: 420,
-          height: "70vh",
+          height: "75vh",
+          aspectRatio: "9 / 16",
           position: "relative",
           overflow: "hidden",
           borderRadius: 4,
           transformStyle: "preserve-3d",
           willChange: "transform",
+          backgroundColor: "#000",
         }}
       >
         <Link
           href={`/work/${project.slug}`}
           style={{ display: "block", width: "100%", height: "100%" }}
         >
-          {/* Thumbnail */}
+          {/* Video / Thumbnail */}
           <div
             ref={imgRef}
             style={{
@@ -108,13 +116,30 @@ function WorkCard({
               transition: "transform 0.6s ease",
             }}
           >
-            <Image
-              src={project.thumbnail}
-              alt={project.title}
-              fill
-              style={{ objectFit: "cover" }}
-              sizes="420px"
-            />
+            {project.videoUrl ? (
+              <iframe
+                src={ambientEmbed(project.videoUrl)}
+                title={project.title}
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  pointerEvents: "none",
+                }}
+                allow="autoplay; encrypted-media; picture-in-picture"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={project.thumbnail}
+                alt={project.title}
+                fill
+                style={{ objectFit: "cover" }}
+                sizes="500px"
+              />
+            )}
           </div>
 
           {/* Bottom gradient overlay */}
@@ -213,6 +238,9 @@ export default function SelectedWorks() {
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
+  // Only short-form vertical content on the home reel: IG reels + YouTube Shorts.
+  const selectedProjects = projects.filter((p) => p.category === "Social Content");
+
   useGSAP(
     () => {
       const track = trackRef.current;
@@ -246,19 +274,29 @@ export default function SelectedWorks() {
       <section style={{ backgroundColor: "#0a0a0a", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-            Selected Work
+            Selected Worksss
           </span>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
-            ({String(projects.length).padStart(2, "0")})
+            ({String(selectedProjects.length).padStart(2, "0")})
           </span>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-          {projects.map((project) => (
+          {selectedProjects.map((project) => (
             <Link key={project.slug} href={`/work/${project.slug}`} style={{ display: "block", textDecoration: "none" }}>
-              <div style={{ position: "relative", aspectRatio: "4/3", borderRadius: 4, overflow: "hidden" }}>
-                <Image src={project.thumbnail} alt={project.title} fill style={{ objectFit: "cover" }} sizes="100vw" />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%)" }} />
-                <div style={{ position: "absolute", bottom: 16, left: 16, right: 16 }}>
+              <div style={{ position: "relative", aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", backgroundColor: "#000", maxWidth: 360, margin: "0 auto" }}>
+                {project.videoUrl ? (
+                  <iframe
+                    src={ambientEmbed(project.videoUrl)}
+                    title={project.title}
+                    style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", pointerEvents: "none" }}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    loading="lazy"
+                  />
+                ) : (
+                  <Image src={project.thumbnail} alt={project.title} fill style={{ objectFit: "cover" }} sizes="100vw" />
+                )}
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 45%)", pointerEvents: "none" }} />
+                <div style={{ position: "absolute", bottom: 16, left: 16, right: 16, pointerEvents: "none" }}>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#f5f4f0", opacity: 0.6 }}>{project.category}</span>
                   <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "#f5f4f0", margin: "4px 0 0" }}>{project.title}</h3>
                   <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.5)" }}>{project.year} &middot; {project.role}</span>
@@ -304,10 +342,10 @@ export default function SelectedWorks() {
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-              Selected Work
+              Selected Works
             </span>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
-              ({String(projects.length).padStart(2, "0")})
+              ({String(selectedProjects.length).padStart(2, "0")})
             </span>
           </div>
         </div>
@@ -336,7 +374,7 @@ export default function SelectedWorks() {
           width: "max-content",
         }}
       >
-        {projects.map((project) => (
+        {selectedProjects.map((project) => (
           <WorkCard key={project.slug} project={project} />
         ))}
       </div>
