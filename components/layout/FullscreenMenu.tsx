@@ -284,9 +284,9 @@ export default function FullscreenMenu() {
               }}
             >
               {[
-                { label: "Instagram", href: "https://instagram.com" },
-                { label: "TikTok", href: "https://tiktok.com" },
-                { label: "LinkedIn", href: "https://linkedin.com" },
+                { label: "Instagram", href: "https://www.instagram.com/joie.egbuson/" },
+                { label: "YouTube", href: "https://www.youtube.com/@JoieTVProductions" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
               ].map((social) => (
                 <a
                   key={social.label}
