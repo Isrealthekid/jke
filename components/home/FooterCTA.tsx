@@ -6,9 +6,9 @@ import { gsap } from "@/lib/gsap";
 import MagneticButton from "@/components/shared/MagneticButton";
 
 const socials = [
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "TikTok", href: "https://tiktok.com" },
-  { label: "LinkedIn", href: "https://linkedin.com" },
+  { label: "Instagram", href: "https://www.instagram.com/joie.egbuson/" },
+  { label: "YouTube", href: "https://www.youtube.com/@JoieTVProductions" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
 ];
 
 export default function FooterCTA() {
@@ -136,7 +136,7 @@ export default function FooterCTA() {
         >
           <span style={{ opacity: 0.4 }}>or email </span>
           <a
-            href="mailto:hello@jkegbuson.com"
+            href="mailto:jkarenateegbuson@gmail.com"
             style={{
               color: "#f5f4f0",
               opacity: 0.4,
@@ -151,7 +151,7 @@ export default function FooterCTA() {
               (e.currentTarget as HTMLElement).style.opacity = "0.4";
             }}
           >
-            hello@jkegbuson.com
+            jkarenateegbuson@gmail.com
           </a>
         </p>
       </div>
@@ -171,7 +171,7 @@ export default function FooterCTA() {
         }}
       >
         {/* Left */}
-        <span style={footerTextStyle}>&copy; 2025 JK Egbuson</span>
+        <span style={footerTextStyle}>&copy; 2025 Joykarenate Egbuson</span>
 
         {/* Centre */}
         <span style={footerTextStyle}>Lagos, Nigeria</span>
