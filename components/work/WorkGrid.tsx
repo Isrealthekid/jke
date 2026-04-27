@@ -22,9 +22,11 @@ function ambientEmbed(embedUrl: string): string {
 function WorkTile({
   project,
   index,
+  isMobile,
 }: {
   project: (typeof projects)[number];
   index: number;
+  isMobile: boolean;
 }) {
   // Vertical content (shorts / reels) takes a narrow 9:16 tile;
   // everything else (films, video edits) takes a wide 16:9 tile.
@@ -38,6 +40,7 @@ function WorkTile({
   const initCard = useCallback((el: HTMLDivElement | null) => {
     if (!el) return;
     cardRef.current = el;
+    if (isMobile) return;
     rotateXTo.current = gsap.quickTo(el, "rotateX", {
       duration: 0.4,
       ease: "power2.out",
@@ -46,7 +49,7 @@ function WorkTile({
       duration: 0.4,
       ease: "power2.out",
     });
-  }, []);
+  }, [isMobile]);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const card = cardRef.current;
@@ -91,9 +94,9 @@ function WorkTile({
     >
       <div
         ref={initCard}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseMove={isMobile ? undefined : handleMouseMove}
+        onMouseEnter={isMobile ? undefined : handleMouseEnter}
+        onMouseLeave={isMobile ? undefined : handleMouseLeave}
         style={{
           position: "relative",
           aspectRatio: isVertical ? "9 / 16" : "16 / 9",
@@ -112,10 +115,10 @@ function WorkTile({
           <span
             style={{
               position: "absolute",
-              top: 16,
-              left: 20,
+              top: 12,
+              left: 16,
               fontFamily: "var(--font-display)",
-              fontSize: 80,
+              fontSize: isMobile ? 48 : 80,
               color: "#f5f4f0",
               opacity: 0.12,
               lineHeight: 1,
@@ -305,6 +308,7 @@ export default function WorkGrid() {
                 key={project.slug}
                 project={project}
                 index={i}
+                isMobile={isMobile}
               />
             );
           })}

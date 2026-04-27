@@ -25,7 +25,7 @@ export default function SocialProof() {
     <section
       style={{
         width: "100%",
-        padding: "80px 0",
+        padding: "clamp(48px, 8vw, 80px) 0",
         backgroundColor: "#0a0a0a",
         borderTop: "0.5px solid rgba(255,255,255,0.08)",
         overflow: "hidden",
@@ -101,11 +101,18 @@ export default function SocialProof() {
 
         .marquee-item {
           flex-shrink: 0;
-          padding: 0 40px;
+          padding: 0 24px;
           font-family: var(--font-body);
-          font-size: 15px;
+          font-size: 14px;
           letter-spacing: 0.04em;
           white-space: nowrap;
+        }
+
+        @media (min-width: 768px) {
+          .marquee-item {
+            padding: 0 40px;
+            font-size: 15px;
+          }
         }
 
         @keyframes marquee-left {

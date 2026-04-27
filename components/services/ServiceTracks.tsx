@@ -133,15 +133,15 @@ export default function ServiceTracks() {
                 textAlign: "left",
               }}
             >
-              <div style={{ position: "relative" }}>
+              <div style={{ position: "relative", flex: 1, minWidth: 0 }}>
                 {/* Decorative number */}
                 <span
                   style={{
                     position: "absolute",
-                    top: -20,
-                    left: -8,
+                    top: -16,
+                    left: -6,
                     fontFamily: "var(--font-display)",
-                    fontSize: 80,
+                    fontSize: "clamp(48px, 8vw, 80px)",
                     color: "#f5f4f0",
                     opacity: 0.08,
                     lineHeight: 1,
@@ -155,7 +155,7 @@ export default function ServiceTracks() {
                 <h3
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontSize: 48,
+                    fontSize: "clamp(30px, 5vw, 48px)",
                     color: "#f5f4f0",
                     margin: 0,
                     lineHeight: 1.1,
@@ -173,10 +173,11 @@ export default function ServiceTracks() {
                 <p
                   style={{
                     fontFamily: "var(--font-body)",
-                    fontSize: 16,
+                    fontSize: 15,
                     color: "rgba(245,244,240,0.6)",
                     marginTop: 8,
                     maxWidth: 480,
+                    lineHeight: 1.5,
                   }}
                 >
                   {track.description}
@@ -259,7 +260,8 @@ export default function ServiceTracks() {
                         style={{
                           display: "flex",
                           alignItems: "center",
-                          gap: 16,
+                          flexWrap: "wrap",
+                          gap: 12,
                           marginTop: 12,
                         }}
                       >
@@ -269,7 +271,7 @@ export default function ServiceTracks() {
                             style={{
                               display: "flex",
                               alignItems: "center",
-                              gap: 16,
+                              gap: 12,
                             }}
                           >
                             <div
