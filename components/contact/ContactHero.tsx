@@ -32,7 +32,7 @@ export default function ContactHero() {
           <h1
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: "clamp(80px, 12vw, 160px)",
+              fontSize: "clamp(56px, 14vw, 160px)",
               color: "#f5f4f0",
               lineHeight: 0.95,
               margin: 0,
@@ -111,24 +111,24 @@ export default function ContactHero() {
       {/* ---- PART 4: Social links row ---- */}
       <div
         style={{
-          marginTop: 80,
+          marginTop: 64,
           paddingTop: 32,
           borderTop: "1px solid rgba(245,244,240,0.06)",
           display: "flex",
           flexWrap: "wrap",
           alignItems: "center",
-          gap: 0,
+          gap: "16px 0",
         }}
       >
         {socials.map((s, i) => (
           <div key={s.platform} style={{ display: "flex", alignItems: "center" }}>
             {i > 0 && (
               <div
+                className="mx-3 md:mx-6"
                 style={{
                   width: 1,
                   height: 20,
                   backgroundColor: "rgba(245,244,240,0.08)",
-                  margin: "0 24px",
                 }}
               />
             )}
