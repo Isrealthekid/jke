@@ -274,7 +274,7 @@ export default function SelectedWorks() {
       <section style={{ backgroundColor: "#0a0a0a", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-            Selected Worksss
+            Selected Works
           </span>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
             ({String(selectedProjects.length).padStart(2, "0")})
@@ -328,7 +328,7 @@ export default function SelectedWorks() {
           top: 0,
           left: 0,
           right: 0,
-          padding: "32px 48px 0",
+          padding: "clamp(24px, 4vw, 32px) clamp(24px, 5vw, 48px) 0",
           zIndex: 10,
         }}
       >
