@@ -3,6 +3,7 @@
 import { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 interface Channel {
   label: string;
@@ -13,8 +14,10 @@ interface Channel {
 }
 
 export default function ChannelCards() {
+  const isMobile = useIsMobile();
   const containerRef = useRef<HTMLDivElement>(null);
   const [toast, setToast] = useState(false);
+  const [flipped, setFlipped] = useState<string | null>(null);
 
   const showToast = useCallback(() => {
     setToast(true);
@@ -77,15 +80,28 @@ export default function ChannelCards() {
 
   return (
     <div ref={containerRef} style={{ position: "relative" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 12 }}>
-        {channels.map((ch) => (
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
+        {channels.map((ch) => {
+          const isFlipped = flipped === ch.label;
+          return (
           <div
             key={ch.label}
             className="channel-card"
-            onClick={ch.action}
+            onClick={() => {
+              if (isMobile) {
+                if (isFlipped) {
+                  ch.action();
+                  setFlipped(null);
+                } else {
+                  setFlipped(ch.label);
+                }
+              } else {
+                ch.action();
+              }
+            }}
             style={{
               width: "100%",
-              minHeight: 200,
+              minHeight: 180,
               perspective: 1000,
               cursor: "none",
               opacity: 0,
@@ -99,12 +115,13 @@ export default function ChannelCards() {
                 height: "100%",
                 transformStyle: "preserve-3d",
                 transition: "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+                transform: isMobile && isFlipped ? "rotateY(180deg)" : undefined,
               }}
-              onMouseEnter={(e) => {
+              onMouseEnter={isMobile ? undefined : (e) => {
                 (e.currentTarget as HTMLElement).style.transform =
                   "rotateY(180deg)";
               }}
-              onMouseLeave={(e) => {
+              onMouseLeave={isMobile ? undefined : (e) => {
                 (e.currentTarget as HTMLElement).style.transform =
                   "rotateY(0deg)";
               }}
@@ -179,7 +196,8 @@ export default function ChannelCards() {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Toast */}
