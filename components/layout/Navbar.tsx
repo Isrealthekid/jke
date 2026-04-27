@@ -114,7 +114,7 @@ export default function Navbar() {
             alignItems: "center",
             justifyContent: "space-between",
             height: "100%",
-            padding: "0 32px",
+            padding: "0 clamp(16px, 5vw, 32px)",
           }}
         >
           {/* ---- Left: Logo ---- */}
@@ -133,10 +133,10 @@ export default function Navbar() {
 
           {/* ---- Right cluster ---- */}
           <div
+            className="gap-4 md:gap-6"
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 24,
             }}
           >
             {/* Current page label */}
