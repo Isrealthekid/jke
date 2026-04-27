@@ -52,7 +52,7 @@ export default function StatsCards() {
           className="stat-card"
           style={{
             border: "1px solid rgba(245,244,240,0.1)",
-            padding: "40px 24px",
+            padding: "clamp(20px, 4vw, 40px) clamp(10px, 2vw, 24px)",
             textAlign: "center",
             opacity: 0,
           }}
