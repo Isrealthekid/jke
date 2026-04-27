@@ -1,323 +1,271 @@
 "use client";
 
-import { useRef, useEffect } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
-import { PLACEHOLDER_IMAGES } from "@/data/projects";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { projects } from "@/data/projects";
+
+const HERO_NAME = "JOY K-EGBUSON";
+
+function formatLagosClock(now: Date): string {
+  // West Africa Time, GMT+1, no DST
+  const utcMs = now.getTime() + now.getTimezoneOffset() * 60_000;
+  const lagos = new Date(utcMs + 60 * 60_000);
+  let hours = lagos.getHours();
+  const mins = lagos.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  hours = ((hours + 11) % 12) + 1;
+  return `${hours}:${String(mins).padStart(2, "0")} ${ampm} GMT+1`;
+}
+
+const HOVER_GRID = (() => {
+  // 5 columns × 4 rows = 20 cells.
+  // Fill with existing project thumbnails first, sprinkle a few existing
+  // category labels for variety (matches the spec's mix of imagery + tiny text).
+  const cells: Array<{ kind: "img"; src: string; alt: string } | { kind: "text"; value: string }> = [];
+  const textPositions = new Set([6, 12, 17]); // a few cells become tiny text fragments
+  let projectIdx = 0;
+  const labels = ["Film", "Video Edit", "Social"];
+  let labelIdx = 0;
+  for (let i = 0; i < 20; i++) {
+    if (textPositions.has(i)) {
+      cells.push({ kind: "text", value: labels[labelIdx % labels.length] });
+      labelIdx++;
+    } else {
+      const project = projects[projectIdx % projects.length];
+      projectIdx++;
+      cells.push({ kind: "img", src: project.thumbnail, alt: project.title });
+    }
+  }
+  return cells;
+})();
 
 export default function HeroReel() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const nameRef = useRef<HTMLHeadingElement>(null);
-  const taglineRef = useRef<HTMLParagraphElement>(null);
-  const scrollLineRef = useRef<HTMLDivElement>(null);
-  const timecodeRef = useRef<HTMLSpanElement>(null);
+  const [time, setTime] = useState<string>(() => formatLagosClock(new Date()));
+  const [year, setYear] = useState<number>(() => new Date().getFullYear());
+  const [hovered, setHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
-  /* ---- Live timecode counter (direct DOM, no React re-renders) ---- */
   useEffect(() => {
-    let frameCount = 0;
-    let rafId: number;
-
-    function tick() {
-      frameCount++;
-      const totalSeconds = Math.floor(frameCount / 24);
-      const hrs = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-      const mins = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
-      const secs = String(totalSeconds % 60).padStart(2, "0");
-      const frames = String(frameCount % 24).padStart(2, "0");
-
-      if (timecodeRef.current) {
-        timecodeRef.current.textContent = `${hrs}:${mins}:${secs}:${frames}`;
-      }
-
-      rafId = requestAnimationFrame(tick);
-    }
-
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
+    const id = window.setInterval(() => {
+      const d = new Date();
+      setTime(formatLagosClock(d));
+      setYear(d.getFullYear());
+    }, 1000);
+    return () => window.clearInterval(id);
   }, []);
-
-  /* ---- GSAP: entrance + scroll fade ---- */
-  useGSAP(
-    () => {
-      const section = sectionRef.current;
-      if (!section || !nameRef.current || !taglineRef.current) return;
-
-      // Entrance animation — 1s delay, stagger 0.2s
-      const tl = gsap.timeline({ delay: 1 });
-      tl.from(nameRef.current, {
-        y: 30,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-      });
-      tl.from(
-        taglineRef.current,
-        { y: 30, opacity: 0, duration: 0.8, ease: "power3.out" },
-        "-=0.6"
-      );
-
-      // Scroll line loop
-      if (scrollLineRef.current) {
-        gsap.fromTo(
-          scrollLineRef.current,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            duration: 1.5,
-            ease: "power2.inOut",
-            repeat: -1,
-            transformOrigin: "top center",
-          }
-        );
-      }
-
-      // Fade hero text on scroll (> ~10% of viewport)
-      gsap.to(".hero-content", {
-        opacity: 0,
-        y: -40,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top top",
-          end: "40% top",
-          scrub: 1,
-        },
-      });
-    },
-    { scope: sectionRef }
-  );
 
   return (
     <section
-      ref={sectionRef}
       style={{
         position: "relative",
-        height: "100vh",
+        minHeight: "100vh",
+        backgroundColor: "#000000",
+        color: "#ffffff",
         overflow: "hidden",
-        backgroundColor: "#0a0a0a",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      {/* ---- Background video ---- */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        poster={PLACEHOLDER_IMAGES[0]}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      >
-        {/* Replace with actual video URL */}
-        <source src="/videos/hero-reel.mp4" type="video/mp4" />
-      </video>
-
-      {/* Dark overlay for readability */}
+      {/* ---- Top metadata bar ---- */}
       <div
         style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%)",
-        }}
-      />
-
-      {/* ---- Camera HUD overlay ---- */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 5,
+          display: "flex",
+          alignItems: "center",
+          gap: 32,
+          padding: "20px 32px 0",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+          color: "#999999",
         }}
       >
-        {/* Top-left: FPS + Resolution (desktop only) */}
-        <div className="hidden md:block" style={{ position: "absolute", top: 24, left: 32 }}>
-          <span style={hudTextStyle}>FPS 24</span>
-          <br />
-          <span style={hudTextStyle}>4K UHD</span>
-        </div>
-
-        {/* Top-right: REC + Timecode */}
-        <div
-          style={{
-            position: "absolute",
-            top: 24,
-            right: 32,
-            textAlign: "right",
-          }}
-        >
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
           <span
             style={{
-              ...hudTextStyle,
-              color: "#ef4444",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              gap: 6,
+              width: 6,
+              height: 6,
+              borderRadius: "50%",
+              backgroundColor: "#008cff",
+              display: "inline-block",
             }}
-          >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                backgroundColor: "#ef4444",
-                display: "inline-block",
-                animation: "blink-rec 1s step-end infinite",
-              }}
-            />
-            REC
-          </span>
-          <span ref={timecodeRef} style={{ ...hudTextStyle, marginTop: 4, display: "block" }}>
-            00:00:00:00
-          </span>
-        </div>
-
-        {/* Bottom-left: Name (desktop only) */}
-        <div className="hidden md:block" style={{ position: "absolute", bottom: 24, left: 32 }}>
-          <span
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 13,
-              letterSpacing: "0.3em",
-              color: "#fff",
-              opacity: 0.7,
-              textTransform: "uppercase",
-            }}
-          >
-            JK EGBUSON
-          </span>
-        </div>
-
-        {/* Bottom-right: Standby (desktop only) */}
-        <div className="hidden md:block" style={{ position: "absolute", bottom: 24, right: 32 }}>
-          <span
-            style={{
-              ...hudTextStyle,
-              animation: "standby-pulse 2s ease-in-out infinite",
-            }}
-          >
-            STANDBY MODE
-          </span>
-        </div>
+          />
+          LAGOS, NG
+        </span>
+        <span style={{ fontVariantNumeric: "tabular-nums" }}>{time}</span>
+        <span>6.5244° N, 3.3792° E</span>
       </div>
 
-      {/* ---- Hero text (centered) ---- */}
-      <div
-        className="hero-content"
+      {/* ---- Full-bleed name ---- */}
+      <h1
         style={{
-          position: "relative",
-          zIndex: 10,
+          fontFamily: "var(--font-display)",
+          fontSize: "19vw",
+          color: "#ffffff",
+          lineHeight: 0.85,
+          letterSpacing: "-0.02em",
+          margin: 0,
+          padding: "0 8px",
+          textAlign: "center",
+          marginTop: "auto",
+        }}
+      >
+        {HERO_NAME}
+      </h1>
+
+      {/* ---- Center metadata row ---- */}
+      <div
+        style={{
           display: "flex",
-          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: "16px clamp(24px, 30%, 30%)",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          letterSpacing: "0.3em",
+          textTransform: "uppercase",
+          color: "#aaaaaa",
+        }}
+      >
+        <span>BASED IN LAGOS</span>
+        <span style={{ fontVariantNumeric: "tabular-nums" }}>{year}</span>
+      </div>
+
+      {/* ---- Subtitle with hover gap (existing tagline split) ---- */}
+      <div
+        style={{
+          display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          height: "100%",
-          textAlign: "center",
-          padding: "0 24px",
+          gap: 0,
+          marginBottom: "auto",
+          paddingBottom: 56,
         }}
       >
-        <h1
-          ref={nameRef}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(60px, 10vw, 140px)",
-            letterSpacing: "-0.02em",
-            color: "#f5f4f0",
-            lineHeight: 1,
-            margin: 0,
-          }}
-        >
-          JK EGBUSON
-        </h1>
-        <p
-          ref={taglineRef}
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: 16,
-            letterSpacing: "0.3em",
-            color: "#f5f4f0",
-            opacity: 0.6,
-            marginTop: 20,
-            textTransform: "uppercase",
-          }}
-        >
-          Social Media &middot; Video &middot; Film
-        </p>
-      </div>
-
-      {/* ---- Scroll indicator ---- */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 40,
-          left: "50%",
-          transform: "translateX(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 8,
-          zIndex: 10,
-        }}
-      >
-        <div
-          ref={scrollLineRef}
-          style={{
-            width: 1,
-            height: 40,
-            backgroundColor: "rgba(245,244,240,0.4)",
-            transformOrigin: "top center",
-          }}
-        />
         <span
           style={{
-            fontFamily: "var(--font-body)",
-            fontSize: 10,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: "rgba(245,244,240,0.4)",
+            fontFamily: "var(--font-display)",
+            fontSize: "6vw",
+            color: "#ffffff",
+            lineHeight: 1,
+            letterSpacing: "-0.01em",
           }}
         >
-          scroll
+          SOCIAL MEDIA
+        </span>
+
+        {/* Interactive gap */}
+        <span
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          style={{
+            position: "relative",
+            width: 300,
+            height: "6vw",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            aria-hidden="true"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "6vw",
+              color: "rgba(255,255,255,0.35)",
+              lineHeight: 1,
+              letterSpacing: "-0.01em",
+            }}
+          >
+            ·
+          </span>
+          <div
+            ref={cardRef}
+            aria-hidden={!hovered}
+            style={{
+              position: "absolute",
+              left: "50%",
+              top: "50%",
+              width: 360,
+              height: 280,
+              transform: `translate(-50%, -50%) scale(${hovered ? 1 : 0.85})`,
+              opacity: hovered ? 1 : 0,
+              transition: "transform 0.2s ease, opacity 0.2s ease",
+              backgroundColor: "#ffffff",
+              border: "1px solid #dddddd",
+              borderRadius: 4,
+              padding: 14,
+              pointerEvents: "none",
+              zIndex: 5,
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)",
+                gridAutoRows: 60,
+                gap: 4,
+                width: "100%",
+                height: "100%",
+              }}
+            >
+              {HOVER_GRID.map((cell, i) =>
+                cell.kind === "img" ? (
+                  <div
+                    key={`cell-${i}`}
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      height: "100%",
+                      borderRadius: 2,
+                      overflow: "hidden",
+                      backgroundColor: "#f4f4f4",
+                    }}
+                  >
+                    <Image
+                      src={cell.src}
+                      alt={cell.alt}
+                      fill
+                      sizes="60px"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                ) : (
+                  <span
+                    key={`cell-${i}`}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "var(--font-body)",
+                      fontSize: 9,
+                      color: "#888888",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.1em",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {cell.value}
+                  </span>
+                )
+              )}
+            </div>
+          </div>
+        </span>
+
+        <span
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "6vw",
+            color: "#ffffff",
+            lineHeight: 1,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          VIDEO · FILM
         </span>
       </div>
-
-      {/* ---- Keyframes ---- */}
-      <style jsx global>{`
-        @keyframes blink-rec {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0;
-          }
-        }
-        @keyframes standby-pulse {
-          0%,
-          100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.3;
-          }
-        }
-      `}</style>
     </section>
   );
 }
-
-/* ---- Shared HUD text style ---- */
-const hudTextStyle: React.CSSProperties = {
-  fontFamily: "monospace",
-  fontSize: 11,
-  letterSpacing: "0.15em",
-  color: "#fff",
-  opacity: 0.5,
-  textTransform: "uppercase",
-};
