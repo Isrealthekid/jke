@@ -9,7 +9,7 @@ export default function AboutCTA() {
   return (
     <section
       style={{
-        padding: "100px 48px",
+        padding: "clamp(64px, 10vw, 100px) clamp(20px, 5vw, 48px)",
         borderTop: "1px solid rgba(245,244,240,0.06)",
         display: "flex",
         flexDirection: "column",
