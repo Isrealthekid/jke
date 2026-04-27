@@ -9,7 +9,7 @@ export default function ProjectContent({ project }: { project: Project }) {
   return (
     <section
       style={{
-        padding: "80px 48px 120px",
+        padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px) clamp(64px, 10vw, 120px)",
         maxWidth: 1400,
         margin: "0 auto",
       }}
@@ -171,9 +171,8 @@ export default function ProjectContent({ project }: { project: Project }) {
 
           {/* Image gallery */}
           <div
+            className="grid grid-cols-2 md:grid-cols-3"
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
               gap: 12,
               marginTop: 64,
             }}
@@ -285,7 +284,7 @@ function SectionHeading({ children }: { children: React.ReactNode }) {
     <h2
       style={{
         fontFamily: "var(--font-display)",
-        fontSize: 32,
+        fontSize: "clamp(26px, 4vw, 32px)",
         color: "#f5f4f0",
         margin: "0 0 16px",
       }}

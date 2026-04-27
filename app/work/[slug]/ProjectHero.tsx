@@ -155,11 +155,11 @@ export default function ProjectHero({ project }: { project: Project }) {
         className="hero-title"
         style={{
           position: "absolute",
-          bottom: 80,
-          left: 64,
-          right: 64,
+          bottom: "clamp(64px, 10vw, 80px)",
+          left: "clamp(20px, 5vw, 64px)",
+          right: "clamp(20px, 5vw, 64px)",
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(48px, 7vw, 90px)",
+          fontSize: "clamp(36px, 7vw, 90px)",
           color: "#f5f4f0",
           lineHeight: 1.05,
           margin: 0,

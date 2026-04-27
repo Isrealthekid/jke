@@ -11,16 +11,17 @@ interface ProjectNavProps {
 export default function ProjectNav({ prev, next }: ProjectNavProps) {
   return (
     <nav
+      className="flex-col md:flex-row gap-6 md:gap-0"
       style={{
         borderTop: "1px solid rgba(245,244,240,0.08)",
-        padding: "48px",
+        padding: "clamp(32px, 6vw, 48px) clamp(20px, 5vw, 48px)",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
       }}
     >
       {/* Previous */}
-      <div style={{ flex: 1 }}>
+      <div className="text-center md:text-left" style={{ flex: 1 }}>
         {prev && (
           <Link
             href={`/work/${prev.slug}`}
@@ -60,7 +61,7 @@ export default function ProjectNav({ prev, next }: ProjectNavProps) {
       </Link>
 
       {/* Next */}
-      <div style={{ flex: 1, textAlign: "right" }}>
+      <div className="text-center md:text-right" style={{ flex: 1 }}>
         {next && (
           <Link
             href={`/work/${next.slug}`}
@@ -69,12 +70,8 @@ export default function ProjectNav({ prev, next }: ProjectNavProps) {
               display: "inline-block",
             }}
           >
-            <span style={{ ...navLabelStyle, textAlign: "right" }}>
-              Next &rarr;
-            </span>
-            <span style={{ ...navTitleStyle, textAlign: "right" }}>
-              {next.title}
-            </span>
+            <span style={navLabelStyle}>Next &rarr;</span>
+            <span style={navTitleStyle}>{next.title}</span>
           </Link>
         )}
       </div>
