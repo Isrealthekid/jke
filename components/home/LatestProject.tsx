@@ -101,11 +101,12 @@ export default function LatestProject() {
           bottom: 0,
           left: 0,
           right: 0,
-          padding: 64,
+          padding: "clamp(24px, 5vw, 64px)",
           zIndex: 10,
           display: "flex",
           alignItems: "flex-end",
           justifyContent: "space-between",
+          gap: 24,
         }}
       >
         <div>
@@ -173,10 +174,10 @@ export default function LatestProject() {
 
           {/* CTA buttons */}
           <div
-            className="lp-reveal"
+            className="lp-reveal flex-col sm:flex-row"
             style={{
               display: "flex",
-              gap: 16,
+              gap: 12,
               marginTop: 28,
               opacity: 0,
             }}
