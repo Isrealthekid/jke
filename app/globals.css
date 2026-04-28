@@ -42,3 +42,26 @@ html.lenis body {
     cursor: auto !important;
   }
 }
+
+/* Hero per-character roll on hover */
+@keyframes hero-char-roll {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+.hero-char {
+  backface-visibility: visible;
+  will-change: transform;
+}
+.hero-char:hover {
+  animation: hero-char-roll 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  color: #008cff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-char:hover {
+    animation: none;
+  }
+}
