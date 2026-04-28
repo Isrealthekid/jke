@@ -28,8 +28,7 @@ export default function LoadingScreen() {
   const exitedRef = useRef(false);
 
   useEffect(() => {
-    const hasLoaded = sessionStorage.getItem("jke-loaded");
-    setVisible(!hasLoaded);
+    setVisible(true);
   }, []);
 
   const animateOut = useCallback(() => {
@@ -37,15 +36,15 @@ export default function LoadingScreen() {
     exitedRef.current = true;
     const finalize = () => {
       setVisible(false);
-      sessionStorage.setItem("jke-loaded", "true");
     };
     if (!containerRef.current) {
       finalize();
       return;
     }
     // 400ms hold at 100% then slide up
+    const target = containerRef.current;
     window.setTimeout(() => {
-      gsap.to(containerRef.current, {
+      gsap.to(target, {
         yPercent: -100,
         duration: 0.6,
         ease: "power3.inOut",
