@@ -79,13 +79,21 @@ function WorkTile({
 
   const num = String(index + 1).padStart(2, "0");
 
+  // Mobile: skip framer-motion enter/exit + layout animations so cards render
+  // statically. Animations were causing layout jitter and visual glitches on phones.
+  const motionProps = isMobile
+    ? {}
+    : {
+        layout: true,
+        initial: { opacity: 0, scale: 0.92 },
+        animate: { opacity: 1, scale: 1 },
+        exit: { opacity: 0, scale: 0.92 },
+        transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      };
+
   return (
     <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.92 }}
-      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      {...motionProps}
       style={{
         gridColumn: isVertical ? "span 4" : "span 8",
         perspective: 1000,
