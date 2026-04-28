@@ -50,7 +50,10 @@ export default function RootLayout({
       className={`${bebasNeue.variable} ${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full bg-brand-black text-brand-white">
+      <body
+        className="min-h-full bg-brand-black text-brand-white"
+        suppressHydrationWarning
+      >
         <ThemeProvider attribute="class" defaultTheme="dark">
           <MenuProvider>
             <SmoothScrollProvider>
