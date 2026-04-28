@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ---- Role data — preserved from previous design ---- */
@@ -215,132 +216,128 @@ function StickyCard({
   );
 }
 
-export default function PinnedIntro() {
-  const isMobile = useIsMobile();
-
-  // ---- MOBILE: stacked vertical cards (no sticky) ----
-  if (isMobile) {
-    return (
-      <div style={{ backgroundColor: "#0a0a0a" }}>
-        {roles.map((role) => (
+function MobileLayout() {
+  return (
+    <>
+      {roles.map((role) => (
+        <div
+          key={role.label}
+          style={{
+            padding: "64px 24px",
+            borderBottom: "1px solid rgba(245,244,240,0.06)",
+          }}
+        >
           <div
-            key={role.label}
             style={{
-              padding: "64px 24px",
-              borderBottom: "1px solid rgba(245,244,240,0.06)",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 10,
+              marginBottom: 12,
             }}
           >
-            <div
+            <span
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 10,
-                marginBottom: 12,
+                display: "inline-block",
+                width: 7,
+                height: 7,
+                backgroundColor: "#008cff",
               }}
-            >
-              <span
-                style={{
-                  display: "inline-block",
-                  width: 7,
-                  height: 7,
-                  backgroundColor: "#008cff",
-                }}
-              />
-              <span
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: 10,
-                  color: "#ffffff",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.18em",
-                  opacity: 0.85,
-                }}
-              >
-                [IWHAT DO I DO]
-              </span>
-            </div>
-            <h3
+            />
+            <span
               style={{
-                fontFamily: "var(--font-display)",
-                fontSize: 44,
+                fontFamily: "var(--font-body)",
+                fontSize: 10,
                 color: "#ffffff",
-                margin: 0,
-                lineHeight: 1,
                 textTransform: "uppercase",
+                letterSpacing: "0.18em",
+                opacity: 0.85,
               }}
             >
-              {role.label}
-            </h3>
-            <div
-              style={{
-                position: "relative",
-                aspectRatio: "16/9",
-                borderRadius: 4,
-                overflow: "hidden",
-                marginTop: 24,
-                backgroundColor: "#000",
-                filter: "grayscale(20%) brightness(0.7)",
-              }}
-            >
-              <iframe
-                src={ytEmbedSrc(role.videoId)}
-                title={role.label}
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  width: "100%",
-                  height: "100%",
-                  border: "none",
-                }}
-                allow="autoplay; encrypted-media; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+              [IWHAT DO I DO]
+            </span>
           </div>
-        ))}
-        <div style={{ padding: "48px 24px", textAlign: "center" }}>
-          <span
+          <h3
             style={{
               fontFamily: "var(--font-display)",
-              fontSize: 56,
-              color: "#008cff",
-            }}
-          >
-            50+
-          </span>
-          <span
-            style={{
-              display: "block",
-              fontFamily: "var(--font-body)",
-              fontSize: 12,
-              letterSpacing: "0.15em",
+              fontSize: 44,
+              color: "#ffffff",
+              margin: 0,
+              lineHeight: 1,
               textTransform: "uppercase",
-              color: "rgba(245,244,240,0.5)",
-              marginTop: 6,
             }}
           >
-            Projects Delivered
-          </span>
-          <p
+            {role.label}
+          </h3>
+          <div
             style={{
-              fontFamily: "var(--font-body)",
-              fontSize: 13,
-              color: "rgba(245,244,240,0.5)",
+              position: "relative",
+              aspectRatio: "16/9",
+              borderRadius: 4,
+              overflow: "hidden",
               marginTop: 24,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
+              backgroundColor: "#000",
+              filter: "grayscale(20%) brightness(0.7)",
             }}
           >
-            Based in Lagos &middot; Available Worldwide
-          </p>
+            <iframe
+              src={ytEmbedSrc(role.videoId)}
+              title={role.label}
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                border: "none",
+              }}
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
         </div>
+      ))}
+      <div style={{ padding: "48px 24px", textAlign: "center" }}>
+        <span
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: 56,
+            color: "#008cff",
+          }}
+        >
+          50+
+        </span>
+        <span
+          style={{
+            display: "block",
+            fontFamily: "var(--font-body)",
+            fontSize: 12,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+            color: "rgba(245,244,240,0.5)",
+            marginTop: 6,
+          }}
+        >
+          Projects Delivered
+        </span>
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: 13,
+            color: "rgba(245,244,240,0.5)",
+            marginTop: 24,
+            letterSpacing: "0.15em",
+            textTransform: "uppercase",
+          }}
+        >
+          Based in Lagos &middot; Available Worldwide
+        </p>
       </div>
-    );
-  }
+    </>
+  );
+}
 
-  // ---- DESKTOP: sticky-stack ----
+function DesktopLayout() {
   return (
-    <section style={{ position: "relative", backgroundColor: "#0a0a0a" }}>
+    <>
       {roles.map((role, i) => (
         <StickyCard
           key={role.label}
@@ -349,6 +346,38 @@ export default function PinnedIntro() {
           isLast={i === roles.length - 1}
         />
       ))}
+    </>
+  );
+}
+
+export default function PinnedIntro() {
+  const isMobile = useIsMobile();
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  // Stable outer wrapper across SSR / mount / resize so React never has to
+  // swap the section root (avoids `insertBefore` reconciliation errors when
+  // Lenis / ScrollTrigger have already attached to descendants).
+  return (
+    <section
+      style={{ position: "relative", backgroundColor: "#0a0a0a" }}
+      suppressHydrationWarning
+    >
+      {!hasMounted ? (
+        // Match the SSR output (desktop is the default branch when isMobile=false)
+        <DesktopLayout />
+      ) : isMobile ? (
+        <div key="mobile">
+          <MobileLayout />
+        </div>
+      ) : (
+        <div key="desktop">
+          <DesktopLayout />
+        </div>
+      )}
     </section>
   );
 }
