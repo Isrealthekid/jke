@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { projects } from "@/data/projects";
+import { useEffect, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import { gsap } from "@/lib/gsap";
 
 const HERO_NAME = "JOY K-EGBUSON";
 
+const GRAIN_SVG =
+  "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
+
 function formatLagosClock(now: Date): string {
-  // West Africa Time, GMT+1, no DST
   const utcMs = now.getTime() + now.getTimezoneOffset() * 60_000;
   const lagos = new Date(utcMs + 60 * 60_000);
   let hours = lagos.getHours();
@@ -17,45 +19,44 @@ function formatLagosClock(now: Date): string {
   return `${hours}:${String(mins).padStart(2, "0")} ${ampm} GMT+1`;
 }
 
-const HOVER_GRID = (() => {
-  // 5 columns × 4 rows = 20 cells.
-  // Fill with existing project thumbnails first, sprinkle a few existing
-  // category labels for variety (matches the spec's mix of imagery + tiny text).
-  const cells: Array<{ kind: "img"; src: string; alt: string } | { kind: "text"; value: string }> = [];
-  const textPositions = new Set([6, 12, 17]); // a few cells become tiny text fragments
-  let projectIdx = 0;
-  const labels = ["Film", "Video Edit", "Social"];
-  let labelIdx = 0;
-  for (let i = 0; i < 20; i++) {
-    if (textPositions.has(i)) {
-      cells.push({ kind: "text", value: labels[labelIdx % labels.length] });
-      labelIdx++;
-    } else {
-      const project = projects[projectIdx % projects.length];
-      projectIdx++;
-      cells.push({ kind: "img", src: project.thumbnail, alt: project.title });
-    }
-  }
-  return cells;
-})();
-
 export default function HeroReel() {
-  const [time, setTime] = useState<string>(() => formatLagosClock(new Date()));
-  const [year, setYear] = useState<number>(() => new Date().getFullYear());
-  const [hovered, setHovered] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const clockRef = useRef<HTMLSpanElement>(null);
+  const yearRef = useRef<HTMLSpanElement>(null);
 
+  /* Drive clock + year via refs (no React re-render) so the GSAP-animated
+     hero-char spans don't reconcile mid-animation. */
   useEffect(() => {
-    const id = window.setInterval(() => {
+    const update = () => {
       const d = new Date();
-      setTime(formatLagosClock(d));
-      setYear(d.getFullYear());
-    }, 1000);
+      if (clockRef.current) clockRef.current.textContent = formatLagosClock(d);
+      if (yearRef.current) yearRef.current.textContent = String(d.getFullYear());
+    };
+    update();
+    const id = window.setInterval(update, 1000);
     return () => window.clearInterval(id);
   }, []);
 
+  useGSAP(
+    () => {
+      if (!nameRef.current) return;
+      gsap.from(nameRef.current.querySelectorAll(".hero-char"), {
+        y: 60,
+        opacity: 0,
+        rotateX: -45,
+        duration: 2.5,
+        ease: "power3.out",
+        stagger: 0.12,
+        delay: 0.3,
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
     <section
+      ref={sectionRef}
       style={{
         position: "relative",
         minHeight: "100vh",
@@ -66,9 +67,26 @@ export default function HeroReel() {
         flexDirection: "column",
       }}
     >
+      {/* ---- Noise overlay ---- */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          backgroundImage: GRAIN_SVG,
+          backgroundSize: "180px 180px",
+          opacity: 0.12,
+          mixBlendMode: "screen",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
       {/* ---- Top metadata bar ---- */}
       <div
         style={{
+          position: "relative",
+          zIndex: 2,
           display: "flex",
           alignItems: "center",
           gap: 32,
@@ -92,13 +110,19 @@ export default function HeroReel() {
           />
           LAGOS, NG
         </span>
-        <span style={{ fontVariantNumeric: "tabular-nums" }}>{time}</span>
+        <span ref={clockRef} style={{ fontVariantNumeric: "tabular-nums" }}>
+          —
+        </span>
         <span>6.5244° N, 3.3792° E</span>
       </div>
 
-      {/* ---- Full-bleed name ---- */}
+      {/* ---- Full-bleed name with per-char effect ---- */}
       <h1
+        ref={nameRef}
+        aria-label={HERO_NAME}
         style={{
+          position: "relative",
+          zIndex: 2,
           fontFamily: "var(--font-display)",
           fontSize: "19vw",
           color: "#ffffff",
@@ -108,14 +132,31 @@ export default function HeroReel() {
           padding: "0 8px",
           textAlign: "center",
           marginTop: "auto",
+          perspective: "800px",
         }}
       >
-        {HERO_NAME}
+        {HERO_NAME.split("").map((char, i) => (
+          <span
+            key={`${char}-${i}`}
+            aria-hidden="true"
+            className="hero-char"
+            style={{
+              display: "inline-block",
+              whiteSpace: "pre",
+              transformStyle: "preserve-3d",
+              transformOrigin: "50% 60%",
+            }}
+          >
+            {char === " " ? " " : char}
+          </span>
+        ))}
       </h1>
 
       {/* ---- Center metadata row ---- */}
       <div
         style={{
+          position: "relative",
+          zIndex: 2,
           display: "flex",
           justifyContent: "space-between",
           padding: "16px clamp(24px, 30%, 30%)",
@@ -127,16 +168,20 @@ export default function HeroReel() {
         }}
       >
         <span>BASED IN LAGOS</span>
-        <span style={{ fontVariantNumeric: "tabular-nums" }}>{year}</span>
+        <span ref={yearRef} style={{ fontVariantNumeric: "tabular-nums" }}>
+          —
+        </span>
       </div>
 
-      {/* ---- Subtitle with hover gap (existing tagline split) ---- */}
+      {/* ---- Subtitle (smaller, no hover image) ---- */}
       <div
         style={{
+          position: "relative",
+          zIndex: 2,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 0,
+          gap: 24,
           marginBottom: "auto",
           paddingBottom: 56,
         }}
@@ -144,126 +189,57 @@ export default function HeroReel() {
         <span
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "6vw",
+            fontSize: "clamp(20px, 2.6vw, 44px)",
             color: "#ffffff",
             lineHeight: 1,
-            letterSpacing: "-0.01em",
+            letterSpacing: "0.02em",
           }}
         >
           SOCIAL MEDIA
         </span>
-
-        {/* Interactive gap */}
         <span
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
+          aria-hidden="true"
           style={{
-            position: "relative",
-            width: 300,
-            height: "6vw",
-            display: "inline-flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 2.6vw, 44px)",
+            color: "rgba(255,255,255,0.4)",
+            lineHeight: 1,
           }}
         >
-          <span
-            aria-hidden="true"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "6vw",
-              color: "rgba(255,255,255,0.35)",
-              lineHeight: 1,
-              letterSpacing: "-0.01em",
-            }}
-          >
-            ·
-          </span>
-          <div
-            ref={cardRef}
-            aria-hidden={!hovered}
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: 360,
-              height: 280,
-              transform: `translate(-50%, -50%) scale(${hovered ? 1 : 0.85})`,
-              opacity: hovered ? 1 : 0,
-              transition: "transform 0.2s ease, opacity 0.2s ease",
-              backgroundColor: "#ffffff",
-              border: "1px solid #dddddd",
-              borderRadius: 4,
-              padding: 14,
-              pointerEvents: "none",
-              zIndex: 5,
-              overflow: "hidden",
-            }}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(5, 1fr)",
-                gridAutoRows: 60,
-                gap: 4,
-                width: "100%",
-                height: "100%",
-              }}
-            >
-              {HOVER_GRID.map((cell, i) =>
-                cell.kind === "img" ? (
-                  <div
-                    key={`cell-${i}`}
-                    style={{
-                      position: "relative",
-                      width: "100%",
-                      height: "100%",
-                      borderRadius: 2,
-                      overflow: "hidden",
-                      backgroundColor: "#f4f4f4",
-                    }}
-                  >
-                    <Image
-                      src={cell.src}
-                      alt={cell.alt}
-                      fill
-                      sizes="60px"
-                      style={{ objectFit: "cover" }}
-                    />
-                  </div>
-                ) : (
-                  <span
-                    key={`cell-${i}`}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      fontFamily: "var(--font-body)",
-                      fontSize: 9,
-                      color: "#888888",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.1em",
-                      lineHeight: 1,
-                    }}
-                  >
-                    {cell.value}
-                  </span>
-                )
-              )}
-            </div>
-          </div>
+          ·
         </span>
-
         <span
           style={{
             fontFamily: "var(--font-display)",
-            fontSize: "6vw",
+            fontSize: "clamp(20px, 2.6vw, 44px)",
             color: "#ffffff",
             lineHeight: 1,
-            letterSpacing: "-0.01em",
+            letterSpacing: "0.02em",
           }}
         >
-          VIDEO · FILM
+          VIDEO
+        </span>
+        <span
+          aria-hidden="true"
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 2.6vw, 44px)",
+            color: "rgba(255,255,255,0.4)",
+            lineHeight: 1,
+          }}
+        >
+          ·
+        </span>
+        <span
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(20px, 2.6vw, 44px)",
+            color: "#ffffff",
+            lineHeight: 1,
+            letterSpacing: "0.02em",
+          }}
+        >
+          FILM
         </span>
       </div>
     </section>
