@@ -90,11 +90,14 @@ export default function FullscreenMenu() {
           style={{
             position: "fixed",
             inset: 0,
+            height: "100dvh",
             zIndex: 9997,
             backgroundColor: "#0a0a0a",
             display: "flex",
             flexDirection: "column",
             paddingTop: 64,
+            overflow: "hidden",
+            overscrollBehavior: "none",
           }}
         >
           {/* ---- Main content area ---- */}
@@ -116,10 +119,13 @@ export default function FullscreenMenu() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "center",
+                justifyContent: "space-evenly",
+                minHeight: 0,
                 paddingLeft: "clamp(24px, 5vw, 48px)",
                 paddingRight: 24,
-                gap: 4,
+                paddingTop: "clamp(8px, 2vh, 20px)",
+                paddingBottom: "clamp(8px, 2vh, 20px)",
+                gap: 0,
               }}
             >
               {menuPreviews.map((link, i) => (
@@ -133,11 +139,12 @@ export default function FullscreenMenu() {
                       display: "block",
                       position: "relative",
                       fontFamily: "var(--font-display)",
-                      fontSize: "clamp(40px, 7vw, 90px)",
-                      lineHeight: 1.1,
+                      fontSize:
+                        "clamp(26px, min(5.4vw, calc((100dvh - 260px) / 6)), 72px)",
+                      lineHeight: 1,
                       color: "#f5f4f0",
                       textDecoration: "none",
-                      paddingBottom: 4,
+                      paddingBottom: 2,
                     }}
                   >
                     {/* Link text */}
