@@ -1,5 +1,80 @@
+import fs from "fs";
+import path from "path";
 import type { Metadata } from "next";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
+
+interface MediaItem {
+  src: string;
+  type: "image" | "video";
+  category: string;
+  label: string;
+}
+
+function buildMediaCatalog(): MediaItem[] {
+  const items: MediaItem[] = [];
+  const dataDir = path.join(process.cwd(), "data");
+
+  const mediaUrl = (...segments: string[]) =>
+    `/api/playground/media/${segments.map((s) => encodeURIComponent(s)).join("/")}`;
+
+  // --- Designs ---
+  const designsBase = path.join(dataDir, "Designs", "Designs");
+  if (fs.existsSync(designsBase)) {
+    for (const client of fs.readdirSync(designsBase).sort()) {
+      const clientPath = path.join(designsBase, client);
+      if (!fs.statSync(clientPath).isDirectory()) continue;
+      for (const campaign of fs.readdirSync(clientPath).sort()) {
+        const campaignPath = path.join(clientPath, campaign);
+        if (!fs.statSync(campaignPath).isDirectory()) continue;
+        for (const file of fs.readdirSync(campaignPath).sort()) {
+          const ext = path.extname(file).toLowerCase();
+          if (
+            ![".png", ".jpg", ".jpeg", ".gif", ".webp", ".mp4", ".webm"].includes(ext)
+          )
+            continue;
+          items.push({
+            src: mediaUrl("Designs", "Designs", client, campaign, file),
+            type: [".mp4", ".webm"].includes(ext) ? "video" : "image",
+            category: "Designs",
+            label: `${client} — ${campaign}`,
+          });
+        }
+      }
+    }
+  }
+
+  // --- Logo Animations ---
+  const logoBase = path.join(dataDir, "Logo Animations", "Logo Animations");
+  if (fs.existsSync(logoBase)) {
+    for (const file of fs.readdirSync(logoBase).sort()) {
+      const ext = path.extname(file).toLowerCase();
+      if (![".mp4", ".webm", ".mov"].includes(ext)) continue;
+      items.push({
+        src: mediaUrl("Logo Animations", "Logo Animations", file),
+        type: "video",
+        category: "Logo Animations",
+        label: path.basename(file, ext),
+      });
+    }
+  }
+
+  // --- Outro Animations ---
+  const outroBase = path.join(dataDir, "Outro Animations", "Outro Animations");
+  if (fs.existsSync(outroBase)) {
+    for (const file of fs.readdirSync(outroBase).sort()) {
+      const ext = path.extname(file).toLowerCase();
+      if (![".mp4", ".webm", ".mov"].includes(ext)) continue;
+      items.push({
+        src: mediaUrl("Outro Animations", "Outro Animations", file),
+        type: "video",
+        category: "Outro Animations",
+        label: path.basename(file, ext),
+      });
+    }
+  }
+
+  return items;
+}
 
 const experiments = [
   {
@@ -40,6 +115,8 @@ export const metadata: Metadata = {
 };
 
 export default function PlaygroundPage() {
+  const mediaItems = buildMediaCatalog();
+
   return (
     <main
       style={{
@@ -50,6 +127,63 @@ export default function PlaygroundPage() {
         overflow: "hidden",
       }}
     >
+      {/* responsive masonry styles */}
+      <style>{`
+        .pg-masonry {
+          columns: 5;
+          column-gap: 10px;
+        }
+        @media (max-width: 1280px) { .pg-masonry { columns: 4; } }
+        @media (max-width: 1024px) { .pg-masonry { columns: 3; } }
+        @media (max-width: 640px)  { .pg-masonry { columns: 2; } }
+
+        .pg-cell {
+          break-inside: avoid;
+          margin-bottom: 10px;
+          position: relative;
+          overflow: hidden;
+          border-radius: 6px;
+          background: rgba(245,244,240,0.04);
+          cursor: default;
+        }
+        .pg-cell img,
+        .pg-cell video {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .pg-cell .pg-label {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: flex-end;
+          padding: 10px 12px;
+          background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%);
+          opacity: 0;
+          transition: opacity 0.2s ease;
+        }
+        .pg-cell:hover .pg-label { opacity: 1; }
+        .pg-label span {
+          font-family: var(--font-body);
+          font-size: 11px;
+          letter-spacing: 0.08em;
+          color: rgba(245,244,240,0.9);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+        .pg-cat-badge {
+          font-family: var(--font-body);
+          font-size: 9px;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #008cff;
+          display: block;
+          margin-bottom: 3px;
+        }
+      `}</style>
+
       <div
         aria-hidden
         style={{
@@ -61,6 +195,7 @@ export default function PlaygroundPage() {
         }}
       />
 
+      {/* Hero */}
       <section
         style={{
           position: "relative",
@@ -167,6 +302,48 @@ export default function PlaygroundPage() {
           ))}
         </div>
       </section>
+
+      {/* Media masonry grid */}
+      {mediaItems.length > 0 && (
+        <section
+          style={{
+            position: "relative",
+            zIndex: 1,
+            padding: "0 clamp(20px, 5vw, 48px) clamp(80px, 10vw, 120px)",
+          }}
+        >
+          <div className="pg-masonry">
+            {mediaItems.map((item, i) => (
+              <div key={i} className="pg-cell">
+                {item.type === "image" ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={item.src}
+                    alt={item.label}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <video
+                    src={item.src}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                  />
+                )}
+                <div className="pg-label">
+                  <span>
+                    <em className="pg-cat-badge">{item.category}</em>
+                    {item.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }
