@@ -7,7 +7,7 @@ import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
 const MIN_DURATION = 2500; // ms — matches the liquid-fill animation
 const MAX_DURATION = 8000; // ms — fail-safe so we never get stuck
 
-const BRAND_BLUE = "#008cff";
+const BRAND_ORANGE = "#FF7A00";
 
 function getLandingAssets(): string[] {
   const set = new Set<string>();
@@ -126,7 +126,7 @@ export default function LoadingScreen() {
         position: "fixed",
         inset: 0,
         zIndex: 99999,
-        backgroundColor: BRAND_BLUE,
+        backgroundColor: BRAND_ORANGE,
         overflow: "hidden",
       }}
     >

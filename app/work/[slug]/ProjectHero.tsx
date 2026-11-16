@@ -132,7 +132,7 @@ export default function ProjectHero({ project }: { project: Project }) {
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.transform =
                   "translate(-50%, -50%) scale(1.1)";
-                (e.currentTarget as HTMLElement).style.borderColor = "#008cff";
+                (e.currentTarget as HTMLElement).style.borderColor = "#FF7A00";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.transform =

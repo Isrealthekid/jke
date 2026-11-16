@@ -69,7 +69,7 @@ export default function SocialProof() {
               <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
                 &middot;
               </span>
-              <span style={{ color: "#008cff" }}>{item.handle}</span>
+              <span style={{ color: "#FF7A00" }}>{item.handle}</span>
             </span>
           ))}
         </div>

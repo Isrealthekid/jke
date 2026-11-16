@@ -74,7 +74,7 @@ export default function ContactForm() {
                 cx="32"
                 cy="32"
                 r="30"
-                stroke="#008cff"
+                stroke="#FF7A00"
                 strokeWidth="2"
                 fill="none"
                 style={{
@@ -85,7 +85,7 @@ export default function ContactForm() {
               />
               <path
                 d="M20 32L28 40L44 24"
-                stroke="#008cff"
+                stroke="#FF7A00"
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -153,7 +153,7 @@ export default function ContactForm() {
                 borderRadius: 4,
                 border: "1px solid rgba(200,255,0,0.4)",
                 backgroundColor: "transparent",
-                color: "#008cff",
+                color: "#FF7A00",
                 fontFamily: "var(--font-body)",
                 fontSize: 14,
                 fontWeight: 500,
@@ -166,14 +166,14 @@ export default function ContactForm() {
               onMouseEnter={(e) => {
                 if (!submitting) {
                   (e.currentTarget as HTMLElement).style.backgroundColor =
-                    "#008cff";
+                    "#FF7A00";
                   (e.currentTarget as HTMLElement).style.color = "#0a0a0a";
                 }
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.backgroundColor =
                   "transparent";
-                (e.currentTarget as HTMLElement).style.color = "#008cff";
+                (e.currentTarget as HTMLElement).style.color = "#FF7A00";
               }}
             >
               {submitting ? "Sending..." : "Send Message"}
@@ -218,7 +218,7 @@ function FloatField({
   const shared: React.CSSProperties = {
     width: "100%",
     backgroundColor: "#111",
-    border: `1px solid ${focused ? "#008cff" : "rgba(255,255,255,0.1)"}`,
+    border: `1px solid ${focused ? "#FF7A00" : "rgba(255,255,255,0.1)"}`,
     borderRadius: 4,
     padding: "20px 16px 8px",
     fontFamily: "var(--font-body)",
@@ -239,7 +239,7 @@ function FloatField({
           letterSpacing: isActive ? "0.1em" : "0",
           textTransform: isActive ? "uppercase" : "none",
           color: focused
-            ? "#008cff"
+            ? "#FF7A00"
             : "rgba(245,244,240,0.35)",
           fontFamily: "var(--font-body)",
           transition: "all 0.2s",

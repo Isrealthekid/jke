@@ -97,7 +97,7 @@ export default function ProcessTimeline() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: 24,
-                  color: "#008cff",
+                  color: "#FF7A00",
                   display: "block",
                 }}
               >

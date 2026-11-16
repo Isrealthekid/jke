@@ -119,7 +119,7 @@ export default function LatestProject() {
               fontSize: 10,
               letterSpacing: "0.2em",
               textTransform: "uppercase",
-              color: "#008cff",
+              color: "#FF7A00",
               opacity: 0,
             }}
           >

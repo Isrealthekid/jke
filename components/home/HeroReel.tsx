@@ -104,7 +104,7 @@ export default function HeroReel() {
               width: 6,
               height: 6,
               borderRadius: "50%",
-              backgroundColor: "#008cff",
+              backgroundColor: "#FF7A00",
               display: "inline-block",
             }}
           />

@@ -5,7 +5,7 @@
   --color-brand-black: #0a0a0a;
   --color-brand-white: #f5f4f0;
   /* --color-brand-accent: #c8ff00; */
-    --color-brand-accent: #008cff;
+    --color-brand-accent: #FF7A00;
 
 
   --font-display: "Bebas Neue", sans-serif;
@@ -58,7 +58,7 @@ html.lenis body {
 }
 .hero-char:hover {
   animation: hero-char-roll 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  color: #008cff;
+  color: #FF7A00;
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-char:hover {

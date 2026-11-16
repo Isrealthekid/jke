@@ -159,7 +159,7 @@ export default function FullscreenMenu() {
                           left: 0,
                           right: 0,
                           height: 2,
-                          backgroundColor: "#008cff",
+                          backgroundColor: "#FF7A00",
                           originX: 0,
                           scaleX: 0,
                         }}

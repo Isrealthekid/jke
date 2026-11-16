@@ -178,7 +178,7 @@ export default function ChannelCards() {
                     fontFamily: "var(--font-body)",
                     fontSize: 14,
                     fontWeight: 500,
-                    color: "#008cff",
+                    color: "#FF7A00",
                     wordBreak: "break-all",
                   }}
                 >
@@ -210,7 +210,7 @@ export default function ChannelCards() {
             transform: "translateX(-50%)",
             padding: "12px 24px",
             borderRadius: 100,
-            backgroundColor: "#008cff",
+            backgroundColor: "#FF7A00",
             color: "#0a0a0a",
             fontFamily: "var(--font-body)",
             fontSize: 13,

@@ -102,7 +102,7 @@ function StickyCard({
             display: "inline-block",
             width: 8,
             height: 8,
-            backgroundColor: "#008cff",
+            backgroundColor: "#FF7A00",
           }}
         />
         <span
@@ -175,7 +175,7 @@ function StickyCard({
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: "clamp(40px, 4vw, 64px)",
-                color: "#008cff",
+                color: "#FF7A00",
                 lineHeight: 1,
                 letterSpacing: "-0.01em",
               }}
@@ -240,7 +240,7 @@ function MobileLayout() {
                 display: "inline-block",
                 width: 7,
                 height: 7,
-                backgroundColor: "#008cff",
+                backgroundColor: "#FF7A00",
               }}
             />
             <span
@@ -300,7 +300,7 @@ function MobileLayout() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: 56,
-            color: "#008cff",
+            color: "#FF7A00",
           }}
         >
           50+

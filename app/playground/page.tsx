@@ -178,7 +178,7 @@ export default function PlaygroundPage() {
           font-size: 9px;
           letter-spacing: 0.14em;
           text-transform: uppercase;
-          color: #008cff;
+          color: #FF7A00;
           display: block;
           margin-bottom: 3px;
         }
@@ -190,7 +190,7 @@ export default function PlaygroundPage() {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(circle at 20% 20%, rgba(0,140,255,0.18), transparent 40%), radial-gradient(circle at 80% 0%, rgba(34,197,94,0.15), transparent 35%)",
+            "radial-gradient(circle at 20% 20%, rgba(255,122,0,0.18), transparent 40%), radial-gradient(circle at 80% 0%, rgba(34,197,94,0.15), transparent 35%)",
           pointerEvents: "none",
         }}
       />
@@ -271,7 +271,7 @@ export default function PlaygroundPage() {
                   fontSize: 10,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
-                  color: "#008cff",
+                  color: "#FF7A00",
                   marginBottom: 12,
                 }}
               >

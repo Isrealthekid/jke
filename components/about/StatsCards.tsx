@@ -61,7 +61,7 @@ export default function StatsCards() {
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(36px, 5vw, 56px)",
-              color: "#008cff",
+              color: "#FF7A00",
               lineHeight: 1,
             }}
           >
