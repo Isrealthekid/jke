@@ -239,7 +239,7 @@ export default function SelectedWorks() {
   const progressRef = useRef<HTMLDivElement>(null);
 
   // Only short-form vertical content on the home reel: IG reels + YouTube Shorts.
-  const selectedProjects = projects.filter((p) => p.category === "Social Content");
+  const selectedProjects = projects.filter((p) => p.category === "Edits");
 
   useGSAP(
     () => {
@@ -273,9 +273,9 @@ export default function SelectedWorks() {
     return (
       <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
-          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-            Selected Works
-          </span>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#FFD34A" }}>
+            Edits
+          </h2>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
             ({String(selectedProjects.length).padStart(2, "0")})
           </span>
@@ -319,6 +319,8 @@ export default function SelectedWorks() {
         overflow: "hidden",
         backgroundColor: "#000000",
         position: "relative",
+        borderRadius: "28px 28px 0 0",
+        boxShadow: "0 -24px 60px rgba(0,0,0,0.7)",
       }}
     >
       {/* Section header */}
@@ -341,9 +343,9 @@ export default function SelectedWorks() {
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-              Selected Works
-            </span>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5vw, 72px)", lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+              <span style={{ color: "#FFD34A" }}>Edits</span>
+            </h2>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
               ({String(selectedProjects.length).padStart(2, "0")})
             </span>

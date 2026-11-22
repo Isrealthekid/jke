@@ -23,10 +23,10 @@ const categories = [
     filter: "Video Edit",
   },
   {
-    title: "Social Content",
+    title: "Edits",
     image: PLACEHOLDER_IMAGES[2],
     backColor: "#0d1710",
-    filter: "Social Content",
+    filter: "Edits",
   },
 ];
 

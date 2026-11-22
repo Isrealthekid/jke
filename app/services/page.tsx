@@ -8,11 +8,11 @@ import FAQ from "@/components/services/FAQ";
 export const metadata: Metadata = {
   title: "JK Egbuson — Services",
   description:
-    "Social media management, video production, and filmmaking services. End-to-end creative work for brands across Nigeria and beyond.",
+    "Video production, editing, and filmmaking services. End-to-end creative work for brands across Nigeria and beyond.",
   openGraph: {
     title: "JK Egbuson — Services",
     description:
-      "Social media management, video production, and filmmaking services for ambitious brands.",
+      "Video production, editing, and filmmaking services for ambitious brands.",
   },
   twitter: {
     card: "summary_large_image",

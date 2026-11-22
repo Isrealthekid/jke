@@ -8,7 +8,7 @@ import { useIsMobile } from "@/lib/useIsMobile";
 import joy1 from "@/app/images/joy1.webp";
 
 const BIO_TEXT =
-  "JK Egbuson is a Lagos-based social media manager, video editor and filmmaker with over 5 years of experience crafting visual stories for brands and individuals. From documentary films to viral social campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
+  "Joy Karenate-Egbuson is a Lagos-based video editor and filmmaker with over 5 years of experience crafting visual stories for brands and individuals. From documentary films to brand campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
 
 const WORDS = BIO_TEXT.split(" ");
 

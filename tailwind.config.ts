@@ -16,7 +16,7 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["Bebas Neue", "sans-serif"],
+        display: ["Bowlby One", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
     },

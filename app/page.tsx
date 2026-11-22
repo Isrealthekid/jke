@@ -5,27 +5,25 @@ import PinnedIntro from "@/components/home/PinnedIntro";
 import SelectedWorks from "@/components/home/SelectedWorks";
 import AboutSection from "@/components/home/AboutSection";
 import OnScreenSection from "@/components/home/OnScreenSection";
-import OnSocialSection from "@/components/home/OnSocialSection";
 import KineticStatement from "@/components/home/KineticStatement";
-import LatestProject from "@/components/home/LatestProject";
 import SocialProof from "@/components/home/SocialProof";
 import FooterCTA from "@/components/home/FooterCTA";
 
 export const metadata: Metadata = {
-  title: "JK Egbuson — Social Media, Video & Film",
+  title: "The Joie TV — Video Editing & Film",
   description:
-    "Lagos-based social media manager, video editor, and filmmaker crafting visual stories for brands and individuals.",
+    "Lagos-based video editor and filmmaker crafting visual stories for brands and individuals.",
   openGraph: {
-    title: "JK Egbuson — Social Media, Video & Film",
+    title: "The Joie TV — Video Editing & Film",
     description:
-      "Lagos-based social media manager, video editor, and filmmaker crafting visual stories for brands and individuals.",
+      "Lagos-based video editor and filmmaker crafting visual stories for brands and individuals.",
     images: [{ url: PLACEHOLDER_IMAGES[0], width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "JK Egbuson — Social Media, Video & Film",
+    title: "The Joie TV — Video Editing & Film",
     description:
-      "Lagos-based social media manager, video editor, and filmmaker crafting visual stories for brands and individuals.",
+      "Lagos-based video editor and filmmaker crafting visual stories for brands and individuals.",
     images: [PLACEHOLDER_IMAGES[0]],
   },
 };
@@ -36,11 +34,10 @@ export default function Home() {
       <HeroReel />
       <AboutSection />
       <KineticStatement />
-      <PinnedIntro />
-      <OnScreenSection />
-      <OnSocialSection />
-      <SelectedWorks />
-      <LatestProject />
+      <PinnedIntro>
+        <OnScreenSection />
+        <SelectedWorks />
+      </PinnedIntro>
       <SocialProof />
       <FooterCTA />
     </main>

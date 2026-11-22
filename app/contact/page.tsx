@@ -4,11 +4,11 @@ import ContactHero from "@/components/contact/ContactHero";
 export const metadata: Metadata = {
   title: "JK Egbuson — Contact",
   description:
-    "Get in touch for social media management, video production, or filmmaking projects. Currently open for new work.",
+    "Get in touch for video editing, production, or filmmaking projects. Currently open for new work.",
   openGraph: {
     title: "JK Egbuson — Contact",
     description:
-      "Get in touch for social media, video, or film projects. Based in Lagos, available worldwide.",
+      "Get in touch for video or film projects. Based in Lagos, available worldwide.",
   },
   twitter: {
     card: "summary_large_image",

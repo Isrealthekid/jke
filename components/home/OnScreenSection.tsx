@@ -9,15 +9,14 @@ const onScreen = projects.filter(
   (p) => p.category === "Film" || p.category === "Video Edit"
 );
 
-/** "On the screen": the films series card plus an index of films and video edits. */
+/**
+ * "On the screen": the films series card plus an index of films and video edits.
+ * On large screens this is a full-screen panel that slides up over the "What I do" cards
+ * (and the Edits showcase then slides up over it), see .stack-panel in globals.css.
+ */
 export default function OnScreenSection() {
   return (
-    <section
-      style={{
-        backgroundColor: "#000000",
-        padding: "clamp(72px, 10vw, 140px) clamp(20px, 5vw, 48px)",
-      }}
-    >
+    <section className="stack-panel">
       <p
         style={{
           margin: 0,
@@ -32,10 +31,10 @@ export default function OnScreenSection() {
       </p>
       <h2
         style={{
-          margin: "12px 0 0",
+          margin: "10px 0 0",
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(56px, 11vw, 160px)",
-          lineHeight: 0.9,
+          fontSize: "clamp(48px, 8vw, 120px)",
+          lineHeight: 1,
           letterSpacing: "-0.01em",
           color: "#f5f4f0",
         }}

@@ -13,7 +13,7 @@ function getLandingAssets(): string[] {
   const set = new Set<string>();
   if (projects[0]?.thumbnail) set.add(projects[0].thumbnail);
   projects
-    .filter((p) => p.category === "Social Content")
+    .filter((p) => p.category === "Edits")
     .forEach((p) => set.add(p.thumbnail));
   PLACEHOLDER_IMAGES.forEach((img) => set.add(img));
   return Array.from(set);

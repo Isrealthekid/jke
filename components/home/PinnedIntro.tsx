@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useIsMobile } from "@/lib/useIsMobile";
 
 /* ---- Role data — preserved from previous design ---- */
 const roles = [
-  { label: "Social Media Management", videoId: "2B3ZORKuDJ0" }, // Women Leaders Unscripted — Trailer
   { label: "Video Production", videoId: "-OKPBPCKP1w" },         // The Beginning — Debola Deji-Kurunmi
   { label: "Filmmaking", videoId: "dDHvTvbNeW4" },               // I Love You — Short Film
 ];
@@ -216,7 +215,7 @@ function StickyCard({
   );
 }
 
-function MobileLayout() {
+function MobileLayout({ children }: { children?: ReactNode }) {
   return (
     <>
       {roles.map((role) => (
@@ -331,11 +330,12 @@ function MobileLayout() {
           Based in Lagos &middot; Available Worldwide
         </p>
       </div>
+      {children}
     </>
   );
 }
 
-function DesktopLayout() {
+function DesktopLayout({ children }: { children?: ReactNode }) {
   return (
     <>
       {roles.map((role, i) => (
@@ -346,11 +346,16 @@ function DesktopLayout() {
           isLast={i === roles.length - 1}
         />
       ))}
+      {children}
     </>
   );
 }
 
-export default function PinnedIntro() {
+/**
+ * The "What I do" cards. Anything passed as children (On the screen, Edits) joins the same
+ * stack, so each panel slides up over the one before it.
+ */
+export default function PinnedIntro({ children }: { children?: ReactNode }) {
   const isMobile = useIsMobile();
   const [hasMounted, setHasMounted] = useState(false);
 
@@ -366,18 +371,15 @@ export default function PinnedIntro() {
       style={{ position: "relative", backgroundColor: "#000000" }}
       suppressHydrationWarning
     >
-      {!hasMounted ? (
-        // Match the SSR output (desktop is the default branch when isMobile=false)
-        <DesktopLayout />
-      ) : isMobile ? (
-        <div key="mobile">
-          <MobileLayout />
-        </div>
-      ) : (
-        <div key="desktop">
-          <DesktopLayout />
-        </div>
-      )}
+      {/* One wrapper for every layout, so the children (and their scroll animations)
+          are never remounted when the layout is chosen after hydration. */}
+      <div>
+        {hasMounted && isMobile ? (
+          <MobileLayout>{children}</MobileLayout>
+        ) : (
+          <DesktopLayout>{children}</DesktopLayout>
+        )}
+      </div>
     </section>
   );
 }

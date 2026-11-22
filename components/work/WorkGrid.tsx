@@ -30,7 +30,7 @@ function WorkTile({
 }) {
   // Vertical content (shorts / reels) takes a narrow 9:16 tile;
   // everything else (films, video edits) takes a wide 16:9 tile.
-  const isVertical = project.category === "Social Content";
+  const isVertical = project.category === "Edits";
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -283,7 +283,7 @@ export default function WorkGrid() {
     "All",
     "Film",
     "Video Edit",
-    "Social Content",
+    "Edits",
   ];
 
   const filtered =

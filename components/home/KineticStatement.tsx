@@ -171,6 +171,7 @@ export default function KineticStatement() {
       }}
     >
       <p
+        className="no-zoom"
         aria-label={STATEMENT}
         style={{
           fontFamily: "var(--font-heading), var(--font-display), sans-serif",

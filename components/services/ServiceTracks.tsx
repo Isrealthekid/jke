@@ -32,7 +32,7 @@ const tracks: Track[] = [
     ],
     process: ["Setup", "Create", "Deliver"],
     turnaround: "Monthly retainer",
-    filterSlug: "Social Content",
+    filterSlug: "Edits",
   },
   {
     num: "02",

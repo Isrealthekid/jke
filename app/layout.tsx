@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Bowlby_One, Inter } from "next/font/google";
+import { Bowlby_One, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { MenuProvider } from "@/components/layout/MenuContext";
 import Navbar from "@/components/layout/Navbar";
@@ -10,13 +10,7 @@ import PageTransition from "@/components/layout/PageTransition";
 import LoadingScreen from "@/components/layout/LoadingScreen";
 import "./globals.css";
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
-  variable: "--font-display",
-  subsets: ["latin"],
-});
-
-// The big home page heading ("THE JOIE TV").
+// Headings across the whole site (Bowlby One). Body text is Inter.
 const bowlbyOne = Bowlby_One({
   weight: "400",
   variable: "--font-heading",
@@ -30,11 +24,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "JK Egbuson — Social Media, Video & Film",
+    default: "The Joie TV — Video Editing & Film",
     template: "%s",
   },
   description:
-    "Lagos-based social media manager, video editor, and filmmaker crafting visual stories for brands and individuals.",
+    "Lagos-based video editor and filmmaker crafting visual stories for brands and individuals.",
   metadataBase: new URL("https://jkegbuson.com"),
   openGraph: {
     type: "website",
@@ -54,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${bowlbyOne.variable} ${inter.variable} h-full antialiased`}
+      className={`${bowlbyOne.variable} ${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body

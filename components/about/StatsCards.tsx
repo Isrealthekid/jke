@@ -7,7 +7,7 @@ import { gsap } from "@/lib/gsap";
 const stats = [
   { value: "5+", label: "Years" },
   { value: "50+", label: "Projects" },
-  { value: "3", label: "Disciplines" },
+  { value: "2", label: "Disciplines" },
 ];
 
 export default function StatsCards() {

@@ -6,11 +6,11 @@ import WorkGrid from "@/components/work/WorkGrid";
 export const metadata: Metadata = {
   title: "JK Egbuson — Work",
   description:
-    "Selected projects across filmmaking, video editing, and social media content. Work for GTBank, Flutterwave, MTN, TikTok, and more.",
+    "Selected projects across filmmaking and video editing. Work for GTBank, Flutterwave, MTN, TikTok, and more.",
   openGraph: {
     title: "JK Egbuson — Work",
     description:
-      "Selected projects across filmmaking, video editing, and social media content.",
+      "Selected projects across filmmaking and video editing.",
     images: [{ url: PLACEHOLDER_IMAGES[1], width: 1200, height: 630 }],
   },
   twitter: {
