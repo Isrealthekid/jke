@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
-const HERO_NAME = "JOY K-EGBUSON";
+const HERO_NAME = "THE JOIE TV";
+const HERO_COLOURS = ["#FF7A00", "#C6249B", "#FFD34A"]; // orange, pink, yellow
 
 const GRAIN_SVG =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
@@ -123,11 +124,13 @@ export default function HeroReel() {
         style={{
           position: "relative",
           zIndex: 2,
-          fontFamily: "var(--font-display)",
-          fontSize: "19vw",
+          fontFamily: "var(--font-heading), var(--font-display), sans-serif",
+          fontWeight: 400,
+          fontSize: "9.5vw",
+          whiteSpace: "nowrap",
           color: "#ffffff",
-          lineHeight: 0.85,
-          letterSpacing: "-0.02em",
+          lineHeight: 1,
+          letterSpacing: "-0.01em",
           margin: 0,
           padding: "0 8px",
           textAlign: "center",
@@ -140,17 +143,39 @@ export default function HeroReel() {
             key={`${char}-${i}`}
             aria-hidden="true"
             className="hero-char"
-            style={{
-              display: "inline-block",
-              whiteSpace: "pre",
-              transformStyle: "preserve-3d",
-              transformOrigin: "50% 60%",
-            }}
+            style={
+              {
+                display: "inline-block",
+                whiteSpace: "pre",
+                transformStyle: "preserve-3d",
+                transformOrigin: "50% 60%",
+                "--hero-hover": HERO_COLOURS[i % HERO_COLOURS.length],
+              } as React.CSSProperties
+            }
           >
             {char === " " ? " " : char}
           </span>
         ))}
       </h1>
+
+      {/* ---- A.K.A line ---- */}
+      <p
+        style={{
+          position: "relative",
+          zIndex: 2,
+          margin: 0,
+          padding: "12px 16px 0",
+          textAlign: "center",
+          fontFamily: "var(--font-display)",
+          fontSize: "clamp(24px, 4vw, 64px)",
+          letterSpacing: "0.04em",
+          lineHeight: 1,
+          color: "#ffffff",
+        }}
+      >
+        <span style={{ color: "rgba(255,255,255,0.45)" }}>A.K.A</span> Joy
+        Karenate-Egbuson
+      </p>
 
       {/* ---- Center metadata row ---- */}
       <div

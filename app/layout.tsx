@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bebas_Neue, Inter } from "next/font/google";
+import { Bebas_Neue, Bowlby_One, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { MenuProvider } from "@/components/layout/MenuContext";
 import Navbar from "@/components/layout/Navbar";
@@ -13,6 +13,13 @@ import "./globals.css";
 const bebasNeue = Bebas_Neue({
   weight: "400",
   variable: "--font-display",
+  subsets: ["latin"],
+});
+
+// The big home page heading ("THE JOIE TV").
+const bowlbyOne = Bowlby_One({
+  weight: "400",
+  variable: "--font-heading",
   subsets: ["latin"],
 });
 
@@ -47,7 +54,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${bebasNeue.variable} ${inter.variable} h-full antialiased`}
+      className={`${bebasNeue.variable} ${bowlbyOne.variable} ${inter.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body

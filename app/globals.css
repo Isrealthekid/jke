@@ -58,7 +58,8 @@ html.lenis body {
 }
 .hero-char:hover {
   animation: hero-char-roll 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  color: #FF7A00;
+  /* each letter turns orange, pink or yellow (set per letter in HeroReel) */
+  color: var(--hero-hover, #FF7A00);
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-char:hover {
