@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
 import HeroReel from "@/components/home/HeroReel";
 
-const MIN_DURATION = 2500; // ms — matches the timeline sweep and the logo fill
+const MIN_DURATION = 1000; // ms — a fast load reads exactly 00:00:01:00 on the timecode
 const MAX_DURATION = 8000; // ms — fail-safe so we never get stuck
 
 const BRAND_ORANGE = "#FF7A00";
@@ -120,6 +120,11 @@ export default function LoadingScreen() {
       return;
     }
 
+    // The monitor's own timecode shows the final load time from the timeline.
+    const finalTime = root.querySelector<HTMLElement>(".tl-timecode")?.textContent;
+    const monitorTime = root.querySelector<HTMLElement>(".pm-time");
+    if (finalTime && monitorTime) monitorTime.textContent = finalTime;
+
     // The monitor takes the logo's place: centred on it, and small enough to fit in the space
     // above the timeline (which stays where it is).
     const vh = window.innerHeight;
@@ -147,50 +152,81 @@ export default function LoadingScreen() {
     if (!visible) return;
     if (!fillRef.current) return;
 
-    // Liquid fill: rises from bottom to top through the letterforms
-    gsap.fromTo(
-      fillRef.current,
-      { clipPath: "inset(100% 0 0 0)" },
-      {
-        clipPath: "inset(0% 0 0 0)",
-        duration: 2.5,
-        ease: "power2.inOut",
-      }
+    const root = containerRef.current;
+    const startTime = Date.now();
+
+    /* ---- One real clock drives everything ----
+       The timecode is a stopwatch for the actual load: 00:00:00:00 up to 00:00:01:00 on a fast
+       load (never faster than 1s), or longer if the page genuinely takes longer. The playhead,
+       the clips snapping in and the logo fill all follow the same progress. */
+    let ready = false; // assets loaded and the minimum time has passed
+    let readyAt = 0; // seconds elapsed when we became ready
+    const clock = { p: 0 };
+    const fillEase = gsap.parseEase("power2.inOut");
+    const clips = Array.from(root?.querySelectorAll<HTMLElement>(".tl-clip") ?? []).map((el) => ({
+      el,
+      at: parseFloat(el.dataset.start || "0") / 100,
+      done: false,
+    }));
+
+    gsap.set(
+      clips.map((c) => c.el),
+      { scaleX: 0 }
     );
 
-    // Editing timeline: the playhead sweeps across while clips snap into the tracks as it
-    // passes them; the timecode runs alongside (24 fps).
-    const clips = containerRef.current?.querySelectorAll<HTMLElement>(".tl-clip");
-    clips?.forEach((clip) => {
-      const start = parseFloat(clip.dataset.start || "0") / 100;
-      gsap.fromTo(
-        clip,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.4, delay: start * 2.5, ease: "back.out(1.7)" }
-      );
-    });
-    if (playheadRef.current) {
-      const clock = { t: 0 };
-      gsap.fromTo(
-        playheadRef.current,
-        { left: "0%" },
-        { left: "100%", duration: 2.5, ease: "none" }
-      );
-      gsap.to(clock, {
-        t: 2.5,
-        duration: 2.5,
-        ease: "none",
-        onUpdate: () => {
-          const sec = Math.floor(clock.t);
-          const frames = Math.floor((clock.t - sec) * 24);
-          if (timecodeRef.current)
-            timecodeRef.current.textContent = `00:00:${String(sec).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
-        },
+    const render = () => {
+      const p = clock.p;
+      if (playheadRef.current) playheadRef.current.style.left = `${p * 100}%`;
+      if (fillRef.current) fillRef.current.style.clipPath = `inset(${(1 - fillEase(p)) * 100}% 0 0 0)`;
+      clips.forEach((c) => {
+        if (!c.done && p >= c.at) {
+          c.done = true;
+          gsap.fromTo(c.el, { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "back.out(1.7)" });
+        }
       });
-    }
+    };
 
-    /* ---- Real asset preload decides when we're ready to open ---- */
-    const startTime = Date.now();
+    const fmt = (t: number) => {
+      const sec = Math.floor(t);
+      const frames = Math.floor((t - sec) * 24);
+      return `00:00:${String(sec).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
+    };
+    const updateTimecode = () => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      let t = elapsed;
+      if (ready) {
+        // A fast load lands exactly on 00:00:01:00; a slow one stops where it really finished.
+        const cap = readyAt <= 1.15 ? 1 : readyAt;
+        t = Math.min(elapsed, cap);
+      }
+      if (timecodeRef.current) timecodeRef.current.textContent = fmt(t);
+    };
+    gsap.ticker.add(updateTimecode);
+
+    // The sweep runs for 1s, but holds just short of the end until the page is really ready.
+    const master = gsap.to(clock, {
+      p: 1,
+      duration: 1,
+      ease: "none",
+      onUpdate: () => {
+        if (!ready && clock.p >= 0.92) master.pause();
+        render();
+      },
+      onComplete: () => {
+        render();
+        updateTimecode();
+        animateOut();
+      },
+    });
+
+    const markReady = () => {
+      if (ready) return;
+      ready = true;
+      readyAt = (Date.now() - startTime) / 1000;
+      master.play();
+    };
+
+    /* ---- Real asset preload decides when we're ready ---- */
     const assets = getLandingAssets();
     const total = Math.max(1, assets.length + 1); // +1 for fonts
     let loaded = 0;
@@ -198,8 +234,7 @@ export default function LoadingScreen() {
     const finalizeIfReady = () => {
       if (loaded < total) return;
       const elapsed = Date.now() - startTime;
-      const wait = Math.max(0, MIN_DURATION - elapsed);
-      window.setTimeout(animateOut, wait);
+      window.setTimeout(markReady, Math.max(0, MIN_DURATION - elapsed));
     };
 
     const tick = () => {
@@ -220,8 +255,13 @@ export default function LoadingScreen() {
       tick();
     }
 
-    const maxTimeout = window.setTimeout(animateOut, MAX_DURATION);
-    return () => window.clearTimeout(maxTimeout);
+    // Fail-safe: never get stuck.
+    const maxTimeout = window.setTimeout(markReady, MAX_DURATION);
+    return () => {
+      window.clearTimeout(maxTimeout);
+      gsap.ticker.remove(updateTimecode);
+      master.kill();
+    };
   }, [visible, animateOut]);
 
   if (visible === null || visible === false) return null;
@@ -358,7 +398,7 @@ export default function LoadingScreen() {
           </div>
         </div>
         <div className="pm-footer">
-          <span className="pm-time">00:00:02:12</span>
+          <span className="pm-time">00:00:01:00</span>
           <span className="pm-transport">
             <i className="pm-prev" />
             <i className="pm-play" />
