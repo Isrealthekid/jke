@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const STATEMENT = "I make things people watch twice.";
 const WORDS = STATEMENT.split(" ");
-const SPECKS_PER_LETTER = 10;
+const SPECKS_PER_LETTER = 26;
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 // Fixed (not random) so server and browser render the same speck positions.
@@ -57,17 +57,30 @@ export default function KineticStatement() {
         },
         0
       );
-      // ...and fall to the floor (the bottom of the line), where the dust lies in a heap.
+      // ...and fall to the floor (the bottom of the line), where each word's dust lies in a heap:
+      // tallest in the middle, tapering off to the sides, like a pile of sand.
+      const word = (el: HTMLElement) => el.closest(".ks-word") as HTMLElement;
       tl.to(
         specks,
         {
           opacity: 1,
-          y: (_i: number, el: HTMLElement) => {
-            const letterBox = el.parentElement as HTMLElement;
-            return letterBox.clientHeight * 0.92 - el.offsetTop - rand(0, 9);
+          x: (_i: number, el: HTMLElement) => {
+            const w = word(el).getBoundingClientRect();
+            const e = el.getBoundingClientRect();
+            const u = parseFloat(el.dataset.u || "0"); // -1 (left edge) .. 1 (right edge), bell-shaped
+            return w.left + w.width / 2 + u * w.width * 0.5 - (e.left + e.width / 2);
           },
-          x: () => rand(-14, 14),
-          duration: 0.45,
+          y: (_i: number, el: HTMLElement) => {
+            const w = word(el).getBoundingClientRect();
+            const e = el.getBoundingClientRect();
+            const u = parseFloat(el.dataset.u || "0");
+            const depth = parseFloat(el.dataset.d || "0"); // 0 = top surface, 1 = bottom of the heap
+            const floor = w.bottom - w.height * 0.08;
+            const heapHeight = Math.min(w.height * 0.5, w.width * 0.4);
+            const surface = heapHeight * (1 - Math.pow(Math.abs(u), 1.4));
+            return floor - surface * (1 - depth) - e.top;
+          },
+          duration: 0.55,
           ease: "power2.in", // gravity: speeds up as it falls
           stagger: { amount: crumbleSpan, from: "start" },
         },
@@ -93,6 +106,17 @@ export default function KineticStatement() {
       // Start in the "gone" state (nothing visible) and wait for the scroll.
       tl.progress(1).pause();
 
+      // If the window is resized, re-measure where the heaps go.
+      let resizeTimer: number | undefined;
+      const onResize = () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(() => {
+          const p = tl.progress();
+          tl.progress(0).invalidate().progress(p);
+        }, 250);
+      };
+      window.addEventListener("resize", onResize);
+
       const reform = () => tl.timeScale(2).reverse();
       const snap = () => tl.timeScale(1.4).play();
 
@@ -113,6 +137,11 @@ export default function KineticStatement() {
           }
         },
       });
+
+      return () => {
+        window.clearTimeout(resizeTimer);
+        window.removeEventListener("resize", onResize);
+      };
     },
     { scope: sectionRef }
   );
@@ -148,6 +177,7 @@ export default function KineticStatement() {
           return (
             <span
               key={wi}
+              className="ks-word"
               aria-hidden="true"
               style={{ display: "inline-block", whiteSpace: "nowrap" }}
             >
@@ -170,12 +200,19 @@ export default function KineticStatement() {
                     {ch}
                   </span>
                   {Array.from({ length: SPECKS_PER_LETTER }).map((_, si) => {
-                    const seed = wi * 1000 + ci * 10 + si;
-                    const size = 2 + Math.round(fixed(seed + 0.9) * 2); // 2-4px
+                    const seed = wi * 10000 + ci * 100 + si;
+                    const size = 2 + Math.round(fixed(seed + 0.9)); // 2-3px
+                    // Where this grain ends up in the heap: u from -1 (left) to 1 (right), bunched
+                    // towards the middle; depth from 0 (surface) to 1 (bottom).
+                    const u =
+                      (fixed(seed + 1) + fixed(seed + 2) + fixed(seed + 3)) / 1.5 - 1;
+                    const depth = fixed(seed + 4);
                     return (
                       <span
                         key={si}
                         className="ks-speck"
+                        data-u={u.toFixed(3)}
+                        data-d={depth.toFixed(3)}
                         style={{
                           position: "absolute",
                           left: `${(10 + fixed(seed) * 80).toFixed(1)}%`,
