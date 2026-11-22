@@ -4,6 +4,8 @@ import HeroReel from "@/components/home/HeroReel";
 import PinnedIntro from "@/components/home/PinnedIntro";
 import SelectedWorks from "@/components/home/SelectedWorks";
 import AboutSection from "@/components/home/AboutSection";
+import OnScreenSection from "@/components/home/OnScreenSection";
+import OnSocialSection from "@/components/home/OnSocialSection";
 import KineticStatement from "@/components/home/KineticStatement";
 import LatestProject from "@/components/home/LatestProject";
 import SocialProof from "@/components/home/SocialProof";
@@ -35,6 +37,8 @@ export default function Home() {
       <KineticStatement />
       <AboutSection />
       <PinnedIntro />
+      <OnScreenSection />
+      <OnSocialSection />
       <SelectedWorks />
       <LatestProject />
       <SocialProof />

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import SocialBar from "./SocialBar";
 
 const HERO_NAME = "THE JOIE TV";
 const HERO_COLOURS = ["#FF7A00", "#C6249B", "#FFD34A"]; // orange, pink, yellow
@@ -227,6 +228,9 @@ export default function HeroReel() {
         }}
       >
         Lagos, Nigeria
-      </div>    </section>
+      </div>
+
+      <SocialBar />
+    </section>
   );
 }
