@@ -86,7 +86,7 @@ function PreviewTopBar() {
 export default function LoadingScreen() {
   const [visible, setVisible] = useState<boolean | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const fillRef = useRef<HTMLSpanElement>(null);
+  const layoutRef = useRef<{ tlTop: number } | null>(null); // where the timeline sits when finished
   const playheadRef = useRef<HTMLDivElement>(null);
   const timecodeRef = useRef<HTMLSpanElement>(null);
   const exitedRef = useRef(false);
@@ -95,8 +95,9 @@ export default function LoadingScreen() {
     setVisible(true);
   }, []);
 
-  /* When the sequence is done: the logo and timeline give way to a Premiere-style program
-     monitor showing the home page, which then zooms up to fill the screen. */
+  /* When the sequence is done: the timeline slides down to the bottom and a Premiere-style
+     program monitor, showing the home page, pops up above it, then zooms open to fill the
+     screen. */
   const animateOut = useCallback(() => {
     if (exitedRef.current) return;
     exitedRef.current = true;
@@ -113,54 +114,50 @@ export default function LoadingScreen() {
 
     const group = root.querySelector<HTMLElement>(".pm-group");
     const frame = root.querySelector<HTMLElement>(".pm-frame");
-    const logo = root.querySelector<HTMLElement>(".pm-logo");
-    const fadeOut = root.querySelectorAll<HTMLElement>(".pm-fade");
-    if (!group || !frame || !logo) {
+    const panel = root.querySelector<HTMLElement>(".tl-panel");
+    if (!group || !frame || !panel) {
       finalize();
       return;
     }
 
-    // The monitor's own timecode shows the final load time from the timeline.
+    // The monitor's own timecode shows the final time from the timeline.
     const finalTime = root.querySelector<HTMLElement>(".tl-timecode")?.textContent;
     const monitorTime = root.querySelector<HTMLElement>(".pm-time");
     if (finalTime && monitorTime) monitorTime.textContent = finalTime;
 
-    // The monitor takes the logo's place: centred on it, and small enough to fit in the space
-    // above the timeline (which stays where it is).
+    // The monitor is centred in the space between the top bar (64px) and the timeline's final
+    // position at the bottom, and sized to fit there.
     const vh = window.innerHeight;
-    const r = logo.getBoundingClientRect();
-    const cy = r.top + r.height / 2;
+    const tlTop = layoutRef.current?.tlTop ?? vh * 0.75;
+    const cy = (64 + tlTop) / 2;
     const y0 = cy - vh / 2;
-    const fitScale = (0.9 * (2 * cy)) / (vh + 176); // 176px = the monitor's header + footer
+    const fitScale = (0.88 * (tlTop - 64)) / (vh + 176); // 176px = the monitor's header + footer
     const k = Math.min(monitorScale(), fitScale);
 
     const tl = gsap.timeline({ onComplete: finalize });
-    // 1. The logo is replaced by the preview monitor...
-    tl.to(fadeOut, { opacity: 0, duration: 0.25, ease: "power2.in" }, 0);
+    // 1. The timeline drops to the bottom while the preview monitor pops up above it...
+    tl.to(panel, { y: 0, duration: 0.55, ease: "power3.inOut" }, 0);
     tl.fromTo(
       group,
-      { opacity: 0, scale: k * 0.85, y: y0 },
-      { opacity: 1, scale: k, y: y0, duration: 0.4, ease: "power3.out" },
-      0.05
+      { opacity: 0, scale: k * 0.8, y: y0 },
+      { opacity: 1, scale: k, y: y0, duration: 0.45, ease: "back.out(1.4)" },
+      0.3
     );
-    // 2. ...and almost immediately opens up to fill the whole screen, covering the timeline.
+    // 2. ...and almost immediately it opens up to fill the whole screen, covering the timeline.
     tl.to(group, { scale: 1, y: 0, duration: 1.1, ease: "power4.inOut" }, ">0.05");
     tl.to(frame, { borderRadius: 0, duration: 0.8, ease: "power2.inOut" }, "<0.1");
   }, []);
 
   useEffect(() => {
     if (!visible) return;
-    if (!fillRef.current) return;
-
     const root = containerRef.current;
     const startTime = Date.now();
 
     /* ---- One progress value drives everything ----
-       The playhead, the clips snapping in, the logo fill and the timecode all follow it. The
+       The playhead, the clips snapping in and the timecode all follow it. The
        timecode runs 00:00:00:00 to 00:00:01:00 over the sweep (it stands in for a % counter). */
     let ready = false; // assets loaded and the minimum time has passed
     const clock = { p: 0 };
-    const fillEase = gsap.parseEase("power2.inOut");
     const clips = Array.from(root?.querySelectorAll<HTMLElement>(".tl-clip") ?? []).map((el) => ({
       el,
       at: parseFloat(el.dataset.start || "0") / 100,
@@ -176,7 +173,6 @@ export default function LoadingScreen() {
       const p = clock.p;
       if (playheadRef.current) playheadRef.current.style.left = `${p * 100}%`;
       if (timecodeRef.current) timecodeRef.current.textContent = fmt(p);
-      if (fillRef.current) fillRef.current.style.clipPath = `inset(${(1 - fillEase(p)) * 100}% 0 0 0)`;
       clips.forEach((c) => {
         if (!c.done && p >= c.at) {
           c.done = true;
@@ -190,10 +186,24 @@ export default function LoadingScreen() {
       const frames = Math.floor((t - sec) * 24);
       return `00:00:${String(sec).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
     };
+    // The timeline pops up in the middle of the screen first, then the sweep starts.
+    const panelEl = root?.querySelector<HTMLElement>(".tl-panel");
+    if (panelEl) {
+      const rect = panelEl.getBoundingClientRect();
+      layoutRef.current = { tlTop: rect.top };
+      const toCentre = window.innerHeight / 2 - (rect.top + rect.height / 2);
+      gsap.fromTo(
+        panelEl,
+        { opacity: 0, scale: 0.94, y: toCentre + 24 },
+        { opacity: 1, scale: 1, y: toCentre, duration: 0.5, ease: "back.out(1.5)" }
+      );
+    }
+
     // The sweep takes 2.5s, but holds just short of the end until the page is really ready.
     const master = gsap.to(clock, {
       p: 1,
       duration: 2.5,
+      delay: 0.45,
       ease: "none",
       onUpdate: () => {
         if (!ready && clock.p >= 0.98) master.pause();
@@ -262,7 +272,7 @@ export default function LoadingScreen() {
       }}
     >
       {/* ---- Editing timeline ---- */}
-      <div className="tl-panel" aria-hidden="true">
+      <div className="tl-panel" aria-hidden="true" style={{ opacity: 0 }}>
         <div className="tl-head">
           <span ref={timecodeRef} className="tl-timecode">
             00:00:00:00
@@ -298,74 +308,21 @@ export default function LoadingScreen() {
         </div>
       </div>
 
-      {/* ---- Logo, centred in the space above the timeline ---- */}
+      {/* ---- Logo: static, top left, exactly where it is on the site ---- */}
       <div
-        className="pm-fade"
         style={{
           position: "absolute",
-          inset: 0,
+          top: 0,
+          left: 0,
+          height: 64,
+          padding: "0 clamp(16px, 5vw, 32px)",
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
-          padding:
-            "24px 24px calc(clamp(28px, 3.4vw, 56px) + clamp(120px, 11vw, 160px) + 16px)",
+          zIndex: 3,
         }}
       >
-        <div
-          className="pm-logo"
-          style={{
-            position: "relative",
-            display: "inline-block",
-            lineHeight: 0.9,
-          }}
-        >
-          {/* Ghost layer */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt=""
-            aria-hidden="true"
-            style={{
-              width: "clamp(150px, 24vw, 340px)",
-              height: "auto",
-              display: "block",
-              opacity: 0.2,
-            }}
-          />
-          {/* Solid white layer with clip-path liquid fill */}
-          <span
-            ref={fillRef}
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: 0,
-              clipPath: "inset(100% 0 0 0)",
-              display: "block",
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logo.png"
-              alt=""
-              style={{ width: "100%", height: "auto", display: "block" }}
-            />
-          </span>
-          <span
-            style={{
-              position: "absolute",
-              width: 1,
-              height: 1,
-              padding: 0,
-              margin: -1,
-              overflow: "hidden",
-              clip: "rect(0, 0, 0, 0)",
-              whiteSpace: "nowrap",
-              border: 0,
-            }}
-          >
-            The Joie TV
-          </span>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.png" alt="The Joie TV" style={{ height: 38, width: "auto", display: "block" }} />
       </div>
 
       {/* ---- Preview monitor (like Premiere's Program monitor), shown at the end ---- */}
