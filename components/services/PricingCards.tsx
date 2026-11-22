@@ -240,7 +240,7 @@ export default function PricingCards() {
                       fontWeight: 600,
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#0a0a0a",
+                      color: "#000000",
                     }}
                   >
                     Popular
@@ -339,7 +339,7 @@ export default function PricingCards() {
                     padding: "12px 0",
                     borderRadius: 100,
                     backgroundColor: "#FF7A00",
-                    color: "#0a0a0a",
+                    color: "#000000",
                     fontFamily: "var(--font-body)",
                     fontSize: 12,
                     fontWeight: 600,

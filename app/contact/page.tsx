@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main style={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
       <ContactHero />
     </main>
   );

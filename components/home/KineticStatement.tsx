@@ -106,34 +106,45 @@ export default function KineticStatement() {
       // Start in the "gone" state (nothing visible) and wait for the scroll.
       tl.progress(1).pause();
 
+      // 0 = the line is whole, 1 = it has blown away. Always glide the timeline to wherever it
+      // should be, from wherever it currently is, so quick or repeated scrolling can't confuse it.
+      let target: 0 | 1 = 1;
+      const goTo = (t: 0 | 1) => {
+        if (target === t) return;
+        target = t;
+        gsap.killTweensOf(tl);
+        tl.tweenTo(t === 1 ? tl.duration() : 0, {
+          duration: tl.duration() / (t === 1 ? 1.4 : 2),
+          ease: "none",
+        });
+      };
+
       // If the window is resized, re-measure where the heaps go.
       let resizeTimer: number | undefined;
       const onResize = () => {
         window.clearTimeout(resizeTimer);
         resizeTimer = window.setTimeout(() => {
-          const p = tl.progress();
-          tl.progress(0).invalidate().progress(p);
+          gsap.killTweensOf(tl);
+          tl.progress(0).invalidate().progress(target);
         }, 250);
       };
       window.addEventListener("resize", onResize);
 
-      const reform = () => tl.timeScale(2).reverse();
-      const snap = () => tl.timeScale(1.4).play();
-
-      ScrollTrigger.create({
+      const st = ScrollTrigger.create({
         trigger: section,
-        // Forms as it comes into view; crumbles as it leaves.
+        // Forms as it comes into view; crumbles as it leaves (either direction).
         start: "top 55%",
         end: "bottom 80%",
-        onEnter: reform,
-        onEnterBack: reform,
-        onLeave: snap,
-        onLeaveBack: snap,
-        // If the page loads with the banner already in view, show it straight away.
+        onToggle: (self) => goTo(self.isActive ? 0 : 1),
+        // After any layout refresh, make sure the line matches where we are on the page.
         onRefresh: (self) => {
-          if (self.isActive && tl.progress() === 1 && !tl.reversed()) {
+          if (self.isActive && target === 1) {
             // On first load, wait for the loading screen to lift before it forms.
-            gsap.delayedCall(window.scrollY === 0 ? 2.9 : 0, reform);
+            gsap.delayedCall(window.scrollY === 0 ? 2.9 : 0, () => {
+              if (st.isActive) goTo(0);
+            });
+          } else if (!self.isActive && target === 0) {
+            goTo(1);
           }
         },
       });
@@ -155,7 +166,7 @@ export default function KineticStatement() {
         display: "flex",
         alignItems: "center",
         padding: "80px clamp(20px, 5vw, 48px)",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         overflow: "hidden",
       }}
     >

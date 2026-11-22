@@ -2,7 +2,7 @@
 @config "../tailwind.config.ts";
 
 @theme inline {
-  --color-brand-black: #0a0a0a;
+  --color-brand-black: #000000;
   --color-brand-white: #f5f4f0;
   /* --color-brand-accent: #c8ff00; */
     --color-brand-accent: #FF7A00;
@@ -14,7 +14,7 @@
 
 html,
 body {
-  background-color: #0a0a0a;
+  background-color: #000000;
   color: #f5f4f0;
 }
 

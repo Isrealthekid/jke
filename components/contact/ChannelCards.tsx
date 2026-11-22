@@ -211,7 +211,7 @@ export default function ChannelCards() {
             padding: "12px 24px",
             borderRadius: 100,
             backgroundColor: "#FF7A00",
-            color: "#0a0a0a",
+            color: "#000000",
             fontFamily: "var(--font-body)",
             fontSize: 13,
             fontWeight: 600,

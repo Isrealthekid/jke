@@ -225,7 +225,7 @@ function WorkTile({
               left: 0,
               right: 0,
               transform: "translateY(100%)",
-              background: "rgba(10,10,10,0.85)",
+              background: "rgba(0,0,0,0.85)",
               backdropFilter: "blur(8px)",
               padding: "16px 24px",
               alignItems: "center",

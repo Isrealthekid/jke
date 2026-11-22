@@ -175,26 +175,6 @@ export default function HeroReel() {
         ))}
       </h1>
 
-      {/* ---- A.K.A line ---- */}
-      <p
-        style={{
-          position: "relative",
-          zIndex: 2,
-          margin: 0,
-          padding: "14px 16px 0",
-          textAlign: "center",
-          fontFamily: "var(--font-body)",
-          fontWeight: 500,
-          fontSize: "clamp(15px, 2.2vw, 34px)",
-          letterSpacing: "0.01em",
-          lineHeight: 1.1,
-          color: "#ffffff",
-        }}
-      >
-        <span style={{ color: "rgba(255,255,255,0.45)" }}>a.k.a</span> JOY
-        KARENATE-EGBUSON
-      </p>
-
       {/* ---- EDITING · FILM (both are links) ---- */}
       <div
         style={{

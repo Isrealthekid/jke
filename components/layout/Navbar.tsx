@@ -101,7 +101,7 @@ export default function Navbar() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(10,10,10,0.7)",
+            background: "rgba(0,0,0,0.7)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             pointerEvents: "none",

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <main style={{ backgroundColor: "#0a0a0a", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
       <section style={{ padding: "clamp(100px, 12vw, 140px) clamp(20px, 5vw, 48px) 0" }}>
         <ServicesHeader />
       </section>

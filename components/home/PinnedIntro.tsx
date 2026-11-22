@@ -33,7 +33,7 @@ function StickyCard({
         height: "100vh",
         width: "100%",
         overflow: "hidden",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
       }}
     >
       {/* Background video (filtered) */}
@@ -363,7 +363,7 @@ export default function PinnedIntro() {
   // Lenis / ScrollTrigger have already attached to descendants).
   return (
     <section
-      style={{ position: "relative", backgroundColor: "#0a0a0a" }}
+      style={{ position: "relative", backgroundColor: "#000000" }}
       suppressHydrationWarning
     >
       {!hasMounted ? (

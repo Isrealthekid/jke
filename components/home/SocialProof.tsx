@@ -26,7 +26,7 @@ export default function SocialProof() {
       style={{
         width: "100%",
         padding: "clamp(48px, 8vw, 80px) 0",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         borderTop: "0.5px solid rgba(255,255,255,0.08)",
         overflow: "hidden",
       }}

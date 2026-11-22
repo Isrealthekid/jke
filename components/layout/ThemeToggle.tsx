@@ -27,7 +27,7 @@ export default function ThemeToggle() {
         height: 40,
         borderRadius: "50%",
         border: "1px solid rgba(245, 244, 240, 0.15)",
-        background: "rgba(10, 10, 10, 0.5)",
+        background: "rgba(0,0,0, 0.5)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         display: "flex",

@@ -167,7 +167,7 @@ export default function ContactForm() {
                 if (!submitting) {
                   (e.currentTarget as HTMLElement).style.backgroundColor =
                     "#FF7A00";
-                  (e.currentTarget as HTMLElement).style.color = "#0a0a0a";
+                  (e.currentTarget as HTMLElement).style.color = "#000000";
                 }
               }}
               onMouseLeave={(e) => {

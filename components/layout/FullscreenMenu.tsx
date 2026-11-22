@@ -92,7 +92,7 @@ export default function FullscreenMenu() {
             inset: 0,
             height: "100dvh",
             zIndex: 9997,
-            backgroundColor: "#0a0a0a",
+            backgroundColor: "#000000",
             display: "flex",
             flexDirection: "column",
             paddingTop: 64,
@@ -211,7 +211,7 @@ export default function FullscreenMenu() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(to top, rgba(10,10,10,0.6), transparent)",
+                          "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
                       }}
                     />
                   </motion.div>

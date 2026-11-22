@@ -7,7 +7,7 @@ import ToolsGrid from "@/components/about/ToolsGrid";
 /** The About content, shown on the home page right after the opening screen. */
 export default function AboutSection() {
   return (
-    <div id="about" style={{ backgroundColor: "#0a0a0a" }}>
+    <div id="about" style={{ backgroundColor: "#000000" }}>
       <section
         style={{ padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 48px) 0" }}
       >

@@ -102,7 +102,7 @@ export default function ProjectHero({ project }: { project: Project }) {
               position: "absolute",
               inset: 0,
               background:
-                "linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.75) 100%)",
+                "linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%)",
             }}
           />
 
@@ -120,7 +120,7 @@ export default function ProjectHero({ project }: { project: Project }) {
                 height: 80,
                 borderRadius: "50%",
                 border: "2px solid rgba(245,244,240,0.6)",
-                backgroundColor: "rgba(10,10,10,0.4)",
+                backgroundColor: "rgba(0,0,0,0.4)",
                 backdropFilter: "blur(8px)",
                 display: "flex",
                 alignItems: "center",

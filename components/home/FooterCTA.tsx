@@ -49,7 +49,7 @@ export default function FooterCTA() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
       }}
     >
       {/* SVG noise texture overlay */}
@@ -113,7 +113,7 @@ export default function FooterCTA() {
               fontSize: 14,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: btnHovered ? "#0a0a0a" : "#f5f4f0",
+              color: btnHovered ? "#000000" : "#f5f4f0",
               backgroundColor: btnHovered ? "#f5f4f0" : "transparent",
               transition: "background-color 0.3s, color 0.3s",
               cursor: "none",

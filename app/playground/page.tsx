@@ -121,7 +121,7 @@ export default function PlaygroundPage() {
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         color: "#f5f4f0",
         position: "relative",
         overflow: "hidden",

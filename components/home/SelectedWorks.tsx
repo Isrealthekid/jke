@@ -271,7 +271,7 @@ export default function SelectedWorks() {
   // ---- MOBILE: vertical stacked cards ----
   if (isMobile) {
     return (
-      <section style={{ backgroundColor: "#0a0a0a", padding: "64px 20px" }}>
+      <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
             Selected Works
@@ -317,7 +317,7 @@ export default function SelectedWorks() {
       style={{
         height: "100vh",
         overflow: "hidden",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         position: "relative",
       }}
     >
