@@ -55,7 +55,7 @@ function PreviewTopBar() {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo.png" alt="" style={{ height: 38, width: "auto", display: "block" }} />
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: window.innerWidth >= 768 ? 24 : 16 }}>
         <span style={{ ...PILL, background: "#f5f4f0", color: "#000", fontWeight: 600 }}>
           <i
             style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "block" }}
@@ -113,26 +113,34 @@ export default function LoadingScreen() {
 
     const group = root.querySelector<HTMLElement>(".pm-group");
     const frame = root.querySelector<HTMLElement>(".pm-frame");
+    const logo = root.querySelector<HTMLElement>(".pm-logo");
     const fadeOut = root.querySelectorAll<HTMLElement>(".pm-fade");
-    if (!group || !frame) {
+    if (!group || !frame || !logo) {
       finalize();
       return;
     }
-    const k = monitorScale();
+
+    // The monitor takes the logo's place: centred on it, and small enough to fit in the space
+    // above the timeline (which stays where it is).
+    const vh = window.innerHeight;
+    const r = logo.getBoundingClientRect();
+    const cy = r.top + r.height / 2;
+    const y0 = cy - vh / 2;
+    const fitScale = (0.9 * (2 * cy)) / (vh + 176); // 176px = the monitor's header + footer
+    const k = Math.min(monitorScale(), fitScale);
 
     const tl = gsap.timeline({ onComplete: finalize });
-    // 1. Logo and timeline fade away...
-    tl.to(fadeOut, { opacity: 0, duration: 0.4, ease: "power2.in" }, 0.25);
-    // 2. ...and the preview monitor appears, small, in the middle.
+    // 1. The logo is replaced by the preview monitor...
+    tl.to(fadeOut, { opacity: 0, duration: 0.25, ease: "power2.in" }, 0);
     tl.fromTo(
       group,
-      { opacity: 0, scale: k * 0.9 },
-      { opacity: 1, scale: k, duration: 0.6, ease: "power3.out" },
-      0.5
+      { opacity: 0, scale: k * 0.85, y: y0 },
+      { opacity: 1, scale: k, y: y0, duration: 0.4, ease: "power3.out" },
+      0.05
     );
-    // 3. A beat on the preview, then it opens up to fill the whole screen.
-    tl.to(group, { scale: 1, duration: 1.25, ease: "power4.inOut" }, "+=0.8");
-    tl.to(frame, { borderRadius: 0, duration: 0.9, ease: "power2.inOut" }, "<0.1");
+    // 2. ...and almost immediately opens up to fill the whole screen, covering the timeline.
+    tl.to(group, { scale: 1, y: 0, duration: 1.1, ease: "power4.inOut" }, ">0.05");
+    tl.to(frame, { borderRadius: 0, duration: 0.8, ease: "power2.inOut" }, "<0.1");
   }, []);
 
   useEffect(() => {
@@ -230,7 +238,7 @@ export default function LoadingScreen() {
       }}
     >
       {/* ---- Editing timeline ---- */}
-      <div className="tl-panel pm-fade" aria-hidden="true">
+      <div className="tl-panel" aria-hidden="true">
         <div className="tl-head">
           <span ref={timecodeRef} className="tl-timecode">
             00:00:00:00
@@ -280,6 +288,7 @@ export default function LoadingScreen() {
         }}
       >
         <div
+          className="pm-logo"
           style={{
             position: "relative",
             display: "inline-block",
