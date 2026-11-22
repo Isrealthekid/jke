@@ -191,8 +191,8 @@ export default function HeroReel() {
           color: "#ffffff",
         }}
       >
-        <span style={{ color: "rgba(255,255,255,0.45)" }}>A.K.A</span> Joy
-        Karenate-Egbuson
+        <span style={{ color: "rgba(255,255,255,0.45)" }}>a.k.a</span> JOY
+        KARENATE-EGBUSON
       </p>
 
       {/* ---- EDITING · FILM (both are links) ---- */}

@@ -31,9 +31,9 @@ export default function Home() {
   return (
     <main>
       <HeroReel />
+      <KineticStatement />
       <PinnedIntro />
       <SelectedWorks />
-      <KineticStatement />
       <LatestProject />
       <SocialProof />
       <FooterCTA />
