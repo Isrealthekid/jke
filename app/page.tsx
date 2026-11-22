@@ -33,8 +33,7 @@ export default function Home() {
       <HeroReel />
       <AboutSection />
       <KineticStatement />
-      <SelectedWorks />
-      <OnScreenSection />
+      <SelectedWorks overlay={<OnScreenSection />} />
       <SocialProof />
       <FooterCTA />
     </main>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
@@ -232,9 +232,10 @@ function WorkCard({
 /* ================================================================== */
 /*  SelectedWorks — horizontal scroll section                          */
 /* ================================================================== */
-export default function SelectedWorks() {
+export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
   const isMobile = useIsMobile();
   const sectionRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
@@ -267,18 +268,48 @@ export default function SelectedWorks() {
         },
       });
 
-      // Hold the section on screen while it scrolls. On large screens it is held one extra
-      // screen-height, so the next panel (On the screen) slides up over it.
-      const slidesOver = window.matchMedia(
-        "(min-width: 1000px) and (min-height: 640px)"
-      ).matches;
-      ScrollTrigger.create({
-        trigger: section,
-        pin: true,
-        start: "top top",
-        end: () => `+=${scrollLength() + (slidesOver ? window.innerHeight : 0)}`,
-        invalidateOnRefresh: true,
+      const mm = gsap.matchMedia();
+
+      // Large screens: the section is held one extra screen-height, and during that time the
+      // overlay (On the screen, which lives inside this section) slides up over the cards.
+      mm.add("(min-width: 1000px) and (min-height: 640px)", () => {
+        const overlayEl = overlayRef.current;
+        if (overlayEl) {
+          gsap.set(overlayEl, { yPercent: 100, autoAlpha: 1 });
+          gsap.to(overlayEl, {
+            yPercent: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: () => `top+=${scrollLength()} top`,
+              end: () => `+=${window.innerHeight}`,
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+        }
+        ScrollTrigger.create({
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: () => `+=${scrollLength() + window.innerHeight}`,
+          invalidateOnRefresh: true,
+        });
       });
+
+      // Smaller screens: just hold the section while it scrolls sideways (the overlay then
+      // simply follows the section as its own block).
+      mm.add("(max-width: 999px), (max-height: 639px)", () => {
+        ScrollTrigger.create({
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: () => `+=${scrollLength()}`,
+          invalidateOnRefresh: true,
+        });
+      });
+
+      return () => mm.revert();
     },
     { scope: sectionRef, dependencies: [isMobile] }
   );
@@ -286,6 +317,7 @@ export default function SelectedWorks() {
   // ---- MOBILE: vertical stacked cards ----
   if (isMobile) {
     return (
+      <>
       <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
@@ -321,11 +353,14 @@ export default function SelectedWorks() {
           ))}
         </div>
       </section>
+      {overlay}
+      </>
     );
   }
 
   // ---- DESKTOP: horizontal scroll ----
   return (
+    <>
     <section
       ref={sectionRef}
       className="works-section"
@@ -395,6 +430,14 @@ export default function SelectedWorks() {
           <WorkCard key={project.slug} project={project} />
         ))}
       </div>
+
+      {/* Overlay (large screens): slides up over the cards at the end of the pinned scroll */}
+      <div ref={overlayRef} className="works-overlay-inside">
+        {overlay}
+      </div>
     </section>
+    {/* Overlay (smaller screens): the same panel as a normal block after the section */}
+    <div className="works-overlay-after">{overlay}</div>
+    </>
   );
 }

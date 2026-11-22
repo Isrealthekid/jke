@@ -72,8 +72,8 @@ export default function KineticStatement() {
 
       const st = ScrollTrigger.create({
         trigger: section,
-        start: "top 60%",
-        end: "bottom 40%",
+        start: "top 75%",
+        end: "bottom 25%",
         onEnter: show,
         onEnterBack: show,
         onLeave: slideAway,
@@ -95,12 +95,12 @@ export default function KineticStatement() {
     <section
       ref={sectionRef}
       style={{
-        // Its own full screen, with the line centred in the middle.
-        minHeight: "100vh",
+        // A shorter band, with the line centred in the middle.
+        minHeight: "58vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        padding: "80px clamp(20px, 5vw, 48px)",
+        padding: "64px clamp(20px, 5vw, 48px)",
         backgroundColor: "#000000",
         overflow: "hidden",
       }}

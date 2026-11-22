@@ -2,16 +2,18 @@
 
 /* ---- Row data ---- */
 const row1Items = [
-  "koppoh",
   "Leading Ladies Africa",
-  "Alpha African Advisory",
-  "Realised Gains",
-  "Princess and Pearls Swift Company",
-  "Quiz Me",
-  "Redeemer's University Theatre Art Department",
-  "Women Aligned for Growth",
-  "Healthy Living Services",
-  "Mimi Paul Collective",
+  "Koppoh",
+  "Princess & Pearl Swift Company Ltd.",
+  "Mimi Paul Creative Agency",
+  "RealisedGains",
+  "QUIZME+",
+  "Women Aligned For Growth",
+  "Healthy Living Services Ltd.",
+  "Listening Birds Productions",
+  "Bala House",
+  "NEVEAH NG Agency",
+  "Tosin Victoria",
 ];
 
 const row2Items = [

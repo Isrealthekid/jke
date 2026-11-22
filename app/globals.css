@@ -265,8 +265,8 @@ h3:not(.no-zoom),
 [style*="--font-display"] [style*="--font-display"] { zoom: 1; }
 
 /* ---- Slide-up panel (On the screen) ----
-   On large screens the timeline is held one extra screen-height (see SelectedWorks) and this panel,
-   pulled up by one screen, slides up over it. */
+   On large screens this panel lives inside the pinned timeline section (see SelectedWorks) and
+   slides up over it. */
 .stack-panel {
   position: relative;
   z-index: 2;
@@ -275,7 +275,6 @@ h3:not(.no-zoom),
 }
 @media (min-width: 1000px) and (min-height: 640px) {
   .stack-panel {
-    margin-top: -100vh;
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -293,5 +292,23 @@ h3:not(.no-zoom),
   .stack-panel .series-card {
     min-height: 0;
     height: 100%;
+  }
+}
+
+/* Which copy of the "On the screen" panel shows (see SelectedWorks): inside the pinned
+   timeline on large screens, after it as a normal block on smaller ones. */
+.works-overlay-inside {
+  display: none;
+}
+@media (min-width: 1000px) and (min-height: 640px) {
+  .works-overlay-inside {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    visibility: hidden; /* shown by the slide-up animation */
+  }
+  .works-overlay-after {
+    display: none;
   }
 }
