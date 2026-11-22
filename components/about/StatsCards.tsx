@@ -5,9 +5,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
 const stats = [
-  { value: "5+", label: "Years" },
-  { value: "50+", label: "Projects" },
-  { value: "2", label: "Disciplines" },
+  { value: "7+", label: "Years" },
+  { value: "100+", label: "Projects" },
+  { value: "14", label: "Clients & Brands" },
 ];
 
 export default function StatsCards() {

@@ -116,10 +116,11 @@ export default function SplitBio() {
 
         <p
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(32px, 4.2vw, 64px)",
-            lineHeight: 1.1,
-            letterSpacing: "0.01em",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+            fontSize: "clamp(22px, 2.7vw, 42px)",
+            lineHeight: 1.3,
+            letterSpacing: "-0.01em",
             color: "#f5f4f0",
             margin: 0,
             display: "flex",

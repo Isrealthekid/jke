@@ -10,17 +10,19 @@ export default function AboutSection() {
         style={{ padding: "clamp(48px, 8vw, 96px) clamp(20px, 5vw, 48px) 0" }}
       >
         <SplitBio />
-        <div style={{ marginTop: "clamp(48px, 8vw, 80px)" }}>
-          <StatsCards />
-        </div>
+      </section>
+      <section
+        style={{ padding: "clamp(56px, 8vw, 96px) clamp(20px, 5vw, 48px) 0" }}
+      >
+        <ToolsGrid />
       </section>
       <section
         style={{
           padding:
-            "clamp(64px, 10vw, 120px) clamp(20px, 5vw, 48px) clamp(64px, 10vw, 120px)",
+            "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px) clamp(64px, 10vw, 120px)",
         }}
       >
-        <ToolsGrid />
+        <StatsCards />
       </section>
     </div>
   );
