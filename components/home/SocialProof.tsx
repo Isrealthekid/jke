@@ -16,12 +16,6 @@ const row1Items = [
   "Tosin Victoria",
 ];
 
-const row2Items = [
-  { platform: "Instagram", handle: "@joie.egbuson" },
-  { platform: "YouTube", handle: "@JoieTVProductions" },
-  { platform: "LinkedIn", handle: "Joykarenate Egbuson" },
-];
-
 export default function SocialProof() {
   return (
     <section
@@ -46,32 +40,15 @@ export default function SocialProof() {
           marginBottom: 48,
         }}
       >
-        Brands &amp; Platforms
+        Brands I&rsquo;ve worked with
       </p>
 
       {/* Row 1 — brands I've worked with (left, 40s) */}
-      <div className="marquee-row marquee-row-1" style={{ marginBottom: 20 }}>
+      <div className="marquee-row marquee-row-1">
         <div className="marquee-track-left">
           {[...row1Items, ...row1Items].map((brand, i) => (
             <span key={i} className="marquee-item">
               <span style={{ fontWeight: 500, color: "#f5f4f0" }}>{brand}</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Row 2 — platforms (right, 25s) */}
-      <div className="marquee-row marquee-row-2">
-        <div className="marquee-track-right">
-          {[...row2Items, ...row2Items].map((item, i) => (
-            <span key={i} className="marquee-item">
-              <span style={{ fontWeight: 500, color: "#f5f4f0" }}>
-                {item.platform}
-              </span>
-              <span style={{ margin: "0 12px", color: "rgba(245,244,240,0.3)" }}>
-                &middot;
-              </span>
-              <span style={{ color: "#FF7A00" }}>{item.handle}</span>
             </span>
           ))}
         </div>
