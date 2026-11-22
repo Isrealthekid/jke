@@ -25,6 +25,8 @@ export default function LoadingScreen() {
   const fillRef = useRef<HTMLSpanElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
+  const playheadRef = useRef<HTMLDivElement>(null);
+  const timecodeRef = useRef<HTMLSpanElement>(null);
   const exitedRef = useRef(false);
 
   useEffect(() => {
@@ -67,6 +69,37 @@ export default function LoadingScreen() {
         ease: "power2.inOut",
       }
     );
+
+    // Editing timeline: the playhead sweeps across while clips snap into the tracks as it
+    // passes them; the timecode runs alongside (24 fps).
+    const clips = containerRef.current?.querySelectorAll<HTMLElement>(".tl-clip");
+    clips?.forEach((clip) => {
+      const start = parseFloat(clip.dataset.start || "0") / 100;
+      gsap.fromTo(
+        clip,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.4, delay: start * 2.5, ease: "back.out(1.7)" }
+      );
+    });
+    if (playheadRef.current) {
+      const clock = { t: 0 };
+      gsap.fromTo(
+        playheadRef.current,
+        { left: "0%" },
+        { left: "100%", duration: 2.5, ease: "none" }
+      );
+      gsap.to(clock, {
+        t: 2.5,
+        duration: 2.5,
+        ease: "none",
+        onUpdate: () => {
+          const sec = Math.floor(clock.t);
+          const frames = Math.floor((clock.t - sec) * 24);
+          if (timecodeRef.current)
+            timecodeRef.current.textContent = `00:00:${String(sec).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
+        },
+      });
+    }
 
     /* ---- Real asset preload drives counter + progress bar ---- */
     const startTime = Date.now();
@@ -130,7 +163,44 @@ export default function LoadingScreen() {
         overflow: "hidden",
       }}
     >
-      {/* ---- Center: liquid-fill JK logo ---- */}
+      {/* ---- Editing timeline ---- */}
+      <div className="tl-panel" aria-hidden="true">
+        <div className="tl-head">
+          <span ref={timecodeRef} className="tl-timecode">
+            00:00:00:00
+          </span>
+          <span>Seq 01 &middot; The Joie TV</span>
+          <span>24 fps</span>
+        </div>
+        <div className="tl-body">
+          <div className="tl-ruler" />
+          <div className="tl-track">
+            <i className="tl-clip tl-pink" data-start="4" style={{ left: "4%", width: "16%" }} />
+            <i className="tl-clip tl-white" data-start="24" style={{ left: "24%", width: "12%" }} />
+            <i className="tl-clip tl-yellow" data-start="40" style={{ left: "40%", width: "22%" }} />
+            <i className="tl-clip tl-pink" data-start="68" style={{ left: "68%", width: "10%" }} />
+            <i className="tl-clip tl-white" data-start="82" style={{ left: "82%", width: "14%" }} />
+          </div>
+          <div className="tl-track">
+            <i className="tl-clip tl-white" data-start="0" style={{ left: "0%", width: "20%" }} />
+            <i className="tl-clip tl-black" data-start="22" style={{ left: "22%", width: "18%" }} />
+            <i className="tl-clip tl-pink" data-start="44" style={{ left: "44%", width: "14%" }} />
+            <i className="tl-clip tl-yellow" data-start="62" style={{ left: "62%", width: "20%" }} />
+            <i className="tl-clip tl-black" data-start="84" style={{ left: "84%", width: "16%" }} />
+          </div>
+          <div className="tl-track">
+            <i className="tl-clip tl-yellow" data-start="2" style={{ left: "2%", width: "26%" }} />
+            <i className="tl-clip tl-white" data-start="32" style={{ left: "32%", width: "24%" }} />
+            <i className="tl-clip tl-black" data-start="60" style={{ left: "60%", width: "14%" }} />
+            <i className="tl-clip tl-pink" data-start="76" style={{ left: "76%", width: "22%" }} />
+          </div>
+          <div ref={playheadRef} className="tl-playhead">
+            <i />
+          </div>
+        </div>
+      </div>
+
+      {/* ---- Center: liquid-fill logo ---- */}
       <div
         style={{
           position: "absolute",
@@ -155,7 +225,7 @@ export default function LoadingScreen() {
             alt=""
             aria-hidden="true"
             style={{
-              width: "clamp(220px, 40vw, 520px)",
+              width: "clamp(150px, 24vw, 340px)",
               height: "auto",
               display: "block",
               opacity: 0.2,
@@ -201,8 +271,8 @@ export default function LoadingScreen() {
       <div
         style={{
           position: "absolute",
-          left: 32,
-          bottom: 28,
+          left: "clamp(20px, 5vw, 72px)",
+          bottom: "clamp(28px, 3.4vw, 56px)",
           display: "flex",
           alignItems: "baseline",
           gap: 14,
