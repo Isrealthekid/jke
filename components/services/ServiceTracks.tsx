@@ -19,19 +19,19 @@ interface Track {
 const tracks: Track[] = [
   {
     num: "01",
-    title: "Social Media Management",
+    title: "Creative Direction",
     description:
-      "Strategy, creation, and community — end-to-end social presence that grows audiences.",
+      "Concept, look and feel — a clear creative vision that ties every piece of your work together.",
     deliverables: [
-      "Content strategy",
-      "Monthly content calendars",
-      "Post creation (photo/video)",
-      "Caption writing",
-      "Analytics reporting",
-      "Community management",
+      "Creative concept & vision",
+      "Brand look & feel",
+      "Mood boards & references",
+      "Scripts & storyboards",
+      "Direction on set",
+      "Campaign creative oversight",
     ],
     process: ["Setup", "Create", "Deliver"],
-    turnaround: "Monthly retainer",
+    turnaround: "Per project or ongoing retainer",
     filterSlug: "Edits",
   },
   {
