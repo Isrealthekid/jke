@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import KineticStatement from "./KineticStatement";
 
 const HERO_NAME = "THE JOIE TV";
 const HERO_COLOURS = ["#FF7A00", "#C6249B", "#FFD34A"]; // orange, pink, yellow
@@ -152,7 +153,7 @@ export default function HeroReel() {
           margin: 0,
           padding: "0 8px",
           textAlign: "center",
-          marginTop: "auto",
+          marginTop: "clamp(8px, 2vh, 24px)",
           perspective: "800px",
         }}
       >
@@ -235,9 +236,7 @@ export default function HeroReel() {
         style={{
           position: "relative",
           zIndex: 2,
-          marginBottom: "auto",
           paddingTop: 28,
-          paddingBottom: 56,
           textAlign: "center",
           fontFamily: "var(--font-body)",
           fontSize: 11,
@@ -248,6 +247,9 @@ export default function HeroReel() {
       >
         Lagos, Nigeria
       </div>
+
+      {/* ---- Statement banner, bottom of the first screen ---- */}
+      <KineticStatement embedded />
     </section>
   );
 }

@@ -19,7 +19,12 @@ const fixed = (n: number) => {
  * "Snap" effect: when the banner scrolls into view the letters pull back together out of
  * dust; when it scrolls out (either direction) they crumble into ash and blow away.
  */
-export default function KineticStatement() {
+export default function KineticStatement({
+  embedded = false,
+}: {
+  /** Sits at the bottom of the hero screen instead of being its own section. */
+  embedded?: boolean;
+}) {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -90,7 +95,10 @@ export default function KineticStatement() {
         onLeaveBack: snap,
         // If the page loads with the banner already in view, show it straight away.
         onRefresh: (self) => {
-          if (self.isActive && tl.progress() === 1 && !tl.reversed()) reform();
+          if (self.isActive && tl.progress() === 1 && !tl.reversed()) {
+            // On first load, wait for the loading screen to lift before it forms.
+            gsap.delayedCall(window.scrollY === 0 ? 3.2 : 0, reform);
+          }
         },
       });
     },
@@ -100,11 +108,21 @@ export default function KineticStatement() {
   return (
     <section
       ref={sectionRef}
-      style={{
-        padding: "clamp(80px, 12vw, 160px) clamp(20px, 5vw, 48px)",
-        backgroundColor: "#0a0a0a",
-        overflow: "hidden",
-      }}
+      style={
+        embedded
+          ? {
+              position: "relative",
+              zIndex: 2,
+              marginTop: "auto",
+              padding:
+                "clamp(24px, 4vw, 48px) clamp(20px, 5vw, 48px) clamp(40px, 6vw, 72px)",
+            }
+          : {
+              padding: "clamp(80px, 12vw, 160px) clamp(20px, 5vw, 48px)",
+              backgroundColor: "#0a0a0a",
+              overflow: "hidden",
+            }
+      }
     >
       <p
         aria-label={STATEMENT}

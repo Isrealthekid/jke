@@ -3,7 +3,7 @@ import { PLACEHOLDER_IMAGES } from "@/data/projects";
 import HeroReel from "@/components/home/HeroReel";
 import PinnedIntro from "@/components/home/PinnedIntro";
 import SelectedWorks from "@/components/home/SelectedWorks";
-import KineticStatement from "@/components/home/KineticStatement";
+import AboutSection from "@/components/home/AboutSection";
 import LatestProject from "@/components/home/LatestProject";
 import SocialProof from "@/components/home/SocialProof";
 import FooterCTA from "@/components/home/FooterCTA";
@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <main>
       <HeroReel />
-      <KineticStatement />
+      <AboutSection />
       <PinnedIntro />
       <SelectedWorks />
       <LatestProject />
