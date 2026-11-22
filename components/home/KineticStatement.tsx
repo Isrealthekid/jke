@@ -6,20 +6,10 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const STATEMENT = "I make things people watch twice.";
 const WORDS = STATEMENT.split(" ");
-const SPECKS_PER_LETTER = 26;
-
-const rand = (min: number, max: number) => min + Math.random() * (max - min);
-// Fixed (not random) so server and browser render the same speck positions.
-const fixed = (n: number) => {
-  const x = Math.sin(n * 12.9898) * 43758.5453;
-  return x - Math.floor(x);
-};
 
 /**
- * "Snap" effect, in order from the first letter to the last:
- *   1. each letter crumbles into a little pile of dust where it stands,
- *   2. then the wind takes the dust away.
- * Scrolling back plays it in reverse: the dust blows back in, gathers, and re-forms the letters.
+ * The tagline. Each word slides up out of a mask when the section scrolls into view.
+ * Scrolling on past it slides the words back down; scrolling back up past it fades them out.
  */
 export default function KineticStatement() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -29,130 +19,74 @@ export default function KineticStatement() {
       const section = sectionRef.current;
       if (!section) return;
 
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      const letters = gsap.utils.toArray<HTMLElement>(
-        section.querySelectorAll(".ks-letter")
-      );
-      const specks = gsap.utils.toArray<HTMLElement>(
-        section.querySelectorAll(".ks-speck")
+      const words = gsap.utils.toArray<HTMLElement>(
+        section.querySelectorAll(".ks-word-inner")
       );
 
-      const crumbleEach = 0.022; // gap between one letter and the next, left to right
-      const crumbleSpan = letters.length * crumbleEach;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        gsap.set(words, { yPercent: 0, opacity: 1 });
+        return;
+      }
 
-      // The timeline runs "whole -> dust -> gone". Scrolling away plays it, scrolling back reverses it.
-      const tl = gsap.timeline({ paused: true });
+      // Start hidden below the mask.
+      gsap.set(words, { yPercent: 115, opacity: 1 });
+      let shown = false;
 
-      // 1. Letters crumble, left to right.
-      tl.to(
-        letters,
-        {
-          opacity: 0,
-          y: 10,
-          filter: "blur(5px)",
-          duration: 0.3,
-          ease: "power1.in",
-          stagger: { each: crumbleEach, from: "start" },
-        },
-        0
-      );
-      // ...and fall to the floor (the bottom of the line), where each word's dust lies in a heap:
-      // tallest in the middle, tapering off to the sides, like a pile of sand.
-      const word = (el: HTMLElement) => el.closest(".ks-word") as HTMLElement;
-      tl.to(
-        specks,
-        {
+      const show = () => {
+        shown = true;
+        gsap.killTweensOf(words);
+        gsap.to(words, {
+          yPercent: 0,
           opacity: 1,
-          x: (_i: number, el: HTMLElement) => {
-            const w = word(el).getBoundingClientRect();
-            const e = el.getBoundingClientRect();
-            const u = parseFloat(el.dataset.u || "0"); // -1 (left edge) .. 1 (right edge), bell-shaped
-            return w.left + w.width / 2 + u * w.width * 0.5 - (e.left + e.width / 2);
-          },
-          y: (_i: number, el: HTMLElement) => {
-            const w = word(el).getBoundingClientRect();
-            const e = el.getBoundingClientRect();
-            const u = parseFloat(el.dataset.u || "0");
-            const depth = parseFloat(el.dataset.d || "0"); // 0 = top surface, 1 = bottom of the heap
-            const floor = w.bottom - w.height * 0.08;
-            const heapHeight = Math.min(w.height * 0.5, w.width * 0.4);
-            const surface = heapHeight * (1 - Math.pow(Math.abs(u), 1.4));
-            return floor - surface * (1 - depth) - e.top;
-          },
-          duration: 0.55,
-          ease: "power2.in", // gravity: speeds up as it falls
-          stagger: { amount: crumbleSpan, from: "start" },
-        },
-        0.05
-      );
-
-      // 2. A short beat on the floor, then the wind lifts the dust and carries it away, left to right.
-      const blowAt = crumbleSpan + 0.5;
-      tl.to(
-        specks,
-        {
-          x: () => "+=" + rand(240, 640),
-          y: () => "+=" + rand(-150, -15),
-          opacity: 0,
-          scale: () => rand(0.2, 0.8),
           duration: 0.8,
-          ease: "power1.in",
-          stagger: { amount: crumbleSpan, from: "start" },
-        },
-        blowAt
-      );
-
-      // Start in the "gone" state (nothing visible) and wait for the scroll.
-      tl.progress(1).pause();
-
-      // 0 = the line is whole, 1 = it has blown away. Always glide the timeline to wherever it
-      // should be, from wherever it currently is, so quick or repeated scrolling can't confuse it.
-      let target: 0 | 1 = 1;
-      const goTo = (t: 0 | 1) => {
-        if (target === t) return;
-        target = t;
-        gsap.killTweensOf(tl);
-        tl.tweenTo(t === 1 ? tl.duration() : 0, {
-          duration: tl.duration() / (t === 1 ? 1.4 : 2),
-          ease: "none",
+          stagger: 0.08,
+          ease: "power4.out",
+        });
+      };
+      // Scrolled on past it: the words drop back down behind the mask.
+      const slideAway = () => {
+        shown = false;
+        gsap.killTweensOf(words);
+        gsap.to(words, {
+          yPercent: 115,
+          duration: 0.5,
+          stagger: { each: 0.04, from: "end" },
+          ease: "power3.in",
+        });
+      };
+      // Scrolled back up past it: the words fade out where they are.
+      const fadeAway = () => {
+        shown = false;
+        gsap.killTweensOf(words);
+        gsap.to(words, {
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.04,
+          ease: "power1.out",
+          // Park them below the mask again, ready to slide up next time.
+          onComplete: () => {
+            gsap.set(words, { yPercent: 115, opacity: 1 });
+          },
         });
       };
 
-      // If the window is resized, re-measure where the heaps go.
-      let resizeTimer: number | undefined;
-      const onResize = () => {
-        window.clearTimeout(resizeTimer);
-        resizeTimer = window.setTimeout(() => {
-          gsap.killTweensOf(tl);
-          tl.progress(0).invalidate().progress(target);
-        }, 250);
-      };
-      window.addEventListener("resize", onResize);
-
       const st = ScrollTrigger.create({
         trigger: section,
-        // Forms as it comes into view; crumbles as it leaves (either direction).
-        start: "top 55%",
-        end: "bottom 80%",
-        onToggle: (self) => goTo(self.isActive ? 0 : 1),
-        // After any layout refresh, make sure the line matches where we are on the page.
+        start: "top 60%",
+        end: "bottom 40%",
+        onEnter: show,
+        onEnterBack: show,
+        onLeave: slideAway,
+        onLeaveBack: fadeAway,
+        // If the page loads with the tagline already in view, wait for the loading screen.
         onRefresh: (self) => {
-          if (self.isActive && target === 1) {
-            // On first load, wait for the loading screen to lift before it forms.
+          if (self.isActive && !shown) {
             gsap.delayedCall(window.scrollY === 0 ? 2.9 : 0, () => {
-              if (st.isActive) goTo(0);
+              if (st.isActive && !shown) show();
             });
-          } else if (!self.isActive && target === 0) {
-            goTo(1);
           }
         },
       });
-
-      return () => {
-        window.clearTimeout(resizeTimer);
-        window.removeEventListener("resize", onResize);
-      };
     },
     { scope: sectionRef }
   );
@@ -161,10 +95,11 @@ export default function KineticStatement() {
     <section
       ref={sectionRef}
       style={{
-        // Its own full screen, with the line in the middle.
+        // Its own full screen, with the line centred in the middle.
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         padding: "80px clamp(20px, 5vw, 48px)",
         backgroundColor: "#000000",
         overflow: "hidden",
@@ -175,72 +110,42 @@ export default function KineticStatement() {
         aria-label={STATEMENT}
         style={{
           fontFamily: "var(--font-heading), var(--font-display), sans-serif",
-          fontSize: "clamp(34px, 6.2vw, 96px)",
-          lineHeight: 1.08,
+          fontSize: "clamp(26px, 4.2vw, 64px)",
+          lineHeight: 1.2,
           letterSpacing: "-0.01em",
+          textAlign: "center",
           margin: 0,
+          maxWidth: "min(1000px, 100%)",
           display: "flex",
           flexWrap: "wrap",
+          justifyContent: "center",
           gap: "0 0.3em",
         }}
       >
-        {WORDS.map((word, wi) => {
-          const isLast = wi === WORDS.length - 1; // "twice."
+        {WORDS.map((word, i) => {
+          const isLast = i === WORDS.length - 1; // "twice."
           return (
             <span
-              key={wi}
-              className="ks-word"
+              key={i}
               aria-hidden="true"
-              style={{ display: "inline-block", whiteSpace: "nowrap" }}
+              style={{
+                display: "inline-block",
+                overflow: "hidden",
+                // room for the descenders (g, p) so the mask doesn't clip them
+                paddingBottom: "0.18em",
+                marginBottom: "-0.18em",
+              }}
             >
-              {word.split("").map((ch, ci) => (
-                <span
-                  key={ci}
-                  style={{
-                    position: "relative",
-                    display: "inline-block",
-                    color: isLast ? "#FF7A00" : "#f5f4f0",
-                  }}
-                >
-                  <span
-                    className="ks-letter"
-                    style={{
-                      display: "inline-block",
-                      willChange: "transform, opacity, filter",
-                    }}
-                  >
-                    {ch}
-                  </span>
-                  {Array.from({ length: SPECKS_PER_LETTER }).map((_, si) => {
-                    const seed = wi * 10000 + ci * 100 + si;
-                    const size = 2 + Math.round(fixed(seed + 0.9)); // 2-3px
-                    // Where this grain ends up in the heap: u from -1 (left) to 1 (right), bunched
-                    // towards the middle; depth from 0 (surface) to 1 (bottom).
-                    const u =
-                      (fixed(seed + 1) + fixed(seed + 2) + fixed(seed + 3)) / 1.5 - 1;
-                    const depth = fixed(seed + 4);
-                    return (
-                      <span
-                        key={si}
-                        className="ks-speck"
-                        data-u={u.toFixed(3)}
-                        data-d={depth.toFixed(3)}
-                        style={{
-                          position: "absolute",
-                          left: `${(10 + fixed(seed) * 80).toFixed(1)}%`,
-                          top: `${(15 + fixed(seed + 0.5) * 75).toFixed(1)}%`,
-                          width: size,
-                          height: size,
-                          borderRadius: "50%",
-                          backgroundColor: "currentColor",
-                          opacity: 0,
-                          pointerEvents: "none",
-                        }}
-                      />
-                    );
-                  })}
-                </span>
-              ))}
+              <span
+                className="ks-word-inner"
+                style={{
+                  display: "inline-block",
+                  color: isLast ? "#FF7A00" : "#f5f4f0",
+                  willChange: "transform",
+                }}
+              >
+                {word}
+              </span>
             </span>
           );
         })}
