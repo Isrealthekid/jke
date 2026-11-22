@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIsMobile } from "@/lib/useIsMobile";
-import joy1 from "@/app/images/joy1.webp";
+import joy1 from "@/app/images/joy-camera.jpg";
 import ToolsGrid from "./ToolsGrid";
 
 const BIO_TEXT =
@@ -92,7 +92,7 @@ export default function SplitBio() {
             src={joy1}
             alt="Joie Egbuson"
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", objectPosition: "50% 35%" }}
             sizes="(min-width: 768px) 50vw, 100vw"
             priority
           />

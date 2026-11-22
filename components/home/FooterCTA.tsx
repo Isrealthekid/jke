@@ -167,7 +167,7 @@ export default function FooterCTA() {
         }}
       >
         {/* Left */}
-        <span style={footerTextStyle}>&copy; 2025 Joykarenate Egbuson</span>
+        <span style={footerTextStyle}>&copy; 2027 Joy Karenate-Egbuson</span>
 
         {/* Centre */}
         <span style={footerTextStyle}>Lagos, Nigeria</span>
