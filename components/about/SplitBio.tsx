@@ -83,7 +83,7 @@ export default function SplitBio() {
           position: "relative",
           aspectRatio: "3/4",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
         }}
       >
         <div ref={imageRef} style={{ position: "absolute", inset: isMobile ? 0 : "-15%", height: isMobile ? "100%" : "130%" }}>

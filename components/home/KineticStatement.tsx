@@ -173,14 +173,14 @@ export default function KineticStatement() {
       <p
         aria-label={STATEMENT}
         style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(48px, 8vw, 110px)",
-          lineHeight: 0.95,
-          letterSpacing: "-0.02em",
+          fontFamily: "var(--font-heading), var(--font-display), sans-serif",
+          fontSize: "clamp(34px, 6.2vw, 96px)",
+          lineHeight: 1.08,
+          letterSpacing: "-0.01em",
           margin: 0,
           display: "flex",
           flexWrap: "wrap",
-          gap: "0 0.28em",
+          gap: "0 0.3em",
         }}
       >
         {WORDS.map((word, wi) => {

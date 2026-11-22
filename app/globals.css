@@ -244,47 +244,15 @@ html.light .site-logo {
   }
 }
 
-/* ---- "On social": card grid ---- */
-.social-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(16px, 2vw, 28px);
-  margin-top: clamp(32px, 5vw, 64px);
-}
-@media (max-width: 900px) {
-  .social-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
-@media (max-width: 560px) {
-  .social-grid { grid-template-columns: minmax(0, 1fr); }
-}
-.social-card {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: #f5f4f0;
-  text-decoration: none;
-}
-.social-card img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
-  border-radius: 14px;
-  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
-  filter: brightness(0.85);
-}
-.social-card:hover img {
-  transform: translateY(-4px) scale(1.01);
-  filter: brightness(1);
-}
-.social-card-title {
-  font-family: var(--font-body);
-  font-size: 15px;
-  font-weight: 500;
-  line-height: 1.3;
-}
-.social-card-meta {
-  font-family: var(--font-body);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  opacity: 0.45;
+/* ---- Retro-cute look, shared across the site (matches the home page) ----
+   Headings use the chunky Bowlby One face. It is much wider than Bebas Neue, so the existing
+   heading sizes are scaled down with zoom to keep layouts as designed. The hero name is
+   excluded (it has its own size). */
+h1:not(.hero-title),
+h2 {
+  font-family: var(--font-heading), var(--font-display), sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.01em !important;
+  text-transform: uppercase;
+  zoom: 0.7;
 }

@@ -97,7 +97,7 @@ function WorkCard({
           aspectRatio: "9 / 16",
           position: "relative",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
           transformStyle: "preserve-3d",
           willChange: "transform",
           backgroundColor: "#000",
@@ -283,7 +283,7 @@ export default function SelectedWorks() {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           {selectedProjects.map((project) => (
             <Link key={project.slug} href={`/work/${project.slug}`} style={{ display: "block", textDecoration: "none" }}>
-              <div style={{ position: "relative", aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", backgroundColor: "#000", maxWidth: 360, margin: "0 auto" }}>
+              <div style={{ position: "relative", aspectRatio: "9/16", borderRadius: 20, overflow: "hidden", backgroundColor: "#000", maxWidth: 360, margin: "0 auto" }}>
                 {project.videoUrl ? (
                   <iframe
                     src={ambientEmbed(project.videoUrl)}

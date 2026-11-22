@@ -194,7 +194,7 @@ export default function FullscreenMenu() {
                     style={{
                       position: "absolute",
                       inset: 48,
-                      borderRadius: 8,
+                      borderRadius: 14,
                       overflow: "hidden",
                     }}
                   >

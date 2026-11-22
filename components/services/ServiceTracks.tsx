@@ -278,7 +278,7 @@ export default function ServiceTracks() {
                               style={{
                                 padding: "8px 16px",
                                 border: "1px solid rgba(245,244,240,0.1)",
-                                borderRadius: 4,
+                                borderRadius: 20,
                                 fontFamily: "var(--font-body)",
                                 fontSize: 13,
                                 color: "rgba(245,244,240,0.6)",

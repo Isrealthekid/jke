@@ -205,7 +205,7 @@ export default function PricingCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   overflow: "hidden",
                   backfaceVisibility: "hidden",
                 }}
@@ -283,7 +283,7 @@ export default function PricingCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
                   backgroundColor: tier.backColor,

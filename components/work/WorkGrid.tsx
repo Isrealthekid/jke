@@ -109,7 +109,7 @@ function WorkTile({
           position: "relative",
           aspectRatio: isVertical ? "9 / 16" : "16 / 9",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
           transformStyle: "preserve-3d",
           willChange: "transform",
           backgroundColor: "#000",

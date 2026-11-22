@@ -272,7 +272,7 @@ function MobileLayout() {
             style={{
               position: "relative",
               aspectRatio: "16/9",
-              borderRadius: 4,
+              borderRadius: 20,
               overflow: "hidden",
               marginTop: 24,
               backgroundColor: "#000",

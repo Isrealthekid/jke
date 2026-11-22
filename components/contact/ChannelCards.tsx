@@ -131,7 +131,7 @@ export default function ChannelCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 12,
+                  borderRadius: 20,
                   border: "1px solid rgba(245,244,240,0.08)",
                   backgroundColor: "#111",
                   backfaceVisibility: "hidden",
@@ -159,7 +159,7 @@ export default function ChannelCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 12,
+                  borderRadius: 20,
                   border: "1px solid rgba(200,255,0,0.2)",
                   backgroundColor: "#111",
                   backfaceVisibility: "hidden",

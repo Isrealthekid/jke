@@ -139,6 +139,7 @@ export default function HeroReel() {
       {/* ---- Full-bleed name with per-char effect ---- */}
       <h1
         ref={nameRef}
+        className="hero-title"
         aria-label={HERO_NAME}
         style={{
           position: "relative",

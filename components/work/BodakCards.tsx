@@ -149,7 +149,7 @@ export default function BodakCards() {
               style={{
                 display: "block",
                 position: "relative",
-                borderRadius: 12,
+                borderRadius: 20,
                 overflow: "hidden",
                 aspectRatio: "16/9",
                 textDecoration: "none",
@@ -212,7 +212,7 @@ export default function BodakCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   overflow: "hidden",
                   backfaceVisibility: "hidden",
                 }}
@@ -272,7 +272,7 @@ export default function BodakCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   overflow: "hidden",
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
