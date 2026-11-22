@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 
 const STATEMENT = "I make things people watch twice.";
 const WORDS = STATEMENT.split(" ");
-const SPECKS_PER_LETTER = 4;
+const SPECKS_PER_LETTER = 10;
 
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 // Fixed (not random) so server and browser render the same speck positions.
@@ -16,8 +16,10 @@ const fixed = (n: number) => {
 };
 
 /**
- * "Snap" effect: when the banner scrolls into view the letters pull back together out of
- * dust; when it scrolls out (either direction) they crumble into ash and blow away.
+ * "Snap" effect, in order from the first letter to the last:
+ *   1. each letter crumbles into a little pile of dust where it stands,
+ *   2. then the wind takes the dust away.
+ * Scrolling back plays it in reverse: the dust blows back in, gathers, and re-forms the letters.
  */
 export default function KineticStatement({
   embedded = false,
@@ -41,54 +43,66 @@ export default function KineticStatement({
         section.querySelectorAll(".ks-speck")
       );
 
-      // The timeline runs "whole -> dust". Scrolling away plays it, scrolling back reverses it.
+      const crumbleEach = 0.05; // gap between one letter and the next, left to right
+      const crumbleSpan = letters.length * crumbleEach;
+
+      // The timeline runs "whole -> dust -> gone". Scrolling away plays it, scrolling back reverses it.
       const tl = gsap.timeline({ paused: true });
 
+      // 1. Letters crumble, left to right.
       tl.to(
         letters,
         {
-          x: () => rand(60, 220),
-          y: () => rand(-170, -30),
-          rotation: () => rand(-70, 70),
           opacity: 0,
-          filter: "blur(10px)",
-          duration: 1.2,
-          ease: "power2.in",
-          stagger: { each: 0.045, from: "random" },
+          y: 10,
+          filter: "blur(5px)",
+          duration: 0.55,
+          ease: "power1.in",
+          stagger: { each: crumbleEach, from: "start" },
         },
         0
       );
-
-      // Ash specks: appear as a letter starts to crumble, then drift off with the wind.
-      tl.to(
-        specks,
-        { opacity: 0.9, duration: 0.2, stagger: { each: 0.012, from: "random" } },
-        0.15
-      );
+      // ...and drop into dust that settles at the foot of each letter.
       tl.to(
         specks,
         {
-          x: () => rand(90, 320),
-          y: () => rand(-220, 40),
-          opacity: 0,
-          scale: () => rand(0.2, 0.9),
-          duration: 1.3,
-          ease: "power1.out",
-          stagger: { each: 0.012, from: "random" },
+          opacity: 1,
+          y: () => rand(4, 30),
+          x: () => rand(-8, 8),
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: { amount: crumbleSpan, from: "start" },
         },
-        0.35
+        0.1
       );
 
-      // Start in the dusted state (nothing visible) and wait for the scroll.
+      // 2. A beat for the dust to settle, then the wind blows it away, left to right.
+      const blowAt = crumbleSpan + 0.9;
+      tl.to(
+        specks,
+        {
+          x: () => "+=" + rand(220, 640),
+          y: () => "+=" + rand(-190, -20),
+          opacity: 0,
+          scale: () => rand(0.2, 0.8),
+          duration: 1.5,
+          ease: "power1.in",
+          stagger: { amount: crumbleSpan, from: "start" },
+        },
+        blowAt
+      );
+
+      // Start in the "gone" state (nothing visible) and wait for the scroll.
       tl.progress(1).pause();
 
-      const reform = () => tl.timeScale(1.15).reverse();
-      const snap = () => tl.timeScale(1).play();
+      const reform = () => tl.timeScale(1.6).reverse();
+      const snap = () => tl.timeScale(1.1).play();
 
       ScrollTrigger.create({
         trigger: section,
-        start: "top 70%",
-        end: "bottom 30%",
+        // Forms as soon as it's on screen; starts to crumble once it's moved up the screen a bit.
+        start: embedded ? "top 95%" : "top 70%",
+        end: embedded ? "bottom 70%" : "bottom 30%",
         onEnter: reform,
         onEnterBack: reform,
         onLeave: snap,
@@ -165,16 +179,17 @@ export default function KineticStatement({
                   </span>
                   {Array.from({ length: SPECKS_PER_LETTER }).map((_, si) => {
                     const seed = wi * 1000 + ci * 10 + si;
+                    const size = 2 + Math.round(fixed(seed + 0.9) * 2); // 2-4px
                     return (
                       <span
                         key={si}
                         className="ks-speck"
                         style={{
                           position: "absolute",
-                          left: `${(15 + fixed(seed) * 70).toFixed(1)}%`,
-                          top: `${(10 + fixed(seed + 0.5) * 80).toFixed(1)}%`,
-                          width: 3,
-                          height: 3,
+                          left: `${(10 + fixed(seed) * 80).toFixed(1)}%`,
+                          top: `${(15 + fixed(seed + 0.5) * 75).toFixed(1)}%`,
+                          width: size,
+                          height: size,
                           borderRadius: "50%",
                           backgroundColor: "currentColor",
                           opacity: 0,
