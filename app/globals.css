@@ -264,17 +264,18 @@ h3:not(.no-zoom),
 [style*="--font-display"] h1, [style*="--font-display"] h2, [style*="--font-display"] h3,
 [style*="--font-display"] [style*="--font-display"] { zoom: 1; }
 
-/* ---- Slide-up panels (What I do cards, On the screen, Edits) ----
-   On large screens each panel sticks to the top and the next one slides up over it. */
+/* ---- Slide-up panel (On the screen) ----
+   On large screens the timeline is held one extra screen-height (see SelectedWorks) and this panel,
+   pulled up by one screen, slides up over it. */
 .stack-panel {
   position: relative;
+  z-index: 2;
   background: #000000;
   padding: clamp(64px, 10vw, 120px) clamp(20px, 5vw, 48px);
 }
 @media (min-width: 1000px) and (min-height: 640px) {
   .stack-panel {
-    position: sticky;
-    top: 0;
+    margin-top: -100vh;
     height: 100vh;
     overflow: hidden;
     display: flex;

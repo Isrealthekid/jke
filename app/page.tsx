@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { PLACEHOLDER_IMAGES } from "@/data/projects";
 import HeroReel from "@/components/home/HeroReel";
-import PinnedIntro from "@/components/home/PinnedIntro";
 import SelectedWorks from "@/components/home/SelectedWorks";
 import AboutSection from "@/components/home/AboutSection";
 import OnScreenSection from "@/components/home/OnScreenSection";
@@ -34,10 +33,8 @@ export default function Home() {
       <HeroReel />
       <AboutSection />
       <KineticStatement />
-      <PinnedIntro>
-        <OnScreenSection />
-        <SelectedWorks />
-      </PinnedIntro>
+      <SelectedWorks />
+      <OnScreenSection />
       <SocialProof />
       <FooterCTA />
     </main>

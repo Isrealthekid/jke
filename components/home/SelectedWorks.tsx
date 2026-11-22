@@ -4,7 +4,7 @@ import { useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { projects } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
 
@@ -247,15 +247,17 @@ export default function SelectedWorks() {
       const section = sectionRef.current;
       if (!track || !section || isMobile) return;
 
+      const scrollLength = () => track.scrollWidth - window.innerWidth;
+
+      // The horizontal scroll itself.
       gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
+        x: () => -scrollLength(),
         ease: "none",
         scrollTrigger: {
           trigger: section,
-          pin: true,
           scrub: 1,
           start: "top top",
-          end: () => `+=${track.scrollWidth - window.innerWidth}`,
+          end: () => `+=${scrollLength()}`,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (progressRef.current) {
@@ -263,6 +265,19 @@ export default function SelectedWorks() {
             }
           },
         },
+      });
+
+      // Hold the section on screen while it scrolls. On large screens it is held one extra
+      // screen-height, so the next panel (On the screen) slides up over it.
+      const slidesOver = window.matchMedia(
+        "(min-width: 1000px) and (min-height: 640px)"
+      ).matches;
+      ScrollTrigger.create({
+        trigger: section,
+        pin: true,
+        start: "top top",
+        end: () => `+=${scrollLength() + (slidesOver ? window.innerHeight : 0)}`,
+        invalidateOnRefresh: true,
       });
     },
     { scope: sectionRef, dependencies: [isMobile] }
@@ -273,8 +288,8 @@ export default function SelectedWorks() {
     return (
       <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#FFD34A" }}>
-            Edits
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+            On the <span style={{ color: "#FFD34A" }}>timeline</span>
           </h2>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
             ({String(selectedProjects.length).padStart(2, "0")})
@@ -330,7 +345,7 @@ export default function SelectedWorks() {
           top: 0,
           left: 0,
           right: 0,
-          padding: "clamp(24px, 4vw, 32px) clamp(24px, 5vw, 48px) 0",
+          padding: "clamp(76px, 11vh, 100px) clamp(24px, 5vw, 48px) 0",
           zIndex: 10,
         }}
       >
@@ -343,8 +358,8 @@ export default function SelectedWorks() {
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 5vw, 72px)", lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
-              <span style={{ color: "#FFD34A" }}>Edits</span>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(48px, 6.4vw, 96px)", lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+              On the <span style={{ color: "#FFD34A" }}>timeline</span>
             </h2>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
               ({String(selectedProjects.length).padStart(2, "0")})
@@ -372,7 +387,7 @@ export default function SelectedWorks() {
           height: "100%",
           paddingLeft: 48,
           paddingRight: 48,
-          paddingTop: 80,
+          paddingTop: 150,
           width: "max-content",
         }}
       >

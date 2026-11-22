@@ -33,7 +33,7 @@ export default function OnScreenSection() {
         style={{
           margin: "10px 0 0",
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(48px, 8vw, 120px)",
+          fontSize: "clamp(48px, 6.4vw, 96px)",
           lineHeight: 1,
           letterSpacing: "-0.01em",
           color: "#f5f4f0",
