@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { projects } from "@/data/projects";
 import { useIsMobile } from "@/lib/useIsMobile";
 
@@ -97,7 +97,7 @@ function WorkCard({
           aspectRatio: "9 / 16",
           position: "relative",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
           transformStyle: "preserve-3d",
           willChange: "transform",
           backgroundColor: "#000",
@@ -232,30 +232,40 @@ function WorkCard({
 /* ================================================================== */
 /*  SelectedWorks — horizontal scroll section                          */
 /* ================================================================== */
-export default function SelectedWorks() {
+export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
   const isMobile = useIsMobile();
+  // The first render always draws the desktop layout (before we know the screen size). Don't set
+  // up the pinned scroll until the real layout is chosen, otherwise on phones the pin is torn
+  // down mid-swap and leaves a stray card behind.
+  const [decided, setDecided] = useState(false);
+  useEffect(() => {
+    setDecided(true);
+  }, []);
   const sectionRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
   // Only short-form vertical content on the home reel: IG reels + YouTube Shorts.
-  const selectedProjects = projects.filter((p) => p.category === "Social Content");
+  const selectedProjects = projects.filter((p) => p.category === "Edits");
 
   useGSAP(
     () => {
       const track = trackRef.current;
       const section = sectionRef.current;
-      if (!track || !section || isMobile) return;
+      if (!track || !section || isMobile || !decided) return;
 
+      const scrollLength = () => track.scrollWidth - window.innerWidth;
+
+      // The horizontal scroll itself.
       gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
+        x: () => -scrollLength(),
         ease: "none",
         scrollTrigger: {
           trigger: section,
-          pin: true,
           scrub: 1,
           start: "top top",
-          end: () => `+=${track.scrollWidth - window.innerWidth}`,
+          end: () => `+=${scrollLength()}`,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (progressRef.current) {
@@ -264,18 +274,62 @@ export default function SelectedWorks() {
           },
         },
       });
+
+      const mm = gsap.matchMedia();
+
+      // Large screens: the section is held one extra screen-height, and during that time the
+      // overlay (On the screen, which lives inside this section) slides up over the cards.
+      mm.add("(min-width: 1000px) and (min-height: 640px)", () => {
+        const overlayEl = overlayRef.current;
+        if (overlayEl) {
+          gsap.set(overlayEl, { yPercent: 100, autoAlpha: 1 });
+          gsap.to(overlayEl, {
+            yPercent: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: () => `top+=${scrollLength()} top`,
+              end: () => `+=${window.innerHeight}`,
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+        }
+        ScrollTrigger.create({
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: () => `+=${scrollLength() + window.innerHeight}`,
+          invalidateOnRefresh: true,
+        });
+      });
+
+      // Smaller screens: just hold the section while it scrolls sideways (the overlay then
+      // simply follows the section as its own block).
+      mm.add("(max-width: 999px), (max-height: 639px)", () => {
+        ScrollTrigger.create({
+          trigger: section,
+          pin: true,
+          start: "top top",
+          end: () => `+=${scrollLength()}`,
+          invalidateOnRefresh: true,
+        });
+      });
+
+      return () => mm.revert();
     },
-    { scope: sectionRef, dependencies: [isMobile] }
+    { scope: sectionRef, dependencies: [isMobile, decided] }
   );
 
   // ---- MOBILE: vertical stacked cards ----
   if (isMobile) {
     return (
-      <section style={{ backgroundColor: "#0a0a0a", padding: "64px 20px" }}>
+      <>
+      <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
-          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-            Selected Works
-          </span>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+            On the <span style={{ color: "#FFD34A" }}>timeline</span>
+          </h2>
           <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
             ({String(selectedProjects.length).padStart(2, "0")})
           </span>
@@ -283,7 +337,7 @@ export default function SelectedWorks() {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
           {selectedProjects.map((project) => (
             <Link key={project.slug} href={`/work/${project.slug}`} style={{ display: "block", textDecoration: "none" }}>
-              <div style={{ position: "relative", aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", backgroundColor: "#000", maxWidth: 360, margin: "0 auto" }}>
+              <div style={{ position: "relative", aspectRatio: "9/16", borderRadius: 20, overflow: "hidden", backgroundColor: "#000", maxWidth: 360, margin: "0 auto" }}>
                 {project.videoUrl ? (
                   <iframe
                     src={ambientEmbed(project.videoUrl)}
@@ -306,19 +360,24 @@ export default function SelectedWorks() {
           ))}
         </div>
       </section>
+      {overlay}
+      </>
     );
   }
 
   // ---- DESKTOP: horizontal scroll ----
   return (
+    <>
     <section
       ref={sectionRef}
       className="works-section"
       style={{
         height: "100vh",
         overflow: "hidden",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         position: "relative",
+        borderRadius: "28px 28px 0 0",
+        boxShadow: "0 -24px 60px rgba(0,0,0,0.7)",
       }}
     >
       {/* Section header */}
@@ -328,7 +387,7 @@ export default function SelectedWorks() {
           top: 0,
           left: 0,
           right: 0,
-          padding: "clamp(24px, 4vw, 32px) clamp(24px, 5vw, 48px) 0",
+          padding: "clamp(76px, 11vh, 100px) clamp(24px, 5vw, 48px) 0",
           zIndex: 10,
         }}
       >
@@ -341,9 +400,9 @@ export default function SelectedWorks() {
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, letterSpacing: "0.15em", textTransform: "uppercase", color: "rgba(245,244,240,0.5)" }}>
-              Selected Works
-            </span>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(48px, 6.4vw, 96px)", lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+              On the <span style={{ color: "#FFD34A" }}>timeline</span>
+            </h2>
             <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
               ({String(selectedProjects.length).padStart(2, "0")})
             </span>
@@ -370,7 +429,7 @@ export default function SelectedWorks() {
           height: "100%",
           paddingLeft: 48,
           paddingRight: 48,
-          paddingTop: 80,
+          paddingTop: 150,
           width: "max-content",
         }}
       >
@@ -378,6 +437,14 @@ export default function SelectedWorks() {
           <WorkCard key={project.slug} project={project} />
         ))}
       </div>
+
+      {/* Overlay (large screens): slides up over the cards at the end of the pinned scroll */}
+      <div ref={overlayRef} className="works-overlay-inside">
+        {overlay}
+      </div>
     </section>
+    {/* Overlay (smaller screens): the same panel as a normal block after the section */}
+    <div className="works-overlay-after">{overlay}</div>
+    </>
   );
 }

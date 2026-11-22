@@ -79,7 +79,7 @@ export default function ProcessTimeline() {
               style={{
                 padding: "20px 28px",
                 border: "1px solid rgba(245,244,240,0.08)",
-                borderRadius: 4,
+                borderRadius: 20,
                 textAlign: "center",
                 minWidth: 120,
                 transition: "border-color 0.2s",

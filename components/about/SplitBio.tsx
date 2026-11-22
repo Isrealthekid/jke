@@ -5,10 +5,11 @@ import Image from "next/image";
 import { useGSAP } from "@gsap/react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useIsMobile } from "@/lib/useIsMobile";
-import joy1 from "@/app/images/joy1.webp";
+import joy1 from "@/app/images/joy-camera.jpg";
+import ToolsGrid from "./ToolsGrid";
 
 const BIO_TEXT =
-  "JK Egbuson is a Lagos-based social media manager, video editor and filmmaker with over 5 years of experience crafting visual stories for brands and individuals. From documentary films to viral social campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
+  "Joy Karenate-Egbuson is a Lagos-based video editor and filmmaker with over 7 years of experience crafting visual stories for brands and individuals. From documentary films to brand campaigns, the work is driven by one belief: great storytelling changes how people feel about a brand.";
 
 const WORDS = BIO_TEXT.split(" ");
 
@@ -83,7 +84,7 @@ export default function SplitBio() {
           position: "relative",
           aspectRatio: "3/4",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
         }}
       >
         <div ref={imageRef} style={{ position: "absolute", inset: isMobile ? 0 : "-15%", height: isMobile ? "100%" : "130%" }}>
@@ -91,7 +92,7 @@ export default function SplitBio() {
             src={joy1}
             alt="Joie Egbuson"
             fill
-            style={{ objectFit: "cover" }}
+            style={{ objectFit: "cover", objectPosition: "50% 35%" }}
             sizes="(min-width: 768px) 50vw, 100vw"
             priority
           />
@@ -116,10 +117,11 @@ export default function SplitBio() {
 
         <p
           style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(32px, 4.2vw, 64px)",
-            lineHeight: 1.1,
-            letterSpacing: "0.01em",
+            fontFamily: "var(--font-body)",
+            fontWeight: 500,
+            fontSize: "clamp(22px, 2.7vw, 42px)",
+            lineHeight: 1.3,
+            letterSpacing: "-0.01em",
             color: "#f5f4f0",
             margin: 0,
             display: "flex",
@@ -139,6 +141,11 @@ export default function SplitBio() {
             </span>
           ))}
         </p>
+
+        {/* Tools sit under the bio, beside the portrait */}
+        <div style={{ marginTop: "clamp(32px, 5vw, 64px)" }}>
+          <ToolsGrid />
+        </div>
       </div>
 
       {/* Responsive grid override + portrait hover filter */}

@@ -5,9 +5,9 @@ import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
 const stats = [
-  { value: "5+", label: "Years" },
-  { value: "50+", label: "Projects" },
-  { value: "3", label: "Disciplines" },
+  { value: "7+", label: "Years" },
+  { value: "100+", label: "Projects" },
+  { value: "12", label: "Clients & Brands" },
 ];
 
 export default function StatsCards() {
@@ -33,6 +33,28 @@ export default function StatsCards() {
           },
         }
       );
+
+      // Count the figures up from 0 as the cards appear (the final value is also in the HTML,
+      // so it still reads correctly with reduced motion or without scripting).
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      containerRef.current
+        ?.querySelectorAll<HTMLElement>(".stat-value")
+        .forEach((el, i) => {
+          const target = parseInt(el.dataset.target || "0", 10);
+          const suffix = el.dataset.suffix || "";
+          const counter = { n: 0 };
+          el.textContent = `0${suffix}`;
+          gsap.to(counter, {
+            n: target,
+            duration: 2,
+            delay: i * 0.12,
+            ease: "power2.out",
+            scrollTrigger: { trigger: containerRef.current, start: "top 80%" },
+            onUpdate: () => {
+              el.textContent = `${Math.round(counter.n)}${suffix}`;
+            },
+          });
+        });
     },
     { scope: containerRef }
   );
@@ -58,11 +80,15 @@ export default function StatsCards() {
           }}
         >
           <span
+            className="stat-value"
+            data-target={parseInt(stat.value, 10)}
+            data-suffix={stat.value.replace(/[0-9]/g, "")}
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(36px, 5vw, 56px)",
               color: "#FF7A00",
               lineHeight: 1,
+              fontVariantNumeric: "tabular-nums",
             }}
           >
             {stat.value}

@@ -17,10 +17,10 @@ const tiers = [
     image: PLACEHOLDER_IMAGES[0],
     backColor: "#0d1117",
     includes: [
-      "Social media content (10 posts/month)",
+      "Creative direction session",
+      "Concept & mood board",
       "Basic video editing (1 project)",
-      "Content calendar",
-      "Monthly analytics report",
+      "Style guide",
     ],
     cta: "Let's talk pricing",
     ctaHref: "/contact",
@@ -33,11 +33,11 @@ const tiers = [
     backColor: "#110d17",
     featured: true,
     includes: [
-      "Full social media management",
+      "Ongoing creative direction",
       "Video production (3 projects/month)",
-      "Content strategy & calendars",
-      "Community management",
-      "Analytics & reporting",
+      "Concepts, scripts & shot lists",
+      "Direction on set",
+      "Review & feedback rounds",
       "Priority turnaround",
     ],
     cta: "Most popular — Let's talk",
@@ -54,7 +54,7 @@ const tiers = [
       "Film / documentary production",
       "Brand campaign direction",
       "Dedicated creative partner",
-      "Quarterly strategy sessions",
+      "Quarterly creative reviews",
       "Unlimited revisions",
     ],
     cta: "Book a call",
@@ -205,7 +205,7 @@ export default function PricingCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   overflow: "hidden",
                   backfaceVisibility: "hidden",
                 }}
@@ -240,7 +240,7 @@ export default function PricingCards() {
                       fontWeight: 600,
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#0a0a0a",
+                      color: "#000000",
                     }}
                   >
                     Popular
@@ -283,7 +283,7 @@ export default function PricingCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 16,
+                  borderRadius: 24,
                   backfaceVisibility: "hidden",
                   transform: "rotateY(180deg)",
                   backgroundColor: tier.backColor,
@@ -339,7 +339,7 @@ export default function PricingCards() {
                     padding: "12px 0",
                     borderRadius: 100,
                     backgroundColor: "#FF7A00",
-                    color: "#0a0a0a",
+                    color: "#000000",
                     fontFamily: "var(--font-body)",
                     fontSize: 12,
                     fontWeight: 600,

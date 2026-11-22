@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const faqs = [
   {
     q: "What's your typical turnaround time?",
-    a: "Social media content is delivered on a monthly retainer cycle. Video projects typically take 5–14 days depending on complexity. Film and documentary projects are scoped individually — we'll discuss timelines during the proposal stage.",
+    a: "Creative direction is scoped per project or run as an ongoing retainer. Video projects typically take 5–14 days depending on complexity. Film and documentary projects are scoped individually — we'll discuss timelines during the proposal stage.",
   },
   {
     q: "Do you work with clients outside Lagos?",
@@ -18,7 +18,7 @@ const faqs = [
   },
   {
     q: "Can I hire you for just one project?",
-    a: "Yes. While retainers are great for ongoing social media work, video production and filmmaking are available as one-off projects. No long-term commitment required.",
+    a: "Yes. While retainers are great for ongoing creative direction, video production and filmmaking are available as one-off projects. No long-term commitment required.",
   },
   {
     q: "Do you handle the full production or just editing?",

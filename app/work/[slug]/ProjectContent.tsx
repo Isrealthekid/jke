@@ -67,7 +67,7 @@ export default function ProjectContent({ project }: { project: Project }) {
                   style={{
                     padding: "4px 12px",
                     border: "1px solid rgba(245,244,240,0.1)",
-                    borderRadius: 4,
+                    borderRadius: 20,
                     fontFamily: "var(--font-body)",
                     fontSize: 12,
                     color: "rgba(245,244,240,0.5)",
@@ -184,7 +184,7 @@ export default function ProjectContent({ project }: { project: Project }) {
                     position: "relative",
                     aspectRatio: "4/5",
                     overflow: "hidden",
-                    borderRadius: 4,
+                    borderRadius: 20,
                   }}
                 >
                   <Image

@@ -45,7 +45,7 @@ export default function AboutCTA() {
             fontSize: 13,
             letterSpacing: "0.06em",
             textTransform: "uppercase",
-            color: hovered ? "#0a0a0a" : "#f5f4f0",
+            color: hovered ? "#000000" : "#f5f4f0",
             backgroundColor: hovered ? "#f5f4f0" : "transparent",
             transition: "background-color 0.3s, color 0.3s",
             cursor: "none",

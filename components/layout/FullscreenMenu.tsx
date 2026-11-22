@@ -92,7 +92,7 @@ export default function FullscreenMenu() {
             inset: 0,
             height: "100dvh",
             zIndex: 9997,
-            backgroundColor: "#0a0a0a",
+            backgroundColor: "#000000",
             display: "flex",
             flexDirection: "column",
             paddingTop: 64,
@@ -194,7 +194,7 @@ export default function FullscreenMenu() {
                     style={{
                       position: "absolute",
                       inset: 48,
-                      borderRadius: 8,
+                      borderRadius: 14,
                       overflow: "hidden",
                     }}
                   >
@@ -211,7 +211,7 @@ export default function FullscreenMenu() {
                         position: "absolute",
                         inset: 0,
                         background:
-                          "linear-gradient(to top, rgba(10,10,10,0.6), transparent)",
+                          "linear-gradient(to top, rgba(0,0,0,0.6), transparent)",
                       }}
                     />
                   </motion.div>
@@ -292,7 +292,7 @@ export default function FullscreenMenu() {
             >
               {[
                 { label: "Instagram", href: "https://www.instagram.com/joie.egbuson/" },
-                { label: "YouTube", href: "https://www.youtube.com/@JoieTVProductions" },
+                { label: "YouTube", href: "https://www.youtube.com/@thejoietv" },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
               ].map((social) => (
                 <a

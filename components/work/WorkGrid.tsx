@@ -30,7 +30,7 @@ function WorkTile({
 }) {
   // Vertical content (shorts / reels) takes a narrow 9:16 tile;
   // everything else (films, video edits) takes a wide 16:9 tile.
-  const isVertical = project.category === "Social Content";
+  const isVertical = project.category === "Edits";
   const cardRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
@@ -109,7 +109,7 @@ function WorkTile({
           position: "relative",
           aspectRatio: isVertical ? "9 / 16" : "16 / 9",
           overflow: "hidden",
-          borderRadius: 4,
+          borderRadius: 20,
           transformStyle: "preserve-3d",
           willChange: "transform",
           backgroundColor: "#000",
@@ -225,7 +225,7 @@ function WorkTile({
               left: 0,
               right: 0,
               transform: "translateY(100%)",
-              background: "rgba(10,10,10,0.85)",
+              background: "rgba(0,0,0,0.85)",
               backdropFilter: "blur(8px)",
               padding: "16px 24px",
               alignItems: "center",
@@ -283,7 +283,7 @@ export default function WorkGrid() {
     "All",
     "Film",
     "Video Edit",
-    "Social Content",
+    "Edits",
   ];
 
   const filtered =

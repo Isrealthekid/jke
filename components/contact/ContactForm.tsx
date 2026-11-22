@@ -150,7 +150,7 @@ export default function ContactForm() {
               style={{
                 width: "100%",
                 padding: "16px 0",
-                borderRadius: 4,
+                borderRadius: 20,
                 border: "1px solid rgba(200,255,0,0.4)",
                 backgroundColor: "transparent",
                 color: "#FF7A00",
@@ -167,7 +167,7 @@ export default function ContactForm() {
                 if (!submitting) {
                   (e.currentTarget as HTMLElement).style.backgroundColor =
                     "#FF7A00";
-                  (e.currentTarget as HTMLElement).style.color = "#0a0a0a";
+                  (e.currentTarget as HTMLElement).style.color = "#000000";
                 }
               }}
               onMouseLeave={(e) => {
@@ -219,7 +219,7 @@ function FloatField({
     width: "100%",
     backgroundColor: "#111",
     border: `1px solid ${focused ? "#FF7A00" : "rgba(255,255,255,0.1)"}`,
-    borderRadius: 4,
+    borderRadius: 20,
     padding: "20px 16px 8px",
     fontFamily: "var(--font-body)",
     fontSize: 15,

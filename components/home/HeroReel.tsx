@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
+import SocialBar from "./SocialBar";
 
-const HERO_NAME = "JOY K-EGBUSON";
+const HERO_NAME = "THE JOIE TV";
+const HERO_COLOURS = ["#FF7A00", "#C6249B", "#FFD34A"]; // orange, pink, yellow
 
 const GRAIN_SVG =
   "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")";
@@ -19,19 +22,35 @@ function formatLagosClock(now: Date): string {
   return `${hours}:${String(mins).padStart(2, "0")} ${ampm} GMT+1`;
 }
 
-export default function HeroReel() {
+/* Play the roll once per hover. The hover target (outer span) never moves, so the
+   letter can't flicker when it turns edge-on under the cursor. */
+function rollLetter(e: React.MouseEvent<HTMLSpanElement>) {
+  const glyph = e.currentTarget.firstElementChild as HTMLElement | null;
+  if (!glyph || glyph.classList.contains("is-rolling")) return;
+  glyph.classList.add("is-rolling");
+  glyph.addEventListener(
+    "animationend",
+    () => glyph.classList.remove("is-rolling"),
+    { once: true }
+  );
+}
+
+const LINK_STYLE: React.CSSProperties = {
+  color: "#ffffff",
+  textDecoration: "none",
+};
+
+export default function HeroReel({ instant = false }: { instant?: boolean } = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const clockRef = useRef<HTMLSpanElement>(null);
-  const yearRef = useRef<HTMLSpanElement>(null);
 
-  /* Drive clock + year via refs (no React re-render) so the GSAP-animated
+  /* Drive the clock via a ref (no React re-render) so the GSAP-animated
      hero-char spans don't reconcile mid-animation. */
   useEffect(() => {
     const update = () => {
-      const d = new Date();
-      if (clockRef.current) clockRef.current.textContent = formatLagosClock(d);
-      if (yearRef.current) yearRef.current.textContent = String(d.getFullYear());
+      if (clockRef.current)
+        clockRef.current.textContent = formatLagosClock(new Date());
     };
     update();
     const id = window.setInterval(update, 1000);
@@ -40,7 +59,7 @@ export default function HeroReel() {
 
   useGSAP(
     () => {
-      if (!nameRef.current) return;
+      if (!nameRef.current || instant) return; // the loader preview shows the finished hero
       gsap.from(nameRef.current.querySelectorAll(".hero-char"), {
         y: 60,
         opacity: 0,
@@ -82,15 +101,16 @@ export default function HeroReel() {
         }}
       />
 
-      {/* ---- Top metadata bar ---- */}
+      {/* ---- Top metadata bar: same line as the logo, shifted right to sit beside it ---- */}
       <div
+        className="hero-meta"
         style={{
           position: "relative",
           zIndex: 2,
           display: "flex",
           alignItems: "center",
           gap: 32,
-          padding: "20px 32px 0",
+          height: 64,
           fontFamily: "var(--font-body)",
           fontSize: 11,
           letterSpacing: "0.18em",
@@ -113,21 +133,24 @@ export default function HeroReel() {
         <span ref={clockRef} style={{ fontVariantNumeric: "tabular-nums" }}>
           —
         </span>
-        <span>6.5244° N, 3.3792° E</span>
+        <span className="hero-coords">6.5244° N, 3.3792° E</span>
       </div>
 
       {/* ---- Full-bleed name with per-char effect ---- */}
       <h1
         ref={nameRef}
+        className="hero-title"
         aria-label={HERO_NAME}
         style={{
           position: "relative",
           zIndex: 2,
-          fontFamily: "var(--font-display)",
-          fontSize: "19vw",
+          fontFamily: "var(--font-heading), var(--font-display), sans-serif",
+          fontWeight: 400,
+          fontSize: "9.5vw",
+          whiteSpace: "nowrap",
           color: "#ffffff",
-          lineHeight: 0.85,
-          letterSpacing: "-0.02em",
+          lineHeight: 1,
+          letterSpacing: "-0.01em",
           margin: 0,
           padding: "0 8px",
           textAlign: "center",
@@ -140,40 +163,21 @@ export default function HeroReel() {
             key={`${char}-${i}`}
             aria-hidden="true"
             className="hero-char"
-            style={{
-              display: "inline-block",
-              whiteSpace: "pre",
-              transformStyle: "preserve-3d",
-              transformOrigin: "50% 60%",
-            }}
+            onMouseEnter={rollLetter}
+            style={
+              {
+                display: "inline-block",
+                whiteSpace: "pre",
+                "--hero-hover": HERO_COLOURS[i % HERO_COLOURS.length],
+              } as React.CSSProperties
+            }
           >
-            {char === " " ? " " : char}
+            <span className="hero-glyph">{char === " " ? " " : char}</span>
           </span>
         ))}
       </h1>
 
-      {/* ---- Center metadata row ---- */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "16px clamp(24px, 30%, 30%)",
-          fontFamily: "var(--font-body)",
-          fontSize: 11,
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          color: "#aaaaaa",
-        }}
-      >
-        <span>BASED IN LAGOS</span>
-        <span ref={yearRef} style={{ fontVariantNumeric: "tabular-nums" }}>
-          —
-        </span>
-      </div>
-
-      {/* ---- Subtitle (smaller, no hover image) ---- */}
+      {/* ---- EDITING · FILM (both are links) ---- */}
       <div
         style={{
           position: "relative",
@@ -181,67 +185,53 @@ export default function HeroReel() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 24,
-          marginBottom: "auto",
-          paddingBottom: 56,
+          gap: 20,
+          marginTop: 28,
+          fontFamily: "var(--font-body)",
+          fontWeight: 600,
+          fontSize: "clamp(13px, 1.5vw, 22px)",
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          lineHeight: 1,
         }}
       >
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
-        >
-          SOCIAL MEDIA
-        </span>
-        <span
-          aria-hidden="true"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "rgba(255,255,255,0.4)",
-            lineHeight: 1,
-          }}
-        >
+        <Link href="/work" className="hero-link" style={LINK_STYLE}>
+          Editing
+        </Link>
+        <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.4)" }}>
           ·
         </span>
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
+        <a
+          href="https://films.thejoietv.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hero-link"
+          style={LINK_STYLE}
         >
-          VIDEO
-        </span>
-        <span
-          aria-hidden="true"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "rgba(255,255,255,0.4)",
-            lineHeight: 1,
-          }}
-        >
-          ·
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
-        >
-          FILM
-        </span>
+          Film
+        </a>
       </div>
+
+      {/* ---- Location ---- */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          marginBottom: "auto",
+          paddingTop: 28,
+          paddingBottom: 56,
+          textAlign: "center",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          letterSpacing: "0.4em",
+          textTransform: "uppercase",
+          color: "#aaaaaa",
+        }}
+      >
+        Lagos, Nigeria
+      </div>
+
+      <SocialBar />
     </section>
   );
 }

@@ -89,7 +89,7 @@ export default function LatestProject() {
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(10,10,10,0) 0%, rgba(10,10,10,0.85) 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)",
           pointerEvents: "none",
         }}
       />
@@ -190,7 +190,7 @@ export default function LatestProject() {
                 justifyContent: "center",
                 padding: "14px 32px",
                 backgroundColor: "#f5f4f0",
-                color: "#0a0a0a",
+                color: "#000000",
                 fontFamily: "var(--font-body)",
                 fontSize: 13,
                 fontWeight: 500,

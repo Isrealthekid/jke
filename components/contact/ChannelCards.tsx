@@ -47,10 +47,10 @@ export default function ChannelCards() {
     {
       label: "YouTube",
       frontIcon: "▶",
-      backValue: "@JoieTVProductions",
+      backValue: "@thejoietv",
       backNote: "Watch the latest films & edits",
       action: () => {
-        window.open("https://www.youtube.com/@JoieTVProductions", "_blank");
+        window.open("https://www.youtube.com/@thejoietv", "_blank");
       },
     },
   ];
@@ -131,7 +131,7 @@ export default function ChannelCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 12,
+                  borderRadius: 20,
                   border: "1px solid rgba(245,244,240,0.08)",
                   backgroundColor: "#111",
                   backfaceVisibility: "hidden",
@@ -159,7 +159,7 @@ export default function ChannelCards() {
                 style={{
                   position: "absolute",
                   inset: 0,
-                  borderRadius: 12,
+                  borderRadius: 20,
                   border: "1px solid rgba(200,255,0,0.2)",
                   backgroundColor: "#111",
                   backfaceVisibility: "hidden",
@@ -211,7 +211,7 @@ export default function ChannelCards() {
             padding: "12px 24px",
             borderRadius: 100,
             backgroundColor: "#FF7A00",
-            color: "#0a0a0a",
+            color: "#000000",
             fontFamily: "var(--font-body)",
             fontSize: 13,
             fontWeight: 600,

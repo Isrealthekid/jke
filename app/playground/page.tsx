@@ -121,7 +121,7 @@ export default function PlaygroundPage() {
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
         color: "#f5f4f0",
         position: "relative",
         overflow: "hidden",
@@ -259,7 +259,7 @@ export default function PlaygroundPage() {
               style={{
                 background: "rgba(245,244,240,0.03)",
                 border: "1px solid rgba(245,244,240,0.12)",
-                borderRadius: 12,
+                borderRadius: 20,
                 padding: 20,
                 backdropFilter: "blur(3px)",
               }}

@@ -199,7 +199,7 @@ export const projects: Project[] = [
   {
     slug: "why-you-feel-stuck",
     title: "Why You Feel Stuck",
-    category: "Social Content",
+    category: "Edits",
     thumbnail: ytThumb("iJw89fpioOQ"),
     year: "2025",
     description:
@@ -227,7 +227,7 @@ export const projects: Project[] = [
   {
     slug: "francesca-uriri-silicon-valley",
     title: "Francesca Uriri — Building a Career in Silicon Valley",
-    category: "Social Content",
+    category: "Edits",
     thumbnail: ytThumb("1IziFZo3SNI"),
     year: "2025",
     description:
@@ -255,7 +255,7 @@ export const projects: Project[] = [
   {
     slug: "francesca-uriri-healing",
     title: "Francesca Uriri — Navigating Loss & Choosing Healing",
-    category: "Social Content",
+    category: "Edits",
     thumbnail: ytThumb("E6b4ITQMcI4"),
     year: "2025",
     description:
@@ -283,7 +283,7 @@ export const projects: Project[] = [
   {
     slug: "yemi-chukwurah-china-supply-chain",
     title: "Yemi Chukwurah — Mastering China's Supply Chain",
-    category: "Social Content",
+    category: "Edits",
     thumbnail: ytThumb("NDqZ3hzOtmc"),
     year: "2025",
     description:
@@ -311,7 +311,7 @@ export const projects: Project[] = [
   {
     slug: "patricia-obozuwa-workplace-politics",
     title: "Patricia Obozuwa — Navigating Workplace Politics",
-    category: "Social Content",
+    category: "Edits",
     thumbnail: ytThumb("WoCZa0TUz4E"),
     year: "2025",
     description:

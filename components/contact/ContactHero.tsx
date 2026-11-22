@@ -5,7 +5,7 @@ import ContactForm from "./ContactForm";
 
 const socials = [
   { platform: "Instagram", handle: "@joie.egbuson", href: "https://www.instagram.com/joie.egbuson/" },
-  { platform: "YouTube", handle: "@JoieTVProductions", href: "https://www.youtube.com/@JoieTVProductions" },
+  { platform: "YouTube", handle: "@thejoietv", href: "https://www.youtube.com/@thejoietv" },
   { platform: "LinkedIn", handle: "Joykarenate Egbuson", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
 ];
 

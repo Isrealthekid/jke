@@ -30,7 +30,7 @@ export default function FilterBar({
                 ? "1px solid #f5f4f0"
                 : "1px solid rgba(245,244,240,0.15)",
               backgroundColor: isActive ? "#f5f4f0" : "transparent",
-              color: isActive ? "#0a0a0a" : "rgba(245,244,240,0.5)",
+              color: isActive ? "#000000" : "rgba(245,244,240,0.5)",
               fontFamily: "var(--font-body)",
               fontSize: 12,
               letterSpacing: "0.08em",

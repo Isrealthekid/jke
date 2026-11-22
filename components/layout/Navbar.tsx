@@ -1,28 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   motion,
   useScroll,
   useMotionValueEvent,
   AnimatePresence,
 } from "framer-motion";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useMenu } from "./MenuContext";
 import FullscreenMenu from "./FullscreenMenu";
-
-/* ------------------------------------------------------------------ */
-/*  Page-name map                                                      */
-/* ------------------------------------------------------------------ */
-const pageNames: Record<string, string> = {
-  "/": "Home",
-  "/work": "Work",
-  "/about": "About",
-  "/playground": "Playground",
-  "/services": "Services",
-  "/contact": "Contact",
-};
 
 /* ------------------------------------------------------------------ */
 /*  Hamburger line variants (framer-motion)                            */
@@ -52,39 +39,19 @@ const lineTransition = {
 /* ------------------------------------------------------------------ */
 export default function Navbar() {
   const { isMenuOpen, toggleMenu } = useMenu();
-  const pathname = usePathname();
 
   /* --- scroll tracking ------------------------------------------- */
   const { scrollY } = useScroll();
   const [hasScrolled, setHasScrolled] = useState(false); // past 80px
-  const [hidden, setHidden] = useState(false);
-  const lastScrollY = useRef(0);
 
+  // The bar stays on screen at all times (so the "Work with me" button is always reachable).
   useMotionValueEvent(scrollY, "change", (latest) => {
-    const previous = lastScrollY.current;
-    lastScrollY.current = latest;
-
-    // backdrop trigger
-    setHasScrolled(latest > 80);
-
-    // hide / reveal
-    if (latest > 200 && latest > previous) {
-      setHidden(true); // scrolling DOWN past 200
-    } else if (latest < previous) {
-      setHidden(false); // scrolling UP
-    }
+    setHasScrolled(latest > 80); // backdrop trigger
   });
-
-  /* --- derive page name ------------------------------------------ */
-  const currentPage =
-    pageNames[pathname] ??
-    (pathname.startsWith("/work/") ? "Project" : "Page");
 
   return (
     <>
       <motion.header
-        animate={{ y: hidden && !isMenuOpen ? "-100%" : "0%" }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
         style={{
           position: "fixed",
           top: 0,
@@ -101,7 +68,7 @@ export default function Navbar() {
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(10,10,10,0.7)",
+            background: "rgba(0,0,0,0.7)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
             pointerEvents: "none",
@@ -121,15 +88,16 @@ export default function Navbar() {
           {/* ---- Left: Logo ---- */}
           <Link
             href="/"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 24,
-              color: "#f5f4f0",
-              textDecoration: "none",
-              letterSpacing: "0.04em",
-            }}
+            aria-label="The Joie TV — home"
+            style={{ display: "block", lineHeight: 0 }}
           >
-            JK
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="The Joie TV"
+              className="site-logo"
+              style={{ height: 38, width: "auto", display: "block" }}
+            />
           </Link>
 
           {/* ---- Right cluster ---- */}
@@ -140,29 +108,28 @@ export default function Navbar() {
               alignItems: "center",
             }}
           >
-            {/* Current page label */}
-            <span
+            {/* Always-on call to action (with the availability dot) */}
+            <Link
+              href="/contact"
               style={{
-                fontFamily: "var(--font-body)",
-                fontSize: 11,
-                fontVariant: "all-small-caps",
-                letterSpacing: "0.1em",
-                color: "#f5f4f0",
-                opacity: 0.4,
-              }}
-            >
-              {currentPage}
-            </span>
-
-            {/* Availability dot — desktop only */}
-            <div
-              className="hidden md:flex"
-              style={{
+                display: "inline-flex",
                 alignItems: "center",
                 gap: 8,
+                height: 36,
+                padding: "0 16px",
+                borderRadius: 999,
+                backgroundColor: "#f5f4f0",
+                color: "#000000",
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                fontWeight: 600,
+                letterSpacing: "0.04em",
+                textDecoration: "none",
+                whiteSpace: "nowrap",
               }}
             >
               <span
+                aria-hidden="true"
                 style={{
                   width: 6,
                   height: 6,
@@ -172,44 +139,44 @@ export default function Navbar() {
                   animation: "pulse-dot 2s ease-in-out infinite",
                 }}
               />
-              <span
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontSize: 11,
-                  letterSpacing: "0.1em",
-                  color: "#f5f4f0",
-                  opacity: 0.4,
-                  fontVariant: "all-small-caps",
-                }}
-              >
-                Available
-              </span>
-            </div>
+              Work with me
+            </Link>
 
-            {/* Hamburger */}
+            {/* Floating menu pill */}
             <button
               onClick={toggleMenu}
               aria-label="Toggle menu"
               style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
+                display: "inline-flex",
                 alignItems: "center",
-                width: 32,
-                height: 32,
-                background: "none",
-                border: "none",
-                padding: 0,
+                gap: 10,
+                height: 36,
+                padding: "0 14px",
+                borderRadius: 999,
+                backgroundColor: "rgba(255,255,255,0.1)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+                border: "1px solid rgba(255,255,255,0.18)",
+                color: "#f5f4f0",
+                fontFamily: "var(--font-body)",
+                fontSize: 12,
+                fontWeight: 500,
+                letterSpacing: "0.04em",
                 cursor: "none",
               }}
             >
+              <span>{isMenuOpen ? "Close" : "Menu"}</span>
+              <span
+                aria-hidden="true"
+                style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+              >
               <motion.span
                 variants={topLine}
                 animate={isMenuOpen ? "open" : "closed"}
                 transition={lineTransition}
                 style={{
                   display: "block",
-                  width: 28,
+                  width: 18,
                   height: 1.5,
                   backgroundColor: "#f5f4f0",
                   transformOrigin: "center center",
@@ -221,7 +188,7 @@ export default function Navbar() {
                 transition={lineTransition}
                 style={{
                   display: "block",
-                  width: 28,
+                  width: 18,
                   height: 1.5,
                   backgroundColor: "#f5f4f0",
                   marginTop: 5,
@@ -234,13 +201,14 @@ export default function Navbar() {
                 transition={lineTransition}
                 style={{
                   display: "block",
-                  width: 28,
+                  width: 18,
                   height: 1.5,
                   backgroundColor: "#f5f4f0",
                   marginTop: 5,
                   transformOrigin: "center center",
                 }}
               />
+              </span>
             </button>
           </div>
         </nav>

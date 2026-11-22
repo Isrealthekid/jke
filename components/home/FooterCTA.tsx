@@ -4,12 +4,8 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import MagneticButton from "@/components/shared/MagneticButton";
+import { SOCIALS } from "@/components/shared/socialLinks";
 
-const socials = [
-  { label: "Instagram", href: "https://www.instagram.com/joie.egbuson/" },
-  { label: "YouTube", href: "https://www.youtube.com/@JoieTVProductions" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
-];
 
 export default function FooterCTA() {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -49,7 +45,7 @@ export default function FooterCTA() {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#0a0a0a",
+        backgroundColor: "#000000",
       }}
     >
       {/* SVG noise texture overlay */}
@@ -113,7 +109,7 @@ export default function FooterCTA() {
               fontSize: 14,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: btnHovered ? "#0a0a0a" : "#f5f4f0",
+              color: btnHovered ? "#000000" : "#f5f4f0",
               backgroundColor: btnHovered ? "#f5f4f0" : "transparent",
               transition: "background-color 0.3s, color 0.3s",
               cursor: "none",
@@ -164,39 +160,33 @@ export default function FooterCTA() {
           justifyContent: "space-between",
           flexWrap: "wrap",
           gap: 16,
-          padding: "24px clamp(20px, 5vw, 48px)",
+          padding: "24px clamp(84px, 7vw, 96px) 24px clamp(20px, 5vw, 48px)", // right side clears the floating theme button
           borderTop: "0.5px solid rgba(255,255,255,0.06)",
           position: "relative",
           zIndex: 1,
         }}
       >
         {/* Left */}
-        <span style={footerTextStyle}>&copy; 2025 Joykarenate Egbuson</span>
+        <span style={footerTextStyle}>&copy; 2027 Joy Karenate-Egbuson</span>
 
         {/* Centre */}
         <span style={footerTextStyle}>Lagos, Nigeria</span>
 
         {/* Right — socials */}
-        <div style={{ display: "flex", gap: 20 }}>
-          {socials.map((s) => (
+        <div style={{ display: "flex", gap: 18 }}>
+          {SOCIALS.map((s) => (
             <a
               key={s.label}
               href={s.href}
               target="_blank"
               rel="noopener noreferrer"
-              style={{
-                ...footerTextStyle,
-                textDecoration: "none",
-                transition: "opacity 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.opacity = "0.7";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.opacity = "0.35";
-              }}
+              aria-label={s.label}
+              className="social-icon"
+              style={{ display: "block", lineHeight: 0, color: "#f5f4f0", opacity: 0.6 }}
             >
-              {s.label}
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+                {s.icon}
+              </svg>
             </a>
           ))}
         </div>
