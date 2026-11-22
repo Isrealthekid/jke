@@ -47,10 +47,10 @@ export default function ChannelCards() {
     {
       label: "YouTube",
       frontIcon: "▶",
-      backValue: "@JoieTVProductions",
+      backValue: "@thejoietv",
       backNote: "Watch the latest films & edits",
       action: () => {
-        window.open("https://www.youtube.com/@JoieTVProductions", "_blank");
+        window.open("https://www.youtube.com/@thejoietv", "_blank");
       },
     },
   ];

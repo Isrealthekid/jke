@@ -292,7 +292,7 @@ export default function FullscreenMenu() {
             >
               {[
                 { label: "Instagram", href: "https://www.instagram.com/joie.egbuson/" },
-                { label: "YouTube", href: "https://www.youtube.com/@JoieTVProductions" },
+                { label: "YouTube", href: "https://www.youtube.com/@thejoietv" },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/joykarenate-egbuson/" },
               ].map((social) => (
                 <a

@@ -12,7 +12,7 @@ const stroke = {
 export const SOCIALS: { label: string; href: string; icon: ReactNode }[] = [
   {
     label: "YouTube",
-    href: "https://www.youtube.com/@JoieTVProductions",
+    href: "https://www.youtube.com/@thejoietv",
     icon: (
       <>
         <rect x="2.5" y="5.5" width="19" height="13" rx="4" {...stroke} />
