@@ -312,3 +312,18 @@ h3:not(.no-zoom),
     display: none;
   }
 }
+
+/* ---- Phones: first screen ---- */
+@media (max-width: 640px) {
+  /* The top info line would sit underneath the Work with me / Menu buttons. */
+  .hero-meta {
+    display: none !important;
+  }
+  .hero-title {
+    font-size: 11vw !important;
+  }
+  /* Lift the social bar clear of the floating light/dark button. */
+  .hero-social-bar {
+    bottom: 88px !important;
+  }
+}

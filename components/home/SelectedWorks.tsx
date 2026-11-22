@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useCallback, type ReactNode } from "react";
+import { useRef, useCallback, useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useGSAP } from "@gsap/react";
@@ -234,6 +234,13 @@ function WorkCard({
 /* ================================================================== */
 export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
   const isMobile = useIsMobile();
+  // The first render always draws the desktop layout (before we know the screen size). Don't set
+  // up the pinned scroll until the real layout is chosen, otherwise on phones the pin is torn
+  // down mid-swap and leaves a stray card behind.
+  const [decided, setDecided] = useState(false);
+  useEffect(() => {
+    setDecided(true);
+  }, []);
   const sectionRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -246,7 +253,7 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
     () => {
       const track = trackRef.current;
       const section = sectionRef.current;
-      if (!track || !section || isMobile) return;
+      if (!track || !section || isMobile || !decided) return;
 
       const scrollLength = () => track.scrollWidth - window.innerWidth;
 
@@ -311,7 +318,7 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
 
       return () => mm.revert();
     },
-    { scope: sectionRef, dependencies: [isMobile] }
+    { scope: sectionRef, dependencies: [isMobile, decided] }
   );
 
   // ---- MOBILE: vertical stacked cards ----

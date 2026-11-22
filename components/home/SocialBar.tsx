@@ -4,6 +4,7 @@ import { SOCIALS } from "@/components/shared/socialLinks";
 export default function SocialBar() {
   return (
     <div
+      className="hero-social-bar"
       style={{
         position: "absolute",
         left: "50%",
