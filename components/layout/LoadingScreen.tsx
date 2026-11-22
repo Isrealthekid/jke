@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
 import HeroReel from "@/components/home/HeroReel";
 
-const MIN_DURATION = 1000; // ms — a fast load reads exactly 00:00:01:00 on the timecode
+const MIN_DURATION = 2500; // ms — the sweep takes this long, even on a fast load
 const MAX_DURATION = 8000; // ms — fail-safe so we never get stuck
 
 const BRAND_ORANGE = "#FF7A00";
@@ -155,12 +155,10 @@ export default function LoadingScreen() {
     const root = containerRef.current;
     const startTime = Date.now();
 
-    /* ---- One real clock drives everything ----
-       The timecode is a stopwatch for the actual load: 00:00:00:00 up to 00:00:01:00 on a fast
-       load (never faster than 1s), or longer if the page genuinely takes longer. The playhead,
-       the clips snapping in and the logo fill all follow the same progress. */
+    /* ---- One progress value drives everything ----
+       The playhead, the clips snapping in, the logo fill and the timecode all follow it. The
+       timecode runs 00:00:00:00 to 00:00:01:00 over the sweep (it stands in for a % counter). */
     let ready = false; // assets loaded and the minimum time has passed
-    let readyAt = 0; // seconds elapsed when we became ready
     const clock = { p: 0 };
     const fillEase = gsap.parseEase("power2.inOut");
     const clips = Array.from(root?.querySelectorAll<HTMLElement>(".tl-clip") ?? []).map((el) => ({
@@ -177,6 +175,7 @@ export default function LoadingScreen() {
     const render = () => {
       const p = clock.p;
       if (playheadRef.current) playheadRef.current.style.left = `${p * 100}%`;
+      if (timecodeRef.current) timecodeRef.current.textContent = fmt(p);
       if (fillRef.current) fillRef.current.style.clipPath = `inset(${(1 - fillEase(p)) * 100}% 0 0 0)`;
       clips.forEach((c) => {
         if (!c.done && p >= c.at) {
@@ -191,30 +190,17 @@ export default function LoadingScreen() {
       const frames = Math.floor((t - sec) * 24);
       return `00:00:${String(sec).padStart(2, "0")}:${String(frames).padStart(2, "0")}`;
     };
-    const updateTimecode = () => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      let t = elapsed;
-      if (ready) {
-        // A fast load lands exactly on 00:00:01:00; a slow one stops where it really finished.
-        const cap = readyAt <= 1.15 ? 1 : readyAt;
-        t = Math.min(elapsed, cap);
-      }
-      if (timecodeRef.current) timecodeRef.current.textContent = fmt(t);
-    };
-    gsap.ticker.add(updateTimecode);
-
-    // The sweep runs for 1s, but holds just short of the end until the page is really ready.
+    // The sweep takes 2.5s, but holds just short of the end until the page is really ready.
     const master = gsap.to(clock, {
       p: 1,
-      duration: 1,
+      duration: 2.5,
       ease: "none",
       onUpdate: () => {
-        if (!ready && clock.p >= 0.92) master.pause();
+        if (!ready && clock.p >= 0.98) master.pause();
         render();
       },
       onComplete: () => {
         render();
-        updateTimecode();
         animateOut();
       },
     });
@@ -222,7 +208,6 @@ export default function LoadingScreen() {
     const markReady = () => {
       if (ready) return;
       ready = true;
-      readyAt = (Date.now() - startTime) / 1000;
       master.play();
     };
 
@@ -259,7 +244,6 @@ export default function LoadingScreen() {
     const maxTimeout = window.setTimeout(markReady, MAX_DURATION);
     return () => {
       window.clearTimeout(maxTimeout);
-      gsap.ticker.remove(updateTimecode);
       master.kill();
     };
   }, [visible, animateOut]);
