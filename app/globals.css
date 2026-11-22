@@ -52,17 +52,45 @@ html.lenis body {
     transform: rotateY(360deg);
   }
 }
-.hero-char {
+/* The outer letter stays still (it owns the hover); only the inner glyph turns.
+   That stops the flicker when a turning letter goes edge-on under the cursor. */
+.hero-glyph {
+  display: inline-block;
   backface-visibility: visible;
   will-change: transform;
+  transition: color 0.35s ease;
 }
-.hero-char:hover {
-  animation: hero-char-roll 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  /* each letter turns orange, pink or yellow (set per letter in HeroReel) */
+/* each letter turns orange, pink or yellow (set per letter in HeroReel) */
+.hero-char:hover .hero-glyph {
   color: var(--hero-hover, #FF7A00);
 }
+.hero-glyph.is-rolling {
+  animation: hero-char-roll 0.8s cubic-bezier(0.45, 0, 0.2, 1);
+}
 @media (prefers-reduced-motion: reduce) {
-  .hero-char:hover {
+  .hero-glyph.is-rolling {
     animation: none;
   }
+}
+
+/* Hero top line sits beside the logo (logo is ~75px wide) */
+.hero-meta {
+  padding-left: calc(clamp(16px, 5vw, 32px) + 100px);
+  padding-right: 16px;
+}
+@media (max-width: 640px) {
+  .hero-coords {
+    display: none;
+  }
+}
+
+.hero-link {
+  transition: color 0.25s ease;
+}
+.hero-link:hover {
+  color: #FF7A00 !important;
+}
+
+html.light .site-logo {
+  filter: invert(1);
 }

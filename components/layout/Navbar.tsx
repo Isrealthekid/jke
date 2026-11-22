@@ -121,15 +121,16 @@ export default function Navbar() {
           {/* ---- Left: Logo ---- */}
           <Link
             href="/"
-            style={{
-              fontFamily: "var(--font-display)",
-              fontSize: 24,
-              color: "#f5f4f0",
-              textDecoration: "none",
-              letterSpacing: "0.04em",
-            }}
+            aria-label="The Joie TV — home"
+            style={{ display: "block", lineHeight: 0 }}
           >
-            JK
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt="The Joie TV"
+              className="site-logo"
+              style={{ height: 38, width: "auto", display: "block" }}
+            />
           </Link>
 
           {/* ---- Right cluster ---- */}

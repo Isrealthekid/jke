@@ -149,35 +149,35 @@ export default function LoadingScreen() {
           }}
         >
           {/* Ghost layer */}
-          <span
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt=""
             aria-hidden="true"
             style={{
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(120px, 22vw, 260px)",
-              color: "rgba(255,255,255,0.2)",
-              letterSpacing: "-0.02em",
+              width: "clamp(220px, 40vw, 520px)",
+              height: "auto",
               display: "block",
+              opacity: 0.2,
             }}
-          >
-            JK
-          </span>
+          />
           {/* Solid white layer with clip-path liquid fill */}
           <span
             ref={fillRef}
             aria-hidden="true"
             style={{
               position: "absolute",
-              top: 0,
-              left: 0,
-              fontFamily: "var(--font-display)",
-              fontSize: "clamp(120px, 22vw, 260px)",
-              color: "#ffffff",
-              letterSpacing: "-0.02em",
+              inset: 0,
               clipPath: "inset(100% 0 0 0)",
               display: "block",
             }}
           >
-            JK
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo.png"
+              alt=""
+              style={{ width: "100%", height: "auto", display: "block" }}
+            />
           </span>
           <span
             style={{
@@ -192,7 +192,7 @@ export default function LoadingScreen() {
               border: 0,
             }}
           >
-            JK
+            The Joie TV
           </span>
         </div>
       </div>

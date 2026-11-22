@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 
@@ -20,19 +21,35 @@ function formatLagosClock(now: Date): string {
   return `${hours}:${String(mins).padStart(2, "0")} ${ampm} GMT+1`;
 }
 
+/* Play the roll once per hover. The hover target (outer span) never moves, so the
+   letter can't flicker when it turns edge-on under the cursor. */
+function rollLetter(e: React.MouseEvent<HTMLSpanElement>) {
+  const glyph = e.currentTarget.firstElementChild as HTMLElement | null;
+  if (!glyph || glyph.classList.contains("is-rolling")) return;
+  glyph.classList.add("is-rolling");
+  glyph.addEventListener(
+    "animationend",
+    () => glyph.classList.remove("is-rolling"),
+    { once: true }
+  );
+}
+
+const LINK_STYLE: React.CSSProperties = {
+  color: "#ffffff",
+  textDecoration: "none",
+};
+
 export default function HeroReel() {
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const clockRef = useRef<HTMLSpanElement>(null);
-  const yearRef = useRef<HTMLSpanElement>(null);
 
-  /* Drive clock + year via refs (no React re-render) so the GSAP-animated
+  /* Drive the clock via a ref (no React re-render) so the GSAP-animated
      hero-char spans don't reconcile mid-animation. */
   useEffect(() => {
     const update = () => {
-      const d = new Date();
-      if (clockRef.current) clockRef.current.textContent = formatLagosClock(d);
-      if (yearRef.current) yearRef.current.textContent = String(d.getFullYear());
+      if (clockRef.current)
+        clockRef.current.textContent = formatLagosClock(new Date());
     };
     update();
     const id = window.setInterval(update, 1000);
@@ -83,15 +100,16 @@ export default function HeroReel() {
         }}
       />
 
-      {/* ---- Top metadata bar ---- */}
+      {/* ---- Top metadata bar: same line as the logo, shifted right to sit beside it ---- */}
       <div
+        className="hero-meta"
         style={{
           position: "relative",
           zIndex: 2,
           display: "flex",
           alignItems: "center",
           gap: 32,
-          padding: "20px 32px 0",
+          height: 64,
           fontFamily: "var(--font-body)",
           fontSize: 11,
           letterSpacing: "0.18em",
@@ -114,7 +132,7 @@ export default function HeroReel() {
         <span ref={clockRef} style={{ fontVariantNumeric: "tabular-nums" }}>
           —
         </span>
-        <span>6.5244° N, 3.3792° E</span>
+        <span className="hero-coords">6.5244° N, 3.3792° E</span>
       </div>
 
       {/* ---- Full-bleed name with per-char effect ---- */}
@@ -143,17 +161,16 @@ export default function HeroReel() {
             key={`${char}-${i}`}
             aria-hidden="true"
             className="hero-char"
+            onMouseEnter={rollLetter}
             style={
               {
                 display: "inline-block",
                 whiteSpace: "pre",
-                transformStyle: "preserve-3d",
-                transformOrigin: "50% 60%",
                 "--hero-hover": HERO_COLOURS[i % HERO_COLOURS.length],
               } as React.CSSProperties
             }
           >
-            {char === " " ? " " : char}
+            <span className="hero-glyph">{char === " " ? " " : char}</span>
           </span>
         ))}
       </h1>
@@ -164,12 +181,13 @@ export default function HeroReel() {
           position: "relative",
           zIndex: 2,
           margin: 0,
-          padding: "12px 16px 0",
+          padding: "14px 16px 0",
           textAlign: "center",
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(24px, 4vw, 64px)",
-          letterSpacing: "0.04em",
-          lineHeight: 1,
+          fontFamily: "var(--font-body)",
+          fontWeight: 500,
+          fontSize: "clamp(15px, 2.2vw, 34px)",
+          letterSpacing: "0.01em",
+          lineHeight: 1.1,
           color: "#ffffff",
         }}
       >
@@ -177,28 +195,7 @@ export default function HeroReel() {
         Karenate-Egbuson
       </p>
 
-      {/* ---- Center metadata row ---- */}
-      <div
-        style={{
-          position: "relative",
-          zIndex: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "16px clamp(24px, 30%, 30%)",
-          fontFamily: "var(--font-body)",
-          fontSize: 11,
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          color: "#aaaaaa",
-        }}
-      >
-        <span>BASED IN LAGOS</span>
-        <span ref={yearRef} style={{ fontVariantNumeric: "tabular-nums" }}>
-          —
-        </span>
-      </div>
-
-      {/* ---- Subtitle (smaller, no hover image) ---- */}
+      {/* ---- EDITING · FILM (both are links) ---- */}
       <div
         style={{
           position: "relative",
@@ -206,66 +203,50 @@ export default function HeroReel() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          gap: 24,
-          marginBottom: "auto",
-          paddingBottom: 56,
+          gap: 20,
+          marginTop: 28,
+          fontFamily: "var(--font-body)",
+          fontWeight: 600,
+          fontSize: "clamp(13px, 1.5vw, 22px)",
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          lineHeight: 1,
         }}
       >
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
-        >
-          SOCIAL MEDIA
-        </span>
-        <span
-          aria-hidden="true"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "rgba(255,255,255,0.4)",
-            lineHeight: 1,
-          }}
-        >
+        <Link href="/work" className="hero-link" style={LINK_STYLE}>
+          Editing
+        </Link>
+        <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.4)" }}>
           ·
         </span>
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
+        <a
+          href="https://films.thejoietv.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hero-link"
+          style={LINK_STYLE}
         >
-          VIDEO
-        </span>
-        <span
-          aria-hidden="true"
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "rgba(255,255,255,0.4)",
-            lineHeight: 1,
-          }}
-        >
-          ·
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(20px, 2.6vw, 44px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "0.02em",
-          }}
-        >
-          FILM
-        </span>
+          Film
+        </a>
+      </div>
+
+      {/* ---- Location ---- */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          marginBottom: "auto",
+          paddingTop: 28,
+          paddingBottom: 56,
+          textAlign: "center",
+          fontFamily: "var(--font-body)",
+          fontSize: 11,
+          letterSpacing: "0.4em",
+          textTransform: "uppercase",
+          color: "#aaaaaa",
+        }}
+      >
+        Lagos, Nigeria
       </div>
     </section>
   );
