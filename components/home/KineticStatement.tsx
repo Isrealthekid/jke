@@ -21,12 +21,7 @@ const fixed = (n: number) => {
  *   2. then the wind takes the dust away.
  * Scrolling back plays it in reverse: the dust blows back in, gathers, and re-forms the letters.
  */
-export default function KineticStatement({
-  embedded = false,
-}: {
-  /** Sits at the bottom of the hero screen instead of being its own section. */
-  embedded?: boolean;
-}) {
+export default function KineticStatement() {
   const sectionRef = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -43,7 +38,7 @@ export default function KineticStatement({
         section.querySelectorAll(".ks-speck")
       );
 
-      const crumbleEach = 0.05; // gap between one letter and the next, left to right
+      const crumbleEach = 0.022; // gap between one letter and the next, left to right
       const crumbleSpan = letters.length * crumbleEach;
 
       // The timeline runs "whole -> dust -> gone". Scrolling away plays it, scrolling back reverses it.
@@ -56,36 +51,39 @@ export default function KineticStatement({
           opacity: 0,
           y: 10,
           filter: "blur(5px)",
-          duration: 0.55,
+          duration: 0.3,
           ease: "power1.in",
           stagger: { each: crumbleEach, from: "start" },
         },
         0
       );
-      // ...and drop into dust that settles at the foot of each letter.
+      // ...and fall to the floor (the bottom of the line), where the dust lies in a heap.
       tl.to(
         specks,
         {
           opacity: 1,
-          y: () => rand(4, 30),
-          x: () => rand(-8, 8),
-          duration: 0.6,
-          ease: "power2.out",
+          y: (_i: number, el: HTMLElement) => {
+            const letterBox = el.parentElement as HTMLElement;
+            return letterBox.clientHeight * 0.92 - el.offsetTop - rand(0, 9);
+          },
+          x: () => rand(-14, 14),
+          duration: 0.45,
+          ease: "power2.in", // gravity: speeds up as it falls
           stagger: { amount: crumbleSpan, from: "start" },
         },
-        0.1
+        0.05
       );
 
-      // 2. A beat for the dust to settle, then the wind blows it away, left to right.
-      const blowAt = crumbleSpan + 0.9;
+      // 2. A short beat on the floor, then the wind lifts the dust and carries it away, left to right.
+      const blowAt = crumbleSpan + 0.5;
       tl.to(
         specks,
         {
-          x: () => "+=" + rand(220, 640),
-          y: () => "+=" + rand(-190, -20),
+          x: () => "+=" + rand(240, 640),
+          y: () => "+=" + rand(-150, -15),
           opacity: 0,
           scale: () => rand(0.2, 0.8),
-          duration: 1.5,
+          duration: 0.8,
           ease: "power1.in",
           stagger: { amount: crumbleSpan, from: "start" },
         },
@@ -95,14 +93,14 @@ export default function KineticStatement({
       // Start in the "gone" state (nothing visible) and wait for the scroll.
       tl.progress(1).pause();
 
-      const reform = () => tl.timeScale(1.6).reverse();
-      const snap = () => tl.timeScale(1.1).play();
+      const reform = () => tl.timeScale(2).reverse();
+      const snap = () => tl.timeScale(1.4).play();
 
       ScrollTrigger.create({
         trigger: section,
-        // Forms as soon as it's on screen; starts to crumble once it's moved up the screen a bit.
-        start: embedded ? "top 95%" : "top 70%",
-        end: embedded ? "bottom 70%" : "bottom 30%",
+        // Forms as it comes into view; crumbles as it leaves.
+        start: "top 55%",
+        end: "bottom 80%",
         onEnter: reform,
         onEnterBack: reform,
         onLeave: snap,
@@ -111,7 +109,7 @@ export default function KineticStatement({
         onRefresh: (self) => {
           if (self.isActive && tl.progress() === 1 && !tl.reversed()) {
             // On first load, wait for the loading screen to lift before it forms.
-            gsap.delayedCall(window.scrollY === 0 ? 3.2 : 0, reform);
+            gsap.delayedCall(window.scrollY === 0 ? 2.9 : 0, reform);
           }
         },
       });
@@ -122,21 +120,15 @@ export default function KineticStatement({
   return (
     <section
       ref={sectionRef}
-      style={
-        embedded
-          ? {
-              position: "relative",
-              zIndex: 2,
-              marginTop: "auto",
-              padding:
-                "clamp(24px, 4vw, 48px) clamp(20px, 5vw, 48px) clamp(40px, 6vw, 72px)",
-            }
-          : {
-              padding: "clamp(80px, 12vw, 160px) clamp(20px, 5vw, 48px)",
-              backgroundColor: "#0a0a0a",
-              overflow: "hidden",
-            }
-      }
+      style={{
+        // Its own full screen, with the line in the middle.
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        padding: "80px clamp(20px, 5vw, 48px)",
+        backgroundColor: "#0a0a0a",
+        overflow: "hidden",
+      }}
     >
       <p
         aria-label={STATEMENT}
