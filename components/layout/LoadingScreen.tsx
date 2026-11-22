@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
+import HeroReel from "@/components/home/HeroReel";
 
-const MIN_DURATION = 2500; // ms — matches the liquid-fill animation
+const MIN_DURATION = 2500; // ms — matches the timeline sweep and the logo fill
 const MAX_DURATION = 8000; // ms — fail-safe so we never get stuck
 
 const BRAND_ORANGE = "#FF7A00";
@@ -19,12 +20,73 @@ function getLandingAssets(): string[] {
   return Array.from(set);
 }
 
+/** How small the preview monitor starts out (1 = full screen). */
+const monitorScale = () => (window.innerWidth < 700 ? 0.6 : 0.46);
+
+/* Static copy of the top bar, so the preview matches the real home page. */
+const PILL: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 8,
+  height: 36,
+  padding: "0 16px",
+  borderRadius: 999,
+  fontFamily: "var(--font-body)",
+  fontSize: 12,
+  whiteSpace: "nowrap",
+};
+
+function PreviewTopBar() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 64,
+        padding: "0 clamp(16px, 5vw, 32px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        zIndex: 5,
+      }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo.png" alt="" style={{ height: 38, width: "auto", display: "block" }} />
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <span style={{ ...PILL, background: "#f5f4f0", color: "#000", fontWeight: 600 }}>
+          <i
+            style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "block" }}
+          />
+          Work with me
+        </span>
+        <span
+          style={{
+            ...PILL,
+            background: "rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.18)",
+            color: "#f5f4f0",
+            fontWeight: 500,
+          }}
+        >
+          Menu
+          <span style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
+            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
+            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
+          </span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export default function LoadingScreen() {
   const [visible, setVisible] = useState<boolean | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLSpanElement>(null);
-  const progressRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
   const playheadRef = useRef<HTMLDivElement>(null);
   const timecodeRef = useRef<HTMLSpanElement>(null);
   const exitedRef = useRef(false);
@@ -33,31 +95,49 @@ export default function LoadingScreen() {
     setVisible(true);
   }, []);
 
+  /* When the sequence is done: the logo and timeline give way to a Premiere-style program
+     monitor showing the home page, which then zooms up to fill the screen. */
   const animateOut = useCallback(() => {
     if (exitedRef.current) return;
     exitedRef.current = true;
-    const finalize = () => {
-      setVisible(false);
-    };
-    if (!containerRef.current) {
+    const root = containerRef.current;
+    const finalize = () => setVisible(false);
+    if (!root) {
       finalize();
       return;
     }
-    // 400ms hold at 100% then slide up
-    const target = containerRef.current;
-    window.setTimeout(() => {
-      gsap.to(target, {
-        yPercent: -100,
-        duration: 0.6,
-        ease: "power3.inOut",
-        onComplete: finalize,
-      });
-    }, 400);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      gsap.to(root, { opacity: 0, duration: 0.3, onComplete: finalize });
+      return;
+    }
+
+    const group = root.querySelector<HTMLElement>(".pm-group");
+    const frame = root.querySelector<HTMLElement>(".pm-frame");
+    const fadeOut = root.querySelectorAll<HTMLElement>(".pm-fade");
+    if (!group || !frame) {
+      finalize();
+      return;
+    }
+    const k = monitorScale();
+
+    const tl = gsap.timeline({ onComplete: finalize });
+    // 1. Logo and timeline fade away...
+    tl.to(fadeOut, { opacity: 0, duration: 0.4, ease: "power2.in" }, 0.25);
+    // 2. ...and the preview monitor appears, small, in the middle.
+    tl.fromTo(
+      group,
+      { opacity: 0, scale: k * 0.9 },
+      { opacity: 1, scale: k, duration: 0.6, ease: "power3.out" },
+      0.5
+    );
+    // 3. A beat on the preview, then it opens up to fill the whole screen.
+    tl.to(group, { scale: 1, duration: 1.25, ease: "power4.inOut" }, "+=0.8");
+    tl.to(frame, { borderRadius: 0, duration: 0.9, ease: "power2.inOut" }, "<0.1");
   }, []);
 
   useEffect(() => {
     if (!visible) return;
-    if (!fillRef.current || !progressRef.current || !counterRef.current) return;
+    if (!fillRef.current) return;
 
     // Liquid fill: rises from bottom to top through the letterforms
     gsap.fromTo(
@@ -101,24 +181,11 @@ export default function LoadingScreen() {
       });
     }
 
-    /* ---- Real asset preload drives counter + progress bar ---- */
+    /* ---- Real asset preload decides when we're ready to open ---- */
     const startTime = Date.now();
     const assets = getLandingAssets();
     const total = Math.max(1, assets.length + 1); // +1 for fonts
     let loaded = 0;
-
-    const setProgress = (value: number) => {
-      const pct = Math.round(value * 100);
-      if (counterRef.current) counterRef.current.textContent = `${pct}%`;
-      if (progressRef.current) {
-        gsap.to(progressRef.current, {
-          scaleX: value,
-          duration: 0.35,
-          ease: "power2.out",
-          overwrite: true,
-        });
-      }
-    };
 
     const finalizeIfReady = () => {
       if (loaded < total) return;
@@ -129,7 +196,6 @@ export default function LoadingScreen() {
 
     const tick = () => {
       loaded++;
-      setProgress(loaded / total);
       finalizeIfReady();
     };
 
@@ -164,7 +230,7 @@ export default function LoadingScreen() {
       }}
     >
       {/* ---- Editing timeline ---- */}
-      <div className="tl-panel" aria-hidden="true">
+      <div className="tl-panel pm-fade" aria-hidden="true">
         <div className="tl-head">
           <span ref={timecodeRef} className="tl-timecode">
             00:00:00:00
@@ -200,15 +266,17 @@ export default function LoadingScreen() {
         </div>
       </div>
 
-      {/* ---- Center: liquid-fill logo ---- */}
+      {/* ---- Logo, centred in the space above the timeline ---- */}
       <div
+        className="pm-fade"
         style={{
           position: "absolute",
           inset: 0,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: 24,
+          padding:
+            "24px 24px calc(clamp(28px, 3.4vw, 56px) + clamp(120px, 11vw, 160px) + 16px)",
         }}
       >
         <div
@@ -267,63 +335,28 @@ export default function LoadingScreen() {
         </div>
       </div>
 
-      {/* ---- Bottom-left counter ---- */}
-      <div
-        style={{
-          position: "absolute",
-          left: "clamp(20px, 5vw, 72px)",
-          bottom: "clamp(28px, 3.4vw, 56px)",
-          display: "flex",
-          alignItems: "baseline",
-          gap: 14,
-        }}
-      >
-        <span
-          ref={counterRef}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "clamp(48px, 5vw, 80px)",
-            color: "#ffffff",
-            lineHeight: 1,
-            letterSpacing: "-0.02em",
-          }}
-        >
-          0%
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--font-body)",
-            fontSize: 14,
-            color: "rgba(255,255,255,0.7)",
-            letterSpacing: "0.02em",
-          }}
-        >
-          [Loading...]
-        </span>
-      </div>
-
-      {/* ---- Bottom progress bar ---- */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
-          height: 4,
-          backgroundColor: "rgba(255,255,255,0.25)",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          ref={progressRef}
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "#ffffff",
-            transformOrigin: "left center",
-            transform: "scaleX(0)",
-          }}
-        />
+      {/* ---- Preview monitor (like Premiere's Program monitor), shown at the end ---- */}
+      <div className="pm-group" aria-hidden="true" style={{ opacity: 0 }}>
+        <div className="pm-panel" />
+        <div className="pm-header">
+          <span>Program: The Joie TV</span>
+          <span className="pm-menu">&#8801;</span>
+        </div>
+        <div className="pm-frame">
+          <div className="pm-stage">
+            <PreviewTopBar />
+            <HeroReel instant />
+          </div>
+        </div>
+        <div className="pm-footer">
+          <span className="pm-time">00:00:02:12</span>
+          <span className="pm-transport">
+            <i className="pm-prev" />
+            <i className="pm-play" />
+            <i className="pm-next" />
+          </span>
+          <span className="pm-fit">Fit &nbsp; 1/2</span>
+        </div>
       </div>
     </div>
   );

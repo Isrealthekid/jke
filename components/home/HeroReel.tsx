@@ -40,7 +40,7 @@ const LINK_STYLE: React.CSSProperties = {
   textDecoration: "none",
 };
 
-export default function HeroReel() {
+export default function HeroReel({ instant = false }: { instant?: boolean } = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const nameRef = useRef<HTMLHeadingElement>(null);
   const clockRef = useRef<HTMLSpanElement>(null);
@@ -59,7 +59,7 @@ export default function HeroReel() {
 
   useGSAP(
     () => {
-      if (!nameRef.current) return;
+      if (!nameRef.current || instant) return; // the loader preview shows the finished hero
       gsap.from(nameRef.current.querySelectorAll(".hero-char"), {
         y: 60,
         opacity: 0,
