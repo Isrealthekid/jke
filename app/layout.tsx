@@ -3,7 +3,7 @@ import { Bowlby_One, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { MenuProvider } from "@/components/layout/MenuContext";
 import Navbar from "@/components/layout/Navbar";
-import FooterCTA from "@/components/home/FooterCTA";
+import SiteFooter from "@/components/layout/SiteFooter";
 import CustomCursor from "@/components/layout/CustomCursor";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
@@ -63,9 +63,21 @@ export default function RootLayout({
               <CustomCursor />
               <Navbar />
               <ThemeToggle />
+              <div
+                aria-hidden="true"
+                className="light-flip"
+                style={{
+                  position: "fixed",
+                  inset: 0,
+                  zIndex: 99990,
+                  pointerEvents: "none",
+                  backdropFilter: "invert(1) hue-rotate(180deg)",
+                  WebkitBackdropFilter: "invert(1) hue-rotate(180deg)",
+                }}
+              />
               <PageTransition>
                 {children}
-                <FooterCTA />
+                <SiteFooter />
               </PageTransition>
             </SmoothScrollProvider>
           </MenuProvider>

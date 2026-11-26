@@ -1,13 +1,26 @@
 "use client";
 
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, type ReactNode } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import { useIsMobile } from "@/lib/useIsMobile";
+import { SOCIALS } from "@/components/shared/socialLinks";
+
+const EMAIL = "jkarenateegbuson@gmail.com";
+
+const stroke = {
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 1.7,
+  strokeLinecap: "round" as const,
+  strokeLinejoin: "round" as const,
+};
+
+const social = (label: string) => SOCIALS.find((s) => s.label === label)!;
 
 interface Channel {
   label: string;
-  frontIcon: string;
+  icon: ReactNode;
   backValue: string;
   backNote: string;
   action: () => void;
@@ -27,52 +40,51 @@ export default function ChannelCards() {
   const channels: Channel[] = [
     {
       label: "Email",
-      frontIcon: "✉",
-      backValue: "jkarenateegbuson@gmail.com",
-      backNote: "Best for project enquiries",
+      icon: (
+        <>
+          <rect x="2.5" y="5" width="19" height="14" rx="3.5" {...stroke} />
+          <path d="m3.5 7.5 8.5 6 8.5-6" {...stroke} />
+        </>
+      ),
+      backValue: EMAIL,
+      backNote: "Tap to copy · best for project enquiries",
       action: () => {
-        navigator.clipboard.writeText("jkarenateegbuson@gmail.com");
+        navigator.clipboard?.writeText(EMAIL);
         showToast();
       },
     },
     {
       label: "Instagram",
-      frontIcon: "◎",
+      icon: social("Instagram").icon,
       backValue: "@joie.egbuson",
       backNote: "Best for quick chats & collabs",
-      action: () => {
-        window.open("https://www.instagram.com/joie.egbuson/", "_blank");
-      },
+      action: () => window.open(social("Instagram").href, "_blank", "noopener"),
     },
     {
       label: "YouTube",
-      frontIcon: "▶",
+      icon: social("YouTube").icon,
       backValue: "@thejoietv",
       backNote: "Watch the latest films & edits",
-      action: () => {
-        window.open("https://www.youtube.com/@thejoietv", "_blank");
-      },
+      action: () => window.open(social("YouTube").href, "_blank", "noopener"),
+    },
+    {
+      label: "LinkedIn",
+      icon: social("LinkedIn").icon,
+      backValue: "Joykarenate Egbuson",
+      backNote: "Best for business & partnerships",
+      action: () => window.open(social("LinkedIn").href, "_blank", "noopener"),
     },
   ];
 
-  // Fly-in animation on mount
+  // Fly-in on mount. Only the outer wrapper moves, so the flip below never fights it.
   useGSAP(
     () => {
       const cards = containerRef.current?.querySelectorAll(".channel-card");
       if (!cards) return;
-
       gsap.fromTo(
         cards,
-        { y: -200, opacity: 0, scale: 0.85 },
-        {
-          y: 0,
-          opacity: 1,
-          scale: 1,
-          stagger: 0.12,
-          duration: 0.7,
-          ease: "power3.out",
-          delay: 0.3,
-        }
+        { y: -120, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power3.out", delay: 0.3, clearProps: "transform" }
       );
     },
     { scope: containerRef }
@@ -80,161 +92,50 @@ export default function ChannelCards() {
 
   return (
     <div ref={containerRef} style={{ position: "relative" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 12 }}>
+      <div className="channel-grid">
         {channels.map((ch) => {
           const isFlipped = flipped === ch.label;
           return (
-          <div
-            key={ch.label}
-            className="channel-card"
-            onClick={() => {
-              if (isMobile) {
-                if (isFlipped) {
-                  ch.action();
-                  setFlipped(null);
-                } else {
-                  setFlipped(ch.label);
-                }
-              } else {
-                ch.action();
-              }
-            }}
-            style={{
-              width: "100%",
-              minHeight: 180,
-              perspective: 1000,
-              cursor: "none",
-              opacity: 0,
-            }}
-          >
             <div
-              className="channel-inner"
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                transformStyle: "preserve-3d",
-                transition: "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-                transform: isMobile && isFlipped ? "rotateY(180deg)" : undefined,
+              key={ch.label}
+              className={`channel-card${isFlipped ? " is-flipped" : ""}`}
+              role="button"
+              tabIndex={0}
+              aria-label={ch.label}
+              onClick={() => {
+                if (isMobile) {
+                  if (isFlipped) {
+                    ch.action();
+                    setFlipped(null);
+                  } else setFlipped(ch.label);
+                } else ch.action();
               }}
-              onMouseEnter={isMobile ? undefined : (e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "rotateY(180deg)";
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  ch.action();
+                }
               }}
-              onMouseLeave={isMobile ? undefined : (e) => {
-                (e.currentTarget as HTMLElement).style.transform =
-                  "rotateY(0deg)";
-              }}
+              style={{ opacity: 0 }}
             >
-              {/* FRONT */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: 20,
-                  border: "1px solid rgba(245,244,240,0.08)",
-                  backgroundColor: "#111",
-                  backfaceVisibility: "hidden",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 16,
-                }}
-              >
-                <span style={{ fontSize: 36 }}>{ch.frontIcon}</span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    fontSize: 22,
-                    color: "#f5f4f0",
-                  }}
-                >
-                  {ch.label}
-                </span>
-              </div>
-
-              {/* BACK */}
-              <div
-                style={{
-                  position: "absolute",
-                  inset: 0,
-                  borderRadius: 20,
-                  border: "1px solid rgba(200,255,0,0.2)",
-                  backgroundColor: "#111",
-                  backfaceVisibility: "hidden",
-                  transform: "rotateY(180deg)",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  padding: 24,
-                  textAlign: "center",
-                }}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: 14,
-                    fontWeight: 500,
-                    color: "#FF7A00",
-                    wordBreak: "break-all",
-                  }}
-                >
-                  {ch.backValue}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-body)",
-                    fontSize: 12,
-                    color: "rgba(245,244,240,0.4)",
-                  }}
-                >
-                  {ch.backNote}
-                </span>
+              <div className="channel-inner">
+                <div className="channel-face channel-front">
+                  <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style={{ color: "#f5f4f0" }}>
+                    {ch.icon}
+                  </svg>
+                  <span className="channel-label">{ch.label}</span>
+                </div>
+                <div className="channel-face channel-back">
+                  <span className="channel-value">{ch.backValue}</span>
+                  <span className="channel-note">{ch.backNote}</span>
+                </div>
               </div>
             </div>
-          </div>
           );
         })}
       </div>
 
-      {/* Toast */}
-      {toast && (
-        <div
-          style={{
-            position: "fixed",
-            bottom: 32,
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "12px 24px",
-            borderRadius: 100,
-            backgroundColor: "#FF7A00",
-            color: "#000000",
-            fontFamily: "var(--font-body)",
-            fontSize: 13,
-            fontWeight: 600,
-            zIndex: 9999,
-            animation: "toast-in 0.3s ease-out",
-          }}
-        >
-          Copied!
-        </div>
-      )}
-
-      <style jsx>{`
-        @keyframes toast-in {
-          from {
-            opacity: 0;
-            transform: translateX(-50%) translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-          }
-        }
-      `}</style>
+      {toast && <div className="channel-toast">Copied!</div>}
     </div>
   );
 }

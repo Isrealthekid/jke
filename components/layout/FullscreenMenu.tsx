@@ -605,6 +605,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
           {tiles.map((t, i) => (
             <div
               key={i}
+              className="keep-colors"
               style={{
                 gridColumn: t.span,
                 background: t.bg,

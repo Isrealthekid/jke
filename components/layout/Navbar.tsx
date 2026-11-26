@@ -95,8 +95,16 @@ export default function Navbar() {
             <img
               src="/logo.png"
               alt="The Joie TV"
-              className="site-logo"
+              className="site-logo logo-on-dark"
               style={{ height: 38, width: "auto", display: "block" }}
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo-dark.png"
+              alt=""
+              aria-hidden="true"
+              className="site-logo logo-on-light"
+              style={{ height: 38, width: "auto", display: "none" }}
             />
           </Link>
 

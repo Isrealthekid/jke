@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import { gsap } from "@/lib/gsap";
 import MagneticButton from "@/components/shared/MagneticButton";
-import { SOCIALS } from "@/components/shared/socialLinks";
 
 
 export default function FooterCTA() {
@@ -42,7 +41,7 @@ export default function FooterCTA() {
       style={{
         position: "relative",
         width: "100%",
-        minHeight: "100vh",
+        minHeight: "calc(100vh - 72px)",
         display: "flex",
         flexDirection: "column",
         backgroundColor: "#000000",
@@ -151,55 +150,6 @@ export default function FooterCTA() {
           </a>
         </p>
       </div>
-
-      {/* Footer bar */}
-      <footer
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 16,
-          padding: "24px clamp(84px, 7vw, 96px) 24px clamp(20px, 5vw, 48px)", // right side clears the floating theme button
-          borderTop: "0.5px solid rgba(255,255,255,0.06)",
-          position: "relative",
-          zIndex: 1,
-        }}
-      >
-        {/* Left */}
-        <span style={footerTextStyle}>&copy; 2027 Joy Karenate-Egbuson</span>
-
-        {/* Centre */}
-        <span style={footerTextStyle}>Lagos, Nigeria</span>
-
-        {/* Right — socials */}
-        <div style={{ display: "flex", gap: 18 }}>
-          {SOCIALS.map((s) => (
-            <a
-              key={s.label}
-              href={s.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={s.label}
-              className="social-icon"
-              style={{ display: "block", lineHeight: 0, color: "#f5f4f0", opacity: 0.6 }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
-                {s.icon}
-              </svg>
-            </a>
-          ))}
-        </div>
-      </footer>
     </section>
   );
 }
-
-const footerTextStyle: React.CSSProperties = {
-  fontFamily: "var(--font-body)",
-  fontSize: 11,
-  letterSpacing: "0.1em",
-  textTransform: "uppercase",
-  color: "#f5f4f0",
-  opacity: 0.35,
-};

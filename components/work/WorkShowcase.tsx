@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { projects, type Project } from "@/data/projects";
 
@@ -24,6 +24,90 @@ function useColumnCount() {
   return n;
 }
 
+/** YouTube ID from an embed URL, or null for TikTok / Instagram (those can't autoplay muted). */
+function youtubeId(url?: string) {
+  const m = url?.match(/youtube\.com\/embed\/([\w-]{11})/);
+  return m ? m[1] : null;
+}
+
+/** Plays a YouTube clip silently on a loop, but only while its tile is on screen. */
+function AutoClip({ id, tall }: { id: string; tall: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      setVisible(e.isIntersecting);
+      if (!e.isIntersecting) setReady(false);
+    }, {
+      rootMargin: "120px",
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className="stagger-clip" aria-hidden="true">
+      {visible && (
+        <iframe
+          className={tall ? "is-tall" : "is-wide"}
+          src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&playsinline=1&modestbranding=1&rel=0&disablekb=1&iv_load_policy=3`}
+          title=""
+          tabIndex={-1}
+          // The player paints black until the video starts, so it only fades in a moment after loading.
+          onLoad={() => setTimeout(() => setReady(true), 1800)}
+          style={{ opacity: ready ? 1 : 0, transition: "opacity 0.6s ease" }}
+          allow="autoplay; encrypted-media"
+        />
+      )}
+    </div>
+  );
+}
+
+/** Bends the tiles like a fish-eye lens: bigger in the middle of the screen, smaller and tilted at the edges. */
+function useFisheye(rootRef: React.RefObject<HTMLDivElement | null>, dep: unknown) {
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+
+    const apply = () => {
+      raf = 0;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      root.querySelectorAll<HTMLElement>(".stagger-tile").forEach((tile) => {
+        const lens = tile.firstElementChild as HTMLElement | null;
+        if (!lens) return;
+        const r = tile.getBoundingClientRect();
+        if (r.bottom < -200 || r.top > vh + 200) return;
+        const dx = (r.left + r.width / 2 - vw / 2) / (vw / 2);
+        const dy = (r.top + r.height / 2 - vh / 2) / (vh / 2);
+        const d2 = Math.min(dx * dx + dy * dy, 2.2);
+        const scale = 1.05 - 0.2 * d2;
+        const rotY = -dx * 16;
+        const rotX = dy * 12;
+        lens.style.transform = `perspective(1100px) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      });
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+
+    apply();
+    window.addEventListener("scroll", queue, { passive: true });
+    window.addEventListener("resize", queue);
+    return () => {
+      window.removeEventListener("scroll", queue);
+      window.removeEventListener("resize", queue);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [rootRef, dep]);
+}
+
 /**
  * The Works page: staggered columns of rounded images, with the title and filters sitting in the
  * top-left corner. To add work, add it to data/projects.ts and it drops into the next free column.
@@ -32,12 +116,14 @@ export default function WorkShowcase() {
   const [active, setActive] = useState<(typeof FILTERS)[number]>("All");
   const cols = useColumnCount();
   const list = active === "All" ? projects : projects.filter((p) => p.category === active);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useFisheye(rootRef, `${active}-${cols}`);
 
   const columns: { p: Project; n: number }[][] = Array.from({ length: cols }, () => []);
   list.forEach((p, i) => columns[i % cols].push({ p, n: i }));
 
   return (
-    <div className="stagger">
+    <div className="stagger" ref={rootRef}>
       {columns.map((col, ci) => (
         <div
           key={ci}
@@ -71,17 +157,20 @@ export default function WorkShowcase() {
             const tall = p.category === "Edits";
             const shapes = tall ? SHAPES_TALL : SHAPES_WIDE;
             return (
-              <Link key={p.slug} href={`/work/${p.slug}`} className="stagger-tile">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.thumbnail}
-                  alt={p.title}
-                  loading="lazy"
-                  style={{ aspectRatio: shapes[(k + ci) % shapes.length] }}
-                />
-                <span className="stagger-cap">
-                  <span className="stagger-cap-num">{String(n + 1).padStart(2, "0")}</span>
-                  <span className="stagger-cap-title">{p.title}</span>
+              <Link
+                key={p.slug}
+                href={`/work/${p.slug}`}
+                className="stagger-tile"
+                style={{ aspectRatio: shapes[(k + ci) % shapes.length] }}
+              >
+                <span className="stagger-lens">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.thumbnail} alt={p.title} loading="lazy" />
+                  {youtubeId(p.videoUrl) && <AutoClip id={youtubeId(p.videoUrl)!} tall={tall} />}
+                  <span className="stagger-cap">
+                    <span className="stagger-cap-num">{String(n + 1).padStart(2, "0")}</span>
+                    <span className="stagger-cap-title">{p.title}</span>
+                  </span>
                 </span>
               </Link>
             );

@@ -5,12 +5,11 @@ const FILMS_URL = "https://films.thejoietv.com";
 const PINK = "#C6249B";
 
 const films = projects.filter((p) => p.category === "Film");
-const onScreen = projects.filter(
-  (p) => p.category === "Film" || p.category === "Video Edit"
-);
+// Just the four films for now; the full list lives on films.thejoietv.com.
+const onScreen = films.slice(0, 4);
 
 /**
- * "On the screen": the films series card plus an index of films and video edits.
+ * "On the screen": the films series card plus an index of the first four films.
  * On large screens this is a full-screen panel that slides up over the "What I do" cards
  * (and the Edits showcase then slides up over it), see .stack-panel in globals.css.
  */

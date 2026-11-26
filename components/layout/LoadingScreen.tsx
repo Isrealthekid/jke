@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap } from "@/lib/gsap";
 import { projects, PLACEHOLDER_IMAGES } from "@/data/projects";
-import HeroReel from "@/components/home/HeroReel";
+import RoutePreview from "./RoutePreview";
 
 const MIN_DURATION = 2500; // ms — the sweep takes this long, even on a fast load
 const MAX_DURATION = 8000; // ms — fail-safe so we never get stuck
@@ -54,7 +54,9 @@ function PreviewTopBar() {
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/logo.png" alt="" style={{ height: 38, width: "auto", display: "block" }} />
+      <img src="/logo.png" alt="" className="logo-on-dark" style={{ height: 38, width: "auto", display: "block" }} />
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/logo-dark.png" alt="" className="logo-on-light" style={{ height: 38, width: "auto", display: "none" }} />
       <div style={{ display: "flex", alignItems: "center", gap: window.innerWidth >= 768 ? 24 : 16 }}>
         <span style={{ ...PILL, background: "#f5f4f0", color: "#000", fontWeight: 600 }}>
           <i
@@ -263,6 +265,7 @@ export default function LoadingScreen() {
   return (
     <div
       ref={containerRef}
+      className="loader-root"
       style={{
         position: "fixed",
         inset: 0,
@@ -335,7 +338,7 @@ export default function LoadingScreen() {
         <div className="pm-frame">
           <div className="pm-stage">
             <PreviewTopBar />
-            <HeroReel instant />
+            <RoutePreview />
           </div>
         </div>
         <div className="pm-footer">

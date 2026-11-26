@@ -92,7 +92,7 @@ export default function ServiceCards() {
         >
           <div className="svc-card-inner">
             {/* Front */}
-            <div className="svc-face svc-front" style={{ background: c.bg, color: c.ink }}>
+            <div className="svc-face svc-front keep-colors" style={{ background: c.bg, color: c.ink }}>
               <span className="svc-num">{c.num}</span>
               <div>
                 <h3 className="svc-title">{c.title}</h3>
@@ -113,7 +113,7 @@ export default function ServiceCards() {
                 ))}
               </ul>
               <p className="svc-turn">{c.turnaround}</p>
-              <Link href="/contact" className="svc-cta" style={{ background: c.bg, color: c.ink }}>
+              <Link href="/contact" className="svc-cta keep-colors" style={{ background: c.bg, color: c.ink }}>
                 {c.cta} &rarr;
               </Link>
             </div>

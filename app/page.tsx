@@ -5,6 +5,7 @@ import SelectedWorks from "@/components/home/SelectedWorks";
 import AboutSection from "@/components/home/AboutSection";
 import OnScreenSection from "@/components/home/OnScreenSection";
 import KineticStatement from "@/components/home/KineticStatement";
+import FooterCTA from "@/components/home/FooterCTA";
 import SocialProof from "@/components/home/SocialProof";
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default function Home() {
       <KineticStatement />
       <SelectedWorks overlay={<OnScreenSection />} />
       <SocialProof />
+      <FooterCTA />
     </main>
   );
 }

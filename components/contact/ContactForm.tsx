@@ -17,6 +17,8 @@ export default function ContactForm() {
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot
   const formRef = useRef<HTMLFormElement>(null);
 
   const update = (field: keyof FormData, value: string) =>
@@ -25,19 +27,23 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
+    setError("");
 
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, website }),
       });
 
       if (res.ok) {
         setSuccess(true);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Something went wrong. Please try again.");
       }
     } catch {
-      // Silent fail for now
+      setError("Couldn't reach the server. Please check your connection and try again.");
     } finally {
       setSubmitting(false);
     }
@@ -142,6 +148,24 @@ export default function ContactForm() {
               onChange={(v) => update("message", v)}
               required
             />
+
+            {/* Honeypot: hidden from people, bots fill it in */}
+            <input
+              type="text"
+              name="website"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
+            />
+
+            {error && (
+              <p role="alert" style={{ margin: 0, fontFamily: "var(--font-body)", fontSize: 14, color: "#ff6b6b" }}>
+                {error}
+              </p>
+            )}
 
             {/* Submit */}
             <button
