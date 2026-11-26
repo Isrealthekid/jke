@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Project } from "@/data/projects";
 
 const label: CSSProperties = {
@@ -36,9 +36,9 @@ function Row({ name, value }: { name: string; value: string }) {
 export default function ProjectDetail({ project }: { project: Project }) {
   const link = project.externalUrl ?? project.videoUrl;
   const vertical = project.category === "Edits";
-  // Instagram's player carries its own header and footer, so it needs a taller box than a plain video.
+  // Instagram's player carries its own header and footer, so it's cropped down to just the video.
   const isInstagram = project.videoUrl?.includes("instagram.com");
-  const ratio = isInstagram ? 480 / 860 : vertical ? 9 / 16 : 16 / 9;
+  const ratio = vertical ? 9 / 16 : 16 / 9;
 
   return (
     <section
@@ -148,6 +148,9 @@ export default function ProjectDetail({ project }: { project: Project }) {
                 background: "#0c0c0c",
               }}
             >
+              {isInstagram ? (
+                <InstagramClip src={project.videoUrl} title={project.title} />
+              ) : (
               <iframe
                 src={project.videoUrl}
                 title={project.title}
@@ -155,6 +158,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                 allowFullScreen
               />
+              )}
             </div>
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
@@ -191,5 +195,50 @@ export default function ProjectDetail({ project }: { project: Project }) {
         }
       `}</style>
     </section>
+  );
+}
+
+/**
+ * Instagram's embed is a whole card (header, caption, likes). It's drawn at its natural size and
+ * scaled and shifted so only the video itself shows inside the rounded box.
+ */
+const IG_W = 480; // embed width in px
+const IG_H = 860; // embed height in px
+const IG_VIDEO = { x: 72, y: 56, w: 336, h: 596 }; // where the video sits inside the embed
+
+function InstagramClip({ src, title }: { src: string; title: string }) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    const update = () => setScale(el.clientWidth / IG_VIDEO.w);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  return (
+    <div ref={boxRef} style={{ position: "absolute", inset: 0, overflow: "hidden", background: "#000" }}>
+      <iframe
+        src={src}
+        title={title}
+        scrolling="no"
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          width: IG_W,
+          height: IG_H,
+          border: "none",
+          transformOrigin: "0 0",
+          transform: `scale(${scale}) translate(${-IG_VIDEO.x}px, ${-IG_VIDEO.y}px)`,
+        }}
+        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+        allowFullScreen
+      />
+    </div>
   );
 }

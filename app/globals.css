@@ -678,3 +678,112 @@ h3:not(.no-zoom),
     transform: none;
   }
 }
+
+/* ---- Services: flip cards ---- */
+.svc-cards {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: clamp(16px, 2vw, 28px);
+}
+.svc-card {
+  width: min(100%, 340px);
+  height: 460px;
+  perspective: 1200px;
+  cursor: none;
+}
+.svc-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .svc-card:hover .svc-card-inner {
+    transform: rotateY(180deg);
+  }
+}
+.svc-card.is-flipped .svc-card-inner {
+  transform: rotateY(180deg);
+}
+.svc-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+}
+.svc-front {
+  justify-content: space-between;
+}
+.svc-num {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  opacity: 0.7;
+}
+.svc-title {
+  font-size: 30px;
+  line-height: 1.02;
+  margin: 0 0 14px;
+}
+.svc-desc {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0;
+  opacity: 0.85;
+}
+.svc-back {
+  transform: rotateY(180deg);
+  background: #111111;
+  border: 1px solid rgba(245, 244, 240, 0.12);
+}
+.svc-back-title {
+  font-size: 22px;
+  line-height: 1.05;
+  margin: 0;
+}
+.svc-list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.svc-list li {
+  font-family: var(--font-body);
+  font-size: 13.5px;
+  color: rgba(245, 244, 240, 0.78);
+  padding-left: 12px;
+  border-left: 2px solid;
+}
+.svc-turn {
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 240, 0.4);
+  margin: 12px 0 14px;
+}
+.svc-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 0;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}

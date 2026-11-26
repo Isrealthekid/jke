@@ -6,7 +6,6 @@ import AboutSection from "@/components/home/AboutSection";
 import OnScreenSection from "@/components/home/OnScreenSection";
 import KineticStatement from "@/components/home/KineticStatement";
 import SocialProof from "@/components/home/SocialProof";
-import FooterCTA from "@/components/home/FooterCTA";
 
 export const metadata: Metadata = {
   title: "The Joie TV — Video Editing & Film",
@@ -35,7 +34,6 @@ export default function Home() {
       <KineticStatement />
       <SelectedWorks overlay={<OnScreenSection />} />
       <SocialProof />
-      <FooterCTA />
     </main>
   );
 }

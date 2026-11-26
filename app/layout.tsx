@@ -3,6 +3,7 @@ import { Bowlby_One, Inter } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { MenuProvider } from "@/components/layout/MenuContext";
 import Navbar from "@/components/layout/Navbar";
+import FooterCTA from "@/components/home/FooterCTA";
 import CustomCursor from "@/components/layout/CustomCursor";
 import ThemeToggle from "@/components/layout/ThemeToggle";
 import SmoothScrollProvider from "@/components/layout/SmoothScrollProvider";
@@ -62,7 +63,10 @@ export default function RootLayout({
               <CustomCursor />
               <Navbar />
               <ThemeToggle />
-              <PageTransition>{children}</PageTransition>
+              <PageTransition>
+                {children}
+                <FooterCTA />
+              </PageTransition>
             </SmoothScrollProvider>
           </MenuProvider>
         </ThemeProvider>

@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import ServicesHeader from "@/components/services/ServicesHeader";
-import ServiceTracks from "@/components/services/ServiceTracks";
-import PricingCards from "@/components/services/PricingCards";
-import ProcessTimeline from "@/components/services/ProcessTimeline";
+import ServiceCards from "@/components/services/ServiceCards";
 import FAQ from "@/components/services/FAQ";
 
 export const metadata: Metadata = {
@@ -26,12 +24,8 @@ export default function ServicesPage() {
       <section style={{ padding: "clamp(100px, 12vw, 140px) clamp(20px, 5vw, 48px) 0" }}>
         <ServicesHeader />
       </section>
-      <section style={{ padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px) 0" }}>
-        <ServiceTracks />
-      </section>
-      <PricingCards />
-      <section style={{ padding: "clamp(48px, 8vw, 80px) clamp(20px, 5vw, 48px)" }}>
-        <ProcessTimeline />
+      <section style={{ padding: "clamp(40px, 6vw, 72px) clamp(20px, 5vw, 48px) clamp(64px, 9vw, 110px)" }}>
+        <ServiceCards />
       </section>
       <section style={{ padding: "0 clamp(20px, 5vw, 48px) clamp(64px, 10vw, 120px)" }}>
         <FAQ />
