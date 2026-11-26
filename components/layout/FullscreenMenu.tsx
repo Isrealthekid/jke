@@ -142,7 +142,13 @@ export default function FullscreenMenu() {
               }}
             >
               {menuItems.map((item) => (
-                <motion.div key={item.label} variants={linkVariants}>
+                <motion.div
+                  key={item.label}
+                  variants={linkVariants}
+                  onPointerLeave={(e) => {
+                    if (item.children && e.pointerType === "mouse") setWorksOpen(false);
+                  }}
+                >
                   {item.children ? (
                     <>
                       {/* Dropdown parent: opens its sub-links */}
@@ -227,9 +233,9 @@ export default function FullscreenMenu() {
                             <div
                               style={{
                                 display: "flex",
-                                flexDirection: "column",
-                                gap: "0.35em",
-                                padding: "10px 0 6px clamp(14px, 2vw, 28px)",
+                                flexWrap: "wrap",
+                                gap: 10,
+                                padding: "14px 0 6px",
                               }}
                             >
                               {item.children.map((child) => (
@@ -242,20 +248,19 @@ export default function FullscreenMenu() {
                                   style={{
                                     display: "inline-flex",
                                     alignItems: "center",
-                                    gap: 14,
-                                    alignSelf: "flex-start",
-                                    fontFamily: "var(--font-display)",
-                                    fontSize: `calc(${LINK_SIZE} * 0.55)`,
-                                    lineHeight: 1,
-                                    color: hovered === child ? "#FF7A00" : "rgba(245,244,240,0.85)",
+                                    fontFamily: "var(--font-body)",
+                                    fontWeight: 600,
+                                    fontSize: "clamp(14px, 1.5vw, 18px)",
+                                    padding: "10px 22px",
+                                    borderRadius: 999,
+                                    border: "1.5px solid",
+                                    borderColor: hovered === child ? "#FF7A00" : "rgba(245,244,240,0.35)",
+                                    background: hovered === child ? "#FF7A00" : "transparent",
+                                    color: hovered === child ? "#000" : "#f5f4f0",
                                     textDecoration: "none",
-                                    transition: "color 0.25s ease",
+                                    transition: "all 0.25s ease",
                                   }}
                                 >
-                                  <span
-                                    aria-hidden="true"
-                                    style={{ width: 22, height: 2, background: "#FF7A00", display: "block" }}
-                                  />
                                   {child.label}
                                 </Link>
                               ))}
@@ -267,6 +272,9 @@ export default function FullscreenMenu() {
                   ) : (
                     <Link
                       href={item.href ?? "/"}
+                      {...(item.href?.startsWith("http")
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
                       onClick={closeMenu}
                       onMouseEnter={() => setHovered(item)}
                       onMouseLeave={() => setHovered(null)}
@@ -466,19 +474,20 @@ function Caption({ item, ink = "#ffffff" }: { item: MenuItem; ink?: string }) {
 }
 
 const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#f5f4f0", D = "#2a2a2a";
-const CLIP_SETS: Record<string, [string, string][]> = {
-  Home: [[O,"span 2"],[P,"span 1"],[Y,"span 1"],[W,"span 1"],[O,"span 1"],[P,"span 2"],[Y,"span 2"],[D,"span 1"],[O,"span 1"]],
-  Services: [[P,"span 1"],[O,"span 2"],[W,"span 1"],[Y,"span 2"],[D,"span 1"],[P,"span 1"],[O,"span 1"],[Y,"span 1"],[P,"span 2"]],
-  "My Works": [[Y,"span 1"],[P,"span 1"],[O,"span 2"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
-  Portfolio: [[Y,"span 1"],[P,"span 1"],[O,"span 2"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
-  Playground: [[O,"span 1"],[Y,"span 2"],[P,"span 1"],[P,"span 2"],[W,"span 1"],[O,"span 1"],[D,"span 1"],[O,"span 2"],[Y,"span 1"]],
-  Films: [[D,"span 1"],[O,"span 1"],[P,"span 2"],[Y,"span 2"],[W,"span 1"],[O,"span 1"],[P,"span 1"],[Y,"span 1"],[O,"span 2"]],
-  Contact: [[W,"span 2"],[Y,"span 1"],[P,"span 1"],[O,"span 1"],[D,"span 1"],[Y,"span 2"],[P,"span 2"],[O,"span 1"],[W,"span 1"]],
+type ClipTile = [string, string, string?];
+const CLIP_SETS: Record<string, ClipTile[]> = {
+  Home: [[O,"span 2","Editing"],[P,"span 1"],[Y,"span 1","Film"],[W,"span 1"],[O,"span 1"],[P,"span 2","The Joie TV"],[Y,"span 2","Lagos"],[D,"span 1"],[O,"span 1"]],
+  Services: [[P,"span 1"],[O,"span 2","Creative Direction"],[W,"span 1"],[Y,"span 2","Concept & Vision"],[D,"span 1"],[P,"span 1","Mood Boards"],[O,"span 1"],[Y,"span 1"],[P,"span 2","Direction on Set"]],
+  "My Works": [[Y,"span 1"],[P,"span 1"],[O,"span 2","Portfolio"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2","Playground"],[Y,"span 1"],[O,"span 1"]],
+  Portfolio: [[Y,"span 1"],[P,"span 1","Film"],[O,"span 2","Video Edits"],[O,"span 1"],[D,"span 2","Edits"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
+  Playground: [[O,"span 1"],[Y,"span 2","Experiments"],[P,"span 1"],[P,"span 2","Extras"],[W,"span 1"],[O,"span 1"],[D,"span 1"],[O,"span 2","Tests"],[Y,"span 1"]],
+  Films: [[D,"span 1"],[O,"span 1"],[P,"span 2","Resonance"],[Y,"span 2","I Love You"],[W,"span 1"],[O,"span 1","Knock Knock"],[P,"span 1"],[Y,"span 1"],[O,"span 2","Wake Up, Eat, Sleep, Repeat"]],
+  Contact: [[W,"span 2","Say hello"],[Y,"span 1"],[P,"span 1","Email"],[O,"span 1"],[D,"span 1"],[Y,"span 2","WhatsApp"],[P,"span 2","Instagram"],[O,"span 1"],[W,"span 1"]],
 };
 
 function PreviewPanel({ item }: { item: MenuItem }) {
   const p = item.preview;
-  const tiles = (CLIP_SETS[item.label] ?? CLIP_SETS.Home).map(([bg, span]) => ({ bg, span }));
+  const tiles = (CLIP_SETS[item.label] ?? CLIP_SETS.Home).map(([bg, span, label]) => ({ bg, span, label }));
 
   if (p.kind === "monitor") {
     // A miniature of the loader's Premiere-style program monitor.
@@ -605,6 +614,20 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                 justifyContent: "center",
               }}
             >
+              {t.label ? (
+                <span
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: 15,
+                    lineHeight: 1.05,
+                    textAlign: "center",
+                    padding: "0 10px",
+                    color: t.bg === "#f5f4f0" || t.bg === "#FFD34A" ? "#000" : "#fff",
+                  }}
+                >
+                  {t.label}
+                </span>
+              ) : (
               <span
                 aria-hidden="true"
                 style={{
@@ -616,6 +639,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                   opacity: 0.85,
                 }}
               />
+              )}
             </div>
           ))}
         </div>
