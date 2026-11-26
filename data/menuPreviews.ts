@@ -44,7 +44,7 @@ export const menuItems: MenuItem[] = [
     label: "Home",
     href: "/",
     preview: {
-      kind: "monitor",
+      kind: "clips",
       title: "The Joie TV",
       blurb: "Editing & film, from Lagos.",
     },
@@ -53,7 +53,7 @@ export const menuItems: MenuItem[] = [
     label: "Services",
     href: "/services",
     preview: {
-      kind: "stills",
+      kind: "clips",
       title: "Creative direction, video & film",
       blurb: "What I can make for you.",
       images: mix,
@@ -63,7 +63,7 @@ export const menuItems: MenuItem[] = [
     label: "My Works",
     // no href: this opens a dropdown
     preview: {
-      kind: "stills",
+      kind: "clips",
       title: "My Works",
       blurb: "Portfolio and Playground.",
       images: mix,
@@ -73,7 +73,7 @@ export const menuItems: MenuItem[] = [
         label: "Portfolio",
         href: "/work",
         preview: {
-          kind: "stills",
+          kind: "clips",
           title: "Portfolio",
           blurb: "Films, edits and campaigns.",
           images: thumbs([...films.slice(0, 2), ...videoEdits.slice(0, 1), ...edits.slice(0, 1)]),
@@ -95,7 +95,7 @@ export const menuItems: MenuItem[] = [
     // Opens the films site (a separate website), not a page of this one.
     href: "https://films.thejoietv.com",
     preview: {
-      kind: "posters",
+      kind: "clips",
       title: "Joie TV Productions",
       blurb: "Watch the films.",
       images: thumbs(films.slice(0, 4)),
@@ -105,7 +105,7 @@ export const menuItems: MenuItem[] = [
     label: "Contact",
     href: "/contact",
     preview: {
-      kind: "portrait",
+      kind: "clips",
       title: "Let’s talk",
       blurb: "Tell me about your project.",
     },

@@ -465,20 +465,20 @@ function Caption({ item, ink = "#ffffff" }: { item: MenuItem; ink?: string }) {
   );
 }
 
-const CLIP_TILES: { bg: string; span: string }[] = [
-  { bg: "#FF7A00", span: "span 2" },
-  { bg: "#C6249B", span: "span 1" },
-  { bg: "#FFD34A", span: "span 1" },
-  { bg: "#f5f4f0", span: "span 1" },
-  { bg: "#FF7A00", span: "span 1" },
-  { bg: "#C6249B", span: "span 2" },
-  { bg: "#FFD34A", span: "span 2" },
-  { bg: "#2a2a2a", span: "span 1" },
-  { bg: "#FF7A00", span: "span 1" },
-];
+const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#f5f4f0", D = "#2a2a2a";
+const CLIP_SETS: Record<string, [string, string][]> = {
+  Home: [[O,"span 2"],[P,"span 1"],[Y,"span 1"],[W,"span 1"],[O,"span 1"],[P,"span 2"],[Y,"span 2"],[D,"span 1"],[O,"span 1"]],
+  Services: [[P,"span 1"],[O,"span 2"],[W,"span 1"],[Y,"span 2"],[D,"span 1"],[P,"span 1"],[O,"span 1"],[Y,"span 1"],[P,"span 2"]],
+  "My Works": [[Y,"span 1"],[P,"span 1"],[O,"span 2"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
+  Portfolio: [[Y,"span 1"],[P,"span 1"],[O,"span 2"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
+  Playground: [[O,"span 1"],[Y,"span 2"],[P,"span 1"],[P,"span 2"],[W,"span 1"],[O,"span 1"],[D,"span 1"],[O,"span 2"],[Y,"span 1"]],
+  Films: [[D,"span 1"],[O,"span 1"],[P,"span 2"],[Y,"span 2"],[W,"span 1"],[O,"span 1"],[P,"span 1"],[Y,"span 1"],[O,"span 2"]],
+  Contact: [[W,"span 2"],[Y,"span 1"],[P,"span 1"],[O,"span 1"],[D,"span 1"],[Y,"span 2"],[P,"span 2"],[O,"span 1"],[W,"span 1"]],
+};
 
 function PreviewPanel({ item }: { item: MenuItem }) {
   const p = item.preview;
+  const tiles = (CLIP_SETS[item.label] ?? CLIP_SETS.Home).map(([bg, span]) => ({ bg, span }));
 
   if (p.kind === "monitor") {
     // A miniature of the loader's Premiere-style program monitor.
@@ -593,7 +593,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
             gap: 10,
           }}
         >
-          {CLIP_TILES.map((t, i) => (
+          {tiles.map((t, i) => (
             <div
               key={i}
               style={{
