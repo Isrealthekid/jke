@@ -95,11 +95,11 @@ html.lenis body {
    Dark: black with cream text. Light: brand cream with near-black text. The brand orange, pink and
    yellow never change. Colours are read from these variables everywhere. */
 :root {
-  --cream: #F5ECDC;
+  --cream: #FFFFFF;
   --ink: #141414;
   --bg: #000000;
   --fg: var(--cream);
-  --fg-rgb: 245 236 220;
+  --fg-rgb: 255 255 255;
   --bg-rgb: 0 0 0;
   --surface: #111111;
 }
@@ -107,8 +107,8 @@ html.light {
   --bg: var(--cream);
   --fg: var(--ink);
   --fg-rgb: 20 20 20;
-  --bg-rgb: 245 236 220;
-  --surface: #EBE0CB;
+  --bg-rgb: 255 255 255;
+  --surface: #F2F2F2;
 }
 .logo-on-light { display: none !important; }
 html.light .logo-on-light { display: block !important; }
@@ -944,7 +944,8 @@ h3:not(.no-zoom),
   margin: 0 0 14px;
 }
 .pg-title {
-  font-size: clamp(64px, 14vw, 190px);
+  font-family: var(--font-display);
+  font-size: clamp(56px, 13.5vw, 190px);
   line-height: 0.9;
   margin: 0;
   color: var(--fg);
@@ -1073,31 +1074,50 @@ h3:not(.no-zoom),
   margin: -12px 0 28px;
 }
 .pg-reel {
-  overflow: hidden;
+  position: relative;
   margin: 0 calc(-1 * clamp(20px, 5vw, 48px));
-  padding: 28px 0 36px;
+}
+.pg-scroller {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 28px clamp(20px, 5vw, 48px) 64px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  user-select: none;
+  -webkit-overflow-scrolling: touch;
+}
+.pg-scroller::-webkit-scrollbar {
+  display: none;
 }
 .pg-track {
   display: flex;
   gap: clamp(20px, 3vw, 40px);
   width: max-content;
-  animation: pg-drift 38s linear infinite;
 }
-.pg-reel:hover .pg-track {
-  animation-play-state: paused;
+.pg-reel-nav {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 0;
+  background: #FF7A00;
+  color: #000;
+  font-size: 22px;
+  cursor: none;
+  box-shadow: 0 8px 22px rgb(0 0 0 / 0.3);
+  transition: transform 0.2s ease;
 }
-@keyframes pg-drift {
-  to {
-    transform: translateX(calc(-50% - clamp(10px, 1.5vw, 20px)));
-  }
+.pg-reel-nav:hover {
+  transform: translateY(-50%) scale(1.1);
 }
-@media (prefers-reduced-motion: reduce) {
-  .pg-reel {
-    overflow-x: auto;
-  }
-  .pg-track {
-    animation: none;
-  }
+.pg-reel-prev {
+  left: clamp(10px, 2.5vw, 32px);
+}
+.pg-reel-next {
+  right: clamp(10px, 2.5vw, 32px);
 }
 .pg-tv {
   position: relative;
@@ -1159,7 +1179,7 @@ h3:not(.no-zoom),
   background: rgb(10 10 10 / 0.92);
   backdrop-filter: blur(8px);
   animation: pg-fade 0.25s ease;
-  color: #F5ECDC;
+  color: #FFFFFF;
   touch-action: pan-y;
 }
 @keyframes pg-fade {
@@ -1197,10 +1217,10 @@ h3:not(.no-zoom),
   margin: 0;
   font-family: var(--font-body);
   font-size: 14px;
-  color: rgb(245 236 220 / 0.75);
+  color: rgb(255 255 255 / 0.75);
 }
 .pg-lb-title b {
-  color: #F5ECDC;
+  color: #FFFFFF;
   margin-right: 8px;
 }
 .pg-close {
@@ -1210,9 +1230,9 @@ h3:not(.no-zoom),
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: 1px solid rgb(245 236 220 / 0.3);
+  border: 1px solid rgb(255 255 255 / 0.3);
   background: transparent;
-  color: #F5ECDC;
+  color: #FFFFFF;
   font-size: 26px;
   line-height: 1;
   cursor: none;
@@ -1257,7 +1277,7 @@ h3:not(.no-zoom),
   font-size: 12px;
   letter-spacing: 0.12em;
   margin-right: 8px;
-  color: rgb(245 236 220 / 0.7);
+  color: rgb(255 255 255 / 0.7);
 }
 .pg-dots button {
   width: 8px;
@@ -1265,7 +1285,7 @@ h3:not(.no-zoom),
   padding: 0;
   border-radius: 50%;
   border: 0;
-  background: rgb(245 236 220 / 0.3);
+  background: rgb(255 255 255 / 0.3);
   cursor: none;
   transition: background 0.2s ease, transform 0.2s ease;
 }

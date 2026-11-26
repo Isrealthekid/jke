@@ -473,7 +473,7 @@ function Caption({ item, ink = "var(--fg)" }: { item: MenuItem; ink?: string }) 
   );
 }
 
-const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#F5ECDC", D = "#2a2a2a";
+const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#FFFFFF", D = "#2a2a2a";
 type ClipTile = [string, string, string?];
 const CLIP_SETS: Record<string, ClipTile[]> = {
   Home: [[O,"span 2","Editing"],[P,"span 1"],[Y,"span 1","Film"],[W,"span 1"],[O,"span 1"],[P,"span 2","The Joie TV"],[Y,"span 2","Lagos"],[D,"span 1"],[O,"span 1"]],
@@ -623,7 +623,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                     lineHeight: 1.05,
                     textAlign: "center",
                     padding: "0 10px",
-                    color: t.bg === "#F5ECDC" || t.bg === "#FFD34A" ? "#000" : "#fff",
+                    color: t.bg === "#FFFFFF" || t.bg === "#FFD34A" ? "#000" : "#fff",
                   }}
                 >
                   {t.label}
@@ -636,7 +636,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                   height: 0,
                   borderTop: "8px solid transparent",
                   borderBottom: "8px solid transparent",
-                  borderLeft: `13px solid ${t.bg === "#F5ECDC" || t.bg === "#FFD34A" ? "#000" : "#fff"}`,
+                  borderLeft: `13px solid ${t.bg === "#FFFFFF" || t.bg === "#FFD34A" ? "#000" : "#fff"}`,
                   opacity: 0.85,
                 }}
               />

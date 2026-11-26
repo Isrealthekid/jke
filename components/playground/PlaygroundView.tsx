@@ -44,7 +44,7 @@ export default function PlaygroundView() {
       {/* ---- Intro ---- */}
       <section className="pg-intro">
         <p className="pg-eyebrow">Beyond the edit</p>
-        <h1 className="pg-title no-zoom">Playground</h1>
+        <h1 className="pg-title">Playground</h1>
         <p className="pg-lede">
           The things I make on the side. Carousel designs, light graphic design and motion
           graphics: work I don&rsquo;t really promote, but love making. Click a carousel to flip
@@ -137,20 +137,103 @@ function Spread({
 /*  Motion: a slow drifting reel of little TVs                         */
 /* ------------------------------------------------------------------ */
 function MotionReel({ onOpen }: { onOpen: (clip: PlaygroundMotion) => void }) {
-  // Twice over so the drift loops without a gap.
+  // Twice over so the reel loops without a gap.
   const items = [...motion, ...motion];
+  const scroller = useRef<HTMLDivElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const paused = useRef(false);
+  const idleUntil = useRef(0);
+  const drag = useRef<{ x: number; left: number; moved: boolean } | null>(null);
+
+  // Drifts on its own, loops forever, and stops whenever someone is using it.
+  useEffect(() => {
+    const el = scroller.current;
+    const tr = track.current;
+    if (!el || !tr) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let raf = 0;
+    let last = performance.now();
+    const loop = (now: number) => {
+      const dt = Math.min(now - last, 50);
+      last = now;
+      const gap = parseFloat(getComputedStyle(tr).columnGap) || 0;
+      const period = (tr.scrollWidth + gap) / 2;
+      if (!reduce && !paused.current && now > idleUntil.current && !drag.current) {
+        el.scrollLeft += dt * 0.04; // about 40px a second
+      }
+      if (period > 0) {
+        if (el.scrollLeft >= period) el.scrollLeft -= period;
+        else if (el.scrollLeft <= 0) el.scrollLeft += period;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  const nudge = (dir: 1 | -1) => {
+    const el = scroller.current;
+    if (!el) return;
+    idleUntil.current = performance.now() + 2500;
+    const amount = Math.min(el.clientWidth * 0.6, 520);
+    el.scrollBy({ left: dir * amount, behavior: "smooth" });
+  };
+
   return (
-    <div className="pg-reel">
-      <div className="pg-track">
-        {items.map((clip, i) => (
-          <Tv
-            key={`${clip.id}-${i}`}
-            clip={clip}
-            colour={BRAND[i % BRAND.length]}
-            hidden={i >= motion.length}
-            onOpen={() => onOpen(clip)}
-          />
-        ))}
+    <div
+      className="pg-reel"
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") paused.current = true;
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") paused.current = false;
+      }}
+    >
+      <button type="button" className="pg-reel-nav pg-reel-prev" aria-label="Previous" onClick={() => nudge(-1)}>
+        &larr;
+      </button>
+      <button type="button" className="pg-reel-nav pg-reel-next" aria-label="Next" onClick={() => nudge(1)}>
+        &rarr;
+      </button>
+      <div
+        ref={scroller}
+        className="pg-scroller"
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse") return;
+          drag.current = { x: e.clientX, left: scroller.current!.scrollLeft, moved: false };
+        }}
+        onPointerMove={(e) => {
+          const d = drag.current;
+          if (!d) return;
+          const dx = e.clientX - d.x;
+          if (Math.abs(dx) > 6) d.moved = true;
+          if (d.moved) scroller.current!.scrollLeft = d.left - dx;
+        }}
+        onPointerUp={() => {
+          // Keep "moved" around for the click that follows a drag, so a drag never opens a clip.
+          setTimeout(() => (drag.current = null), 0);
+        }}
+        onPointerCancel={() => (drag.current = null)}
+        onTouchStart={() => (idleUntil.current = performance.now() + 3000)}
+        onWheel={() => (idleUntil.current = performance.now() + 2500)}
+        onClickCapture={(e) => {
+          if (drag.current?.moved) {
+            e.stopPropagation();
+            e.preventDefault();
+          }
+        }}
+      >
+        <div ref={track} className="pg-track">
+          {items.map((clip, i) => (
+            <Tv
+              key={`${clip.id}-${i}`}
+              clip={clip}
+              colour={BRAND[i % BRAND.length]}
+              hidden={i >= motion.length}
+              onOpen={() => onOpen(clip)}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
