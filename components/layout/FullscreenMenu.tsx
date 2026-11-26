@@ -6,7 +6,7 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMenu } from "./MenuContext";
 import { menuItems, type MenuItem } from "@/data/menuPreviews";
-import portrait from "@/app/images/joy-camera.jpg";
+import portrait from "@/app/images/joy2.webp";
 
 const LINK_SIZE = "clamp(26px, min(5.4vw, calc((100dvh - 260px) / 6)), 72px)";
 
@@ -465,8 +465,164 @@ function Caption({ item, ink = "#ffffff" }: { item: MenuItem; ink?: string }) {
   );
 }
 
+const CLIP_TILES: { bg: string; span: string }[] = [
+  { bg: "#FF7A00", span: "span 2" },
+  { bg: "#C6249B", span: "span 1" },
+  { bg: "#FFD34A", span: "span 1" },
+  { bg: "#f5f4f0", span: "span 1" },
+  { bg: "#FF7A00", span: "span 1" },
+  { bg: "#C6249B", span: "span 2" },
+  { bg: "#FFD34A", span: "span 2" },
+  { bg: "#2a2a2a", span: "span 1" },
+  { bg: "#FF7A00", span: "span 1" },
+];
+
 function PreviewPanel({ item }: { item: MenuItem }) {
   const p = item.preview;
+
+  if (p.kind === "monitor") {
+    // A miniature of the loader's Premiere-style program monitor.
+    return (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "#FF7A00",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: 28,
+        }}
+      >
+        <div
+          style={{
+            background: "#1f1f1f",
+            border: "2px solid #3b3b3b",
+            borderRadius: 18,
+            padding: 12,
+            boxShadow: "0 24px 60px rgba(0,0,0,0.35)",
+          }}
+        >
+          <div
+            style={{
+              fontFamily: "var(--font-body)",
+              fontWeight: 600,
+              fontSize: 12,
+              color: "#cfcfcf",
+              padding: "2px 4px 10px",
+            }}
+          >
+            Program: The Joie TV
+          </div>
+          <div
+            style={{
+              background: "#000",
+              borderRadius: 6,
+              aspectRatio: "16 / 10",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          >
+            <div
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: 30,
+                lineHeight: 1,
+                color: "#fff",
+              }}
+            >
+              The Joie TV
+            </div>
+            <div
+              style={{
+                fontFamily: "var(--font-body)",
+                fontWeight: 600,
+                fontSize: 9,
+                letterSpacing: "0.22em",
+                color: "#fff",
+              }}
+            >
+              EDITING · FILM
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "10px 4px 2px",
+              fontFamily: "var(--font-body)",
+              fontWeight: 600,
+              fontSize: 13,
+            }}
+          >
+            <span style={{ color: "#FF7A00", fontVariantNumeric: "tabular-nums" }}>00:00:01:00</span>
+            <span style={{ color: "#d8d8d8", letterSpacing: 4 }}>&#9664;&#9646; &#9654; &#9646;&#9654;</span>
+            <span style={{ color: "#9a9a9a" }}>Fit</span>
+          </div>
+        </div>
+        <Caption item={item} ink="#ffffff" />
+      </div>
+    );
+  }
+
+  if (p.kind === "clips") {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: "#0d0d0d",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          padding: 24,
+          gap: 18,
+        }}
+      >
+        <div
+          style={{
+            flex: 1,
+            minHeight: 0,
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gridAutoRows: "1fr",
+            gap: 10,
+          }}
+        >
+          {CLIP_TILES.map((t, i) => (
+            <div
+              key={i}
+              style={{
+                gridColumn: t.span,
+                background: t.bg,
+                borderRadius: 14,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <span
+                aria-hidden="true"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: "8px solid transparent",
+                  borderBottom: "8px solid transparent",
+                  borderLeft: `13px solid ${t.bg === "#f5f4f0" || t.bg === "#FFD34A" ? "#000" : "#fff"}`,
+                  opacity: 0.85,
+                }}
+              />
+            </div>
+          ))}
+        </div>
+        <Caption item={item} />
+      </div>
+    );
+  }
 
   if (p.kind === "card") {
     return (

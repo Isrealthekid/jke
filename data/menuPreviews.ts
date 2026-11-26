@@ -3,6 +3,8 @@ import { projects } from "./projects";
 /** What the big preview shows when you hover a menu link. All of it comes from your own work. */
 export type MenuPreviewKind =
   | "card" // a brand-colour card with the logo
+  | "monitor" // a mini Premiere-style program monitor showing your home screen
+  | "clips" // a playful grid of orange, pink and yellow "clip" tiles
   | "stills" // a grid of stills from your projects
   | "posters" // your film posters, stacked
   | "portrait"; // your portrait photo
@@ -42,11 +44,9 @@ export const menuItems: MenuItem[] = [
     label: "Home",
     href: "/",
     preview: {
-      kind: "card",
+      kind: "monitor",
       title: "The Joie TV",
       blurb: "Editing & film, from Lagos.",
-      color: "#FF7A00",
-      ink: "#ffffff",
     },
   },
   {
@@ -83,11 +83,9 @@ export const menuItems: MenuItem[] = [
         label: "Playground",
         href: "/playground",
         preview: {
-          kind: "card",
+          kind: "clips",
           title: "Playground",
           blurb: "Experiments and extras.",
-          color: "#C6249B",
-          ink: "#ffffff",
         },
       },
     ],
