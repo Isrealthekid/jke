@@ -2,18 +2,18 @@ import type { Metadata } from "next";
 import WorkShowcase from "@/components/work/WorkShowcase";
 
 export const metadata: Metadata = {
-  title: "JK Egbuson — Work",
+  title: "Work | Joy Karenate-Egbuson — The Joie TV",
   description:
     "Selected projects across filmmaking and video editing. Work for GTBank, Flutterwave, MTN, TikTok, and more.",
   openGraph: {
-    title: "JK Egbuson — Work",
+    title: "Work | Joy Karenate-Egbuson — The Joie TV",
     description:
       "Selected projects across filmmaking and video editing.",
     images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "JK Egbuson — Work",
+    title: "Work | Joy Karenate-Egbuson — The Joie TV",
     images: ["/og.png"],
   },
 };

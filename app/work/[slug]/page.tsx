@@ -14,19 +14,19 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  if (!project) return { title: "Project — JK Egbuson" };
+  if (!project) return { title: "Project | Joy Karenate-Egbuson — The Joie TV" };
 
   return {
-    title: `JK Egbuson — ${project.title}`,
+    title: `${project.title} | Joy Karenate-Egbuson — The Joie TV`,
     description: project.description,
     openGraph: {
-      title: `JK Egbuson — ${project.title}`,
+      title: `${project.title} | Joy Karenate-Egbuson — The Joie TV`,
       description: project.description,
       images: [{ url: project.thumbnail, width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image" as const,
-      title: `JK Egbuson — ${project.title}`,
+      title: `${project.title} | Joy Karenate-Egbuson — The Joie TV`,
       description: project.description,
       images: [project.thumbnail],
     },

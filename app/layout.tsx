@@ -23,13 +23,81 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+
+const SITE = "https://thejoietv.com";
+const FILMS_SITE = "https://films.thejoietv.com";
+
+// Tells Google who and what this site is, including the other names people search for.
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${SITE}/#website`,
+      url: SITE,
+      name: "The Joie TV",
+      alternateName: ["Joie TV", "Joie TV Productions", "Joy Karenate-Egbuson"],
+      inLanguage: "en",
+      publisher: { "@id": `${SITE}/#org` },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${SITE}/#org`,
+      name: "The Joie TV",
+      alternateName: ["Joie TV", "Joie TV Productions", "JTV"],
+      url: SITE,
+      logo: `${SITE}/logo.png`,
+      image: `${SITE}/og.png`,
+      founder: { "@id": `${SITE}/#joy` },
+      sameAs: [
+        FILMS_SITE,
+        "https://www.youtube.com/@thejoietv",
+        "https://www.instagram.com/joie.egbuson/",
+        "https://www.linkedin.com/in/joykarenate-egbuson/",
+      ],
+    },
+    {
+      "@type": "Person",
+      "@id": `${SITE}/#joy`,
+      name: "Joy Karenate-Egbuson",
+      alternateName: ["Joy Egbuson", "Joie Egbuson", "Joie TV"],
+      familyName: "Egbuson",
+      givenName: "Joy",
+      jobTitle: "Video editor, filmmaker and creative director",
+      url: SITE,
+      image: `${SITE}/og.png`,
+      worksFor: { "@id": `${SITE}/#org` },
+      address: { "@type": "PostalAddress", addressLocality: "Lagos", addressCountry: "NG" },
+      sameAs: [
+        "https://www.youtube.com/@thejoietv",
+        "https://www.instagram.com/joie.egbuson/",
+        "https://www.linkedin.com/in/joykarenate-egbuson/",
+        FILMS_SITE,
+      ],
+    },
+  ],
+};
+
 export const metadata: Metadata = {
   title: {
-    default: "The Joie TV — Video Editing & Film",
+    default: "The Joie TV | Joy Karenate-Egbuson — Video Editor & Filmmaker in Lagos",
     template: "%s",
   },
   description:
-    "Lagos-based video editor and filmmaker crafting visual stories for brands and individuals.",
+    "Joy Karenate-Egbuson (Joy Egbuson) is a Lagos-based video editor, filmmaker and creative director behind The Joie TV (Joie TV Productions). Short films, video editing and creative direction for brands.",
+  keywords: [
+    "Joy Karenate-Egbuson",
+    "Joy Egbuson",
+    "Egbuson",
+    "Joie TV",
+    "The Joie TV",
+    "Joie TV Productions",
+    "video editor Lagos",
+    "filmmaker Nigeria",
+    "creative director Lagos",
+  ],
+  authors: [{ name: "Joy Karenate-Egbuson", url: "https://thejoietv.com" }],
+  alternates: { canonical: "./" },
   metadataBase: new URL("https://thejoietv.com"),
   openGraph: {
     type: "website",
@@ -58,6 +126,10 @@ export default function RootLayout({
         className="min-h-full bg-brand-black text-brand-white"
         suppressHydrationWarning
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <ThemeProvider attribute="class" defaultTheme="dark">
           <MenuProvider>
             <SmoothScrollProvider>

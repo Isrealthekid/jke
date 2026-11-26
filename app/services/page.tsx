@@ -4,17 +4,17 @@ import ServiceCards from "@/components/services/ServiceCards";
 import FAQ from "@/components/services/FAQ";
 
 export const metadata: Metadata = {
-  title: "JK Egbuson — Services",
+  title: "Services | Joy Karenate-Egbuson — The Joie TV",
   description:
     "Creative direction, video production, editing, and filmmaking services. End-to-end creative work for brands across Nigeria and beyond.",
   openGraph: {
-    title: "JK Egbuson — Services",
+    title: "Services | Joy Karenate-Egbuson — The Joie TV",
     description:
       "Creative direction, video production, editing, and filmmaking services for ambitious brands.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "JK Egbuson — Services",
+    title: "Services | Joy Karenate-Egbuson — The Joie TV",
   },
 };
 
