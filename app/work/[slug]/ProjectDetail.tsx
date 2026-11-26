@@ -36,6 +36,9 @@ function Row({ name, value }: { name: string; value: string }) {
 export default function ProjectDetail({ project }: { project: Project }) {
   const link = project.externalUrl ?? project.videoUrl;
   const vertical = project.category === "Edits";
+  // Instagram's player carries its own header and footer, so it needs a taller box than a plain video.
+  const isInstagram = project.videoUrl?.includes("instagram.com");
+  const ratio = isInstagram ? 480 / 860 : vertical ? 9 / 16 : 16 / 9;
 
   return (
     <section
@@ -82,6 +85,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
           <Row name="Year" value={project.year} />
           <Row name="Duration" value={project.duration} />
 
+          {project.tools.length > 0 && (
           <div style={{ marginTop: 22 }}>
             <span style={label}>Tools</span>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 8 }}>
@@ -102,6 +106,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
               ))}
             </div>
           </div>
+          )}
 
           {link && (
             <a
@@ -134,9 +139,9 @@ export default function ProjectDetail({ project }: { project: Project }) {
               style={{
                 position: "relative",
                 width: "100%",
-                aspectRatio: vertical ? "9 / 16" : "16 / 9",
+                aspectRatio: String(ratio),
                 maxHeight: vertical ? "82vh" : undefined,
-                maxWidth: vertical ? "calc(82vh * 9 / 16)" : undefined,
+                maxWidth: vertical ? `calc(82vh * ${ratio})` : undefined,
                 margin: vertical ? "0 auto" : undefined,
                 borderRadius: 20,
                 overflow: "hidden",

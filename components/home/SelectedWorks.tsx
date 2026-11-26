@@ -247,7 +247,9 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
   const progressRef = useRef<HTMLDivElement>(null);
 
   // Only short-form vertical content on the home reel: IG reels + YouTube Shorts.
-  const selectedProjects = projects.filter((p) => p.category === "Edits");
+  const selectedProjects = projects.filter(
+    (p) => p.category === "Edits" && p.videoUrl?.includes("youtube.com")
+  );
 
   useGSAP(
     () => {
