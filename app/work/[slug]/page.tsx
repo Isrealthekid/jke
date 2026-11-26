@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { projects } from "@/data/projects";
-import ProjectHero from "./ProjectHero";
-import ProjectContent from "./ProjectContent";
+import ProjectDetail from "./ProjectDetail";
 import ProjectNav from "./ProjectNav";
 
 interface Props {
@@ -46,8 +45,7 @@ export default async function ProjectPage({ params }: Props) {
 
   return (
     <main style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
-      <ProjectHero project={project} />
-      <ProjectContent project={project} />
+      <ProjectDetail project={project} />
       <ProjectNav prev={prevProject} next={nextProject} />
     </main>
   );
