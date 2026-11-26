@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { PLACEHOLDER_IMAGES } from "@/data/projects";
 import WorkShowcase from "@/components/work/WorkShowcase";
 
 export const metadata: Metadata = {
@@ -10,12 +9,12 @@ export const metadata: Metadata = {
     title: "JK Egbuson — Work",
     description:
       "Selected projects across filmmaking and video editing.",
-    images: [{ url: PLACEHOLDER_IMAGES[1], width: 1200, height: 630 }],
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "JK Egbuson — Work",
-    images: [PLACEHOLDER_IMAGES[1]],
+    images: ["/og.png"],
   },
 };
 
