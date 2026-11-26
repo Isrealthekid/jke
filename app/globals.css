@@ -552,3 +552,116 @@ h3:not(.no-zoom),
     font-size: 24px;
   }
 }
+
+/* ---- Works page: contact-sheet grid ---- */
+.showcase-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-bottom: clamp(20px, 3vw, 36px);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.showcase-filters button {
+  background: none;
+  border: none;
+  padding: 6px 0;
+  color: rgba(245, 244, 240, 0.45);
+  cursor: none;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font: inherit;
+  border-bottom: 2px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.showcase-filters button:hover {
+  color: #f5f4f0;
+}
+.showcase-filters button.is-active {
+  color: #f5f4f0;
+  border-bottom-color: #FF7A00;
+}
+.showcase-count {
+  margin-left: auto;
+  color: rgba(245, 244, 240, 0.35);
+}
+.showcase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(28px, 3vw, 44px) clamp(12px, 1.6vw, 24px);
+}
+@media (max-width: 1000px) {
+  .showcase-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.showcase-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #f5f4f0;
+  text-decoration: none;
+}
+.showcase-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  background: #0c0c0c;
+  border-radius: 16px;
+  overflow: hidden;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.3s ease, background 0.3s ease;
+}
+.showcase-cell img {
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+  filter: brightness(0.9);
+}
+.showcase-cell img.is-natural {
+  width: 100%;
+  height: auto;
+}
+.showcase-cell img.is-fill {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.showcase-item:hover .showcase-cell {
+  outline-color: #FF7A00;
+  background: #141414;
+}
+.showcase-item:hover .showcase-cell img {
+  transform: scale(1.04);
+  filter: brightness(1);
+}
+.showcase-caption {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 12px;
+  row-gap: 2px;
+  font-family: var(--font-body);
+}
+.showcase-num {
+  grid-row: span 2;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: rgba(245, 244, 240, 0.4);
+  padding-top: 2px;
+}
+.showcase-title {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.showcase-meta {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245, 244, 240, 0.45);
+}
