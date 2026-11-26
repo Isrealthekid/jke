@@ -44,9 +44,9 @@ export default function CustomCursor() {
       el.addEventListener("mouseleave", onPointerLeave);
     });
 
-    // --- view targets: <img>, [data-cursor="view"] ---
+    // --- view targets: only things tagged data-cursor="view" (work tiles that open a page) ---
     const viewTargets = document.querySelectorAll(
-      'img, [data-cursor="view"]'
+      '[data-cursor="view"]'
     );
 
     const onViewEnter = () => {

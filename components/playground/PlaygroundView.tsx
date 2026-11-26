@@ -106,6 +106,7 @@ function Spread({
       ref={ref}
       type="button"
       className="pg-spread"
+      data-cursor="view"
       onClick={onOpen}
       aria-label={`Open ${carousel.client}: ${carousel.title}, ${n} slides`}
       style={{ ["--accent" as string]: accent }}

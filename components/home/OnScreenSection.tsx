@@ -1,90 +1,37 @@
-import Link from "next/link";
 import { projects } from "@/data/projects";
+import OnScreenFilms, { type FeedFilm } from "./OnScreenFilms";
 
-const FILMS_URL = "https://films.thejoietv.com";
-const PINK = "#C6249B";
+const FEED = "https://films.thejoietv.com/films.json";
 
-const films = projects.filter((p) => p.category === "Film");
-// Just the four films for now; the full list lives on films.thejoietv.com.
-const onScreen = films.slice(0, 4);
+// Used only if films.thejoietv.com can't be reached when the site is built.
+const backup: FeedFilm[] = projects
+  .filter((p) => p.category === "Film")
+  .map((p, i) => ({
+    id: i + 1,
+    title: p.title,
+    genre: "",
+    year: p.year,
+    image: p.thumbnail,
+    soon: false,
+    isNew: false,
+    releaseDate: "",
+  }));
 
 /**
- * "On the screen": the films series card plus an index of the first four films.
- * On large screens this is a full-screen panel that slides up over the "What I do" cards
- * (and the Edits showcase then slides up over it), see .stack-panel in globals.css.
+ * "On the screen": a live copy of the films on films.thejoietv.com. The list is read from that
+ * site's films.json when this site is built, and again in the visitor's browser, so a film added
+ * there shows up here too, with its name, year and picture.
  */
-export default function OnScreenSection() {
-  return (
-    <section className="stack-panel">
-      <p
-        style={{
-          margin: 0,
-          fontFamily: "var(--font-body)",
-          fontSize: 11,
-          letterSpacing: "0.3em",
-          textTransform: "uppercase",
-          color: "rgb(var(--fg-rgb) / 0.45)",
-        }}
-      >
-        Film &amp; video
-      </p>
-      <h2
-        style={{
-          margin: "10px 0 0",
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(48px, 6.4vw, 96px)",
-          lineHeight: 1,
-          letterSpacing: "-0.01em",
-          color: "var(--fg)",
-        }}
-      >
-        On the <span style={{ color: PINK }}>screen</span>
-      </h2>
-
-      <div className="onscreen-grid">
-        {/* Series card: stacked posters, links to the films site */}
-        <a
-          href={FILMS_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="series-card"
-        >
-          <span className="series-card-label">
-            <i aria-hidden="true" />
-            Click to see the films
-          </span>
-          <span className="poster-stack" aria-hidden="true">
-            {films.slice(0, 4).map((f, i) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={f.slug} src={f.thumbnail} alt="" className={`poster poster-${i}`} />
-            ))}
-          </span>
-          <span className="series-card-foot">
-            <strong>Joie TV Productions</strong>
-            <span>
-              {films.length}{" "}films &middot; films.thejoietv.com ↗
-            </span>
-          </span>
-        </a>
-
-        {/* Index of films and edits */}
-        <ol className="work-index">
-          {onScreen.map((p, i) => (
-            <li key={p.slug}>
-              <Link href={`/work/${p.slug}`} className="work-row">
-                <span className="work-row-num">{String(i + 1).padStart(2, "0")}</span>
-                <span className="work-row-title">{p.title}</span>
-                <span className="work-row-meta">
-                  {p.category} &middot; {p.year}
-                </span>
-                <span className="work-row-arrow" aria-hidden="true">
-                  &rarr;
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
+export default async function OnScreenSection() {
+  let films = backup;
+  try {
+    const res = await fetch(FEED, { next: { revalidate: 300 } });
+    if (res.ok) {
+      const data = (await res.json()) as { films?: FeedFilm[] };
+      if (Array.isArray(data.films) && data.films.length) films = data.films;
+    }
+  } catch {
+    // keep the backup list
+  }
+  return <OnScreenFilms initial={films} feed={FEED} />;
 }

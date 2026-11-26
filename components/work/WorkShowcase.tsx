@@ -161,6 +161,7 @@ export default function WorkShowcase() {
                 key={p.slug}
                 href={`/work/${p.slug}`}
                 className="stagger-tile"
+                data-cursor="view"
                 style={{ aspectRatio: shapes[(k + ci) % shapes.length] }}
               >
                 <span className="stagger-lens">
