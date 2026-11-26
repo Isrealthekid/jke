@@ -40,7 +40,6 @@ const cards: Card[] = [
       "From commercial spots to event recaps — polished video that commands attention.",
     deliverables: [
       "Commercial videos",
-      "Music videos",
       "Event highlight reels",
       "Corporate videos",
       "YouTube content",

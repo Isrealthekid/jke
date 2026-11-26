@@ -35,6 +35,11 @@ function AutoClip({ id, tall }: { id: string; tall: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [ready, setReady] = useState(false);
+  // Phones and tablets keep still pictures: less data, less battery, and no player buttons showing.
+  const [canPlay, setCanPlay] = useState(false);
+  useEffect(() => {
+    setCanPlay(window.matchMedia('(hover: hover) and (min-width: 900px)').matches);
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -51,7 +56,7 @@ function AutoClip({ id, tall }: { id: string; tall: boolean }) {
 
   return (
     <div ref={ref} className="stagger-clip" aria-hidden="true">
-      {visible && (
+      {canPlay && visible && (
         <iframe
           className={tall ? "is-tall" : "is-wide"}
           src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&playsinline=1&modestbranding=1&rel=0&disablekb=1&iv_load_policy=3`}
@@ -86,10 +91,11 @@ function useFisheye(rootRef: React.RefObject<HTMLDivElement | null>, dep: unknow
         if (r.bottom < -200 || r.top > vh + 200) return;
         const dx = (r.left + r.width / 2 - vw / 2) / (vw / 2);
         const dy = (r.top + r.height / 2 - vh / 2) / (vh / 2);
+        const k = vw < 700 ? 0.4 : 1; // softer on phones
         const d2 = Math.min(dx * dx + dy * dy, 2.2);
-        const scale = 1.05 - 0.2 * d2;
-        const rotY = -dx * 16;
-        const rotX = dy * 12;
+        const scale = 1.04 - 0.2 * d2 * k;
+        const rotY = -dx * 16 * k;
+        const rotX = dy * 12 * k;
         lens.style.transform = `perspective(1100px) rotateY(${rotY.toFixed(2)}deg) rotateX(${rotX.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
       });
     };

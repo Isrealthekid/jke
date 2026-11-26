@@ -70,7 +70,7 @@ export default function ChannelCards() {
     {
       label: "LinkedIn",
       icon: social("LinkedIn").icon,
-      backValue: "Joykarenate Egbuson",
+      backValue: "Joy Karenate-Egbuson",
       backNote: "Best for business & partnerships",
       action: () => window.open(social("LinkedIn").href, "_blank", "noopener"),
     },

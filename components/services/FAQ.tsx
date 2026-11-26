@@ -25,10 +25,6 @@ const faqs = [
     a: "Both. I can take a project from concept to final delivery — including pre-production planning, shooting, and post. Or if you already have footage, I'm happy to handle just the edit and post-production.",
   },
   {
-    q: "What equipment do you use?",
-    a: "I shoot on Sony FX6, BMPCC 6K, and Sony A7IV depending on the project. Post-production in DaVinci Resolve and Premiere Pro. Motion graphics in After Effects. I believe in using the right tool for the job, not the most expensive one.",
-  },
-  {
     q: "How do you handle revisions?",
     a: "Every project includes revision rounds — typically 2 for standard projects, unlimited for Studio-tier clients. I believe in getting it right, not getting it fast. That said, clear briefs help us nail it on the first try.",
   },
