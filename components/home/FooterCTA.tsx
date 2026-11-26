@@ -44,7 +44,7 @@ export default function FooterCTA() {
         minHeight: "calc(100vh - 72px)",
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "#000000",
+        backgroundColor: "var(--bg)",
       }}
     >
       {/* SVG noise texture overlay */}
@@ -79,7 +79,7 @@ export default function FooterCTA() {
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(48px, 7vw, 100px)",
-            color: "#f5f4f0",
+            color: "var(--fg)",
             textAlign: "center",
             lineHeight: 1.05,
             margin: 0,
@@ -103,13 +103,13 @@ export default function FooterCTA() {
               width: 220,
               height: 64,
               borderRadius: 100,
-              border: "1px solid rgba(255,255,255,0.3)",
+              border: "1px solid rgb(var(--fg-rgb) / 0.3)",
               fontFamily: "var(--font-body)",
               fontSize: 14,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: btnHovered ? "#000000" : "#f5f4f0",
-              backgroundColor: btnHovered ? "#f5f4f0" : "transparent",
+              color: btnHovered ? "var(--bg)" : "var(--fg)",
+              backgroundColor: btnHovered ? "var(--fg)" : "transparent",
               transition: "background-color 0.3s, color 0.3s",
               cursor: "none",
             }}
@@ -125,7 +125,7 @@ export default function FooterCTA() {
             marginTop: 28,
             fontFamily: "var(--font-body)",
             fontSize: 13,
-            color: "#f5f4f0",
+            color: "var(--fg)",
             opacity: 0,
           }}
         >
@@ -133,7 +133,7 @@ export default function FooterCTA() {
           <a
             href="mailto:jkarenateegbuson@gmail.com"
             style={{
-              color: "#f5f4f0",
+              color: "var(--fg)",
               opacity: 0.4,
               textDecoration: "underline",
               textUnderlineOffset: 3,

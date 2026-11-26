@@ -51,7 +51,7 @@ export default function ToolsGrid() {
           fontSize: 11,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.35)",
+          color: "rgb(var(--fg-rgb) / 0.35)",
           display: "block",
           marginBottom: 24,
         }}
@@ -67,10 +67,10 @@ export default function ToolsGrid() {
             style={{
               padding: "8px 18px",
               borderRadius: 100,
-              border: "1px solid rgba(245,244,240,0.1)",
+              border: "1px solid rgb(var(--fg-rgb) / 0.1)",
               fontFamily: "var(--font-body)",
               fontSize: 13,
-              color: "rgba(245,244,240,0.5)",
+              color: "rgb(var(--fg-rgb) / 0.5)",
               opacity: 0,
               transition: "border-color 0.2s, color 0.2s",
             }}
@@ -81,8 +81,8 @@ export default function ToolsGrid() {
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;
-              el.style.borderColor = "rgba(245,244,240,0.1)";
-              el.style.color = "rgba(245,244,240,0.5)";
+              el.style.borderColor = "rgb(var(--fg-rgb) / 0.1)";
+              el.style.color = "rgb(var(--fg-rgb) / 0.5)";
             }}
           >
             {tool}

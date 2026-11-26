@@ -58,7 +58,7 @@ function PreviewTopBar() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src="/logo-dark.png" alt="" className="logo-on-light" style={{ height: 38, width: "auto", display: "none" }} />
       <div style={{ display: "flex", alignItems: "center", gap: window.innerWidth >= 768 ? 24 : 16 }}>
-        <span style={{ ...PILL, background: "#f5f4f0", color: "#000", fontWeight: 600 }}>
+        <span style={{ ...PILL, background: "var(--fg)", color: "var(--bg)", fontWeight: 600 }}>
           <i
             style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", display: "block" }}
           />
@@ -67,17 +67,17 @@ function PreviewTopBar() {
         <span
           style={{
             ...PILL,
-            background: "rgba(255,255,255,0.1)",
-            border: "1px solid rgba(255,255,255,0.18)",
-            color: "#f5f4f0",
+            background: "rgb(var(--fg-rgb) / 0.1)",
+            border: "1px solid rgb(var(--fg-rgb) / 0.18)",
+            color: "var(--fg)",
             fontWeight: 500,
           }}
         >
           Menu
           <span style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
-            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
-            <i style={{ width: 18, height: 1.5, background: "#f5f4f0", display: "block" }} />
+            <i style={{ width: 18, height: 1.5, background: "var(--fg)", display: "block" }} />
+            <i style={{ width: 18, height: 1.5, background: "var(--fg)", display: "block" }} />
+            <i style={{ width: 18, height: 1.5, background: "var(--fg)", display: "block" }} />
           </span>
         </span>
       </div>

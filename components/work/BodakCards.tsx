@@ -158,8 +158,8 @@ export default function BodakCards() {
               <Image src={cat.image} alt={cat.title} fill style={{ objectFit: "cover" }} sizes="100vw" />
               <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }} />
               <div style={{ position: "absolute", bottom: 20, left: 20 }}>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "#f5f4f0", margin: 0 }}>{cat.title}</h3>
-                <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgba(245,244,240,0.6)" }}>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "var(--fg)", margin: 0 }}>{cat.title}</h3>
+                <span style={{ fontFamily: "var(--font-body)", fontSize: 12, color: "rgb(var(--fg-rgb) / 0.6)" }}>
                   {getProjectCount(cat.filter)} projects
                 </span>
               </div>
@@ -246,7 +246,7 @@ export default function BodakCards() {
                     style={{
                       fontFamily: "var(--font-display)",
                       fontSize: 28,
-                      color: "#f5f4f0",
+                      color: "var(--fg)",
                       margin: 0,
                     }}
                   >
@@ -256,7 +256,7 @@ export default function BodakCards() {
                     style={{
                       fontFamily: "var(--font-body)",
                       fontSize: 12,
-                      color: "#f5f4f0",
+                      color: "var(--fg)",
                       opacity: 0.6,
                       marginTop: 4,
                       display: "block",
@@ -286,7 +286,7 @@ export default function BodakCards() {
                   style={{
                     fontFamily: "var(--font-display)",
                     fontSize: 32,
-                    color: "#f5f4f0",
+                    color: "var(--fg)",
                     margin: 0,
                   }}
                 >
@@ -310,8 +310,8 @@ export default function BodakCards() {
                       style={{
                         fontFamily: "var(--font-body)",
                         fontSize: 14,
-                        color: "rgba(245,244,240,0.7)",
-                        borderBottom: "1px solid rgba(245,244,240,0.08)",
+                        color: "rgb(var(--fg-rgb) / 0.7)",
+                        borderBottom: "1px solid rgb(var(--fg-rgb) / 0.08)",
                         paddingBottom: 12,
                       }}
                     >

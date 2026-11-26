@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 export default function WorkPage() {
   return (
-    <main style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "var(--bg)", minHeight: "100vh" }}>
       <div
         style={{
           padding:

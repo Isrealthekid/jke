@@ -39,7 +39,7 @@ export default function PageTransition({
             position: "fixed",
             inset: 0,
             zIndex: 9990,
-            backgroundColor: "#000000",
+            backgroundColor: "var(--bg)",
             pointerEvents: "none",
           }}
         />

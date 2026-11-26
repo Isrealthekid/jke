@@ -57,7 +57,7 @@ export default function ServicesList() {
           fontSize: 11,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.35)",
+          color: "rgb(var(--fg-rgb) / 0.35)",
           display: "block",
           marginBottom: 32,
         }}
@@ -74,7 +74,7 @@ export default function ServicesList() {
             alignItems: "center",
             gap: 24,
             padding: "24px 0",
-            borderBottom: "1px solid rgba(245,244,240,0.06)",
+            borderBottom: "1px solid rgb(var(--fg-rgb) / 0.06)",
             opacity: 0,
           }}
         >
@@ -86,7 +86,7 @@ export default function ServicesList() {
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 24,
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 margin: 0,
               }}
             >
@@ -96,7 +96,7 @@ export default function ServicesList() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 14,
-                color: "rgba(245,244,240,0.5)",
+                color: "rgb(var(--fg-rgb) / 0.5)",
                 margin: "4px 0 0",
               }}
             >

@@ -63,18 +63,6 @@ export default function RootLayout({
               <CustomCursor />
               <Navbar />
               <ThemeToggle />
-              <div
-                aria-hidden="true"
-                className="light-flip"
-                style={{
-                  position: "fixed",
-                  inset: 0,
-                  zIndex: 99990,
-                  pointerEvents: "none",
-                  backdropFilter: "invert(1) hue-rotate(180deg)",
-                  WebkitBackdropFilter: "invert(1) hue-rotate(180deg)",
-                }}
-              />
               <PageTransition>
                 {children}
                 <SiteFooter />

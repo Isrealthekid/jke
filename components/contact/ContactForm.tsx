@@ -108,7 +108,7 @@ export default function ContactForm() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 16,
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 maxWidth: 320,
               }}
             >
@@ -241,13 +241,13 @@ function FloatField({
 
   const shared: React.CSSProperties = {
     width: "100%",
-    backgroundColor: "#111",
-    border: `1px solid ${focused ? "#FF7A00" : "rgba(255,255,255,0.1)"}`,
+    backgroundColor: "var(--surface)",
+    border: `1px solid ${focused ? "#FF7A00" : "rgb(var(--fg-rgb) / 0.1)"}`,
     borderRadius: 20,
     padding: "20px 16px 8px",
     fontFamily: "var(--font-body)",
     fontSize: 15,
-    color: "#f5f4f0",
+    color: "var(--fg)",
     outline: "none",
     transition: "border-color 0.2s",
   };
@@ -264,7 +264,7 @@ function FloatField({
           textTransform: isActive ? "uppercase" : "none",
           color: focused
             ? "#FF7A00"
-            : "rgba(245,244,240,0.35)",
+            : "rgb(var(--fg-rgb) / 0.35)",
           fontFamily: "var(--font-body)",
           transition: "all 0.2s",
           pointerEvents: "none",

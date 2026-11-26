@@ -11,8 +11,8 @@ export default function SiteFooter() {
         flexWrap: "wrap",
         gap: 16,
         padding: "24px clamp(84px, 7vw, 96px) 24px clamp(20px, 5vw, 48px)", // right side clears the floating theme button
-        borderTop: "0.5px solid rgba(255,255,255,0.06)",
-        backgroundColor: "#000000",
+        borderTop: "0.5px solid rgb(var(--fg-rgb) / 0.06)",
+        backgroundColor: "var(--bg)",
         position: "relative",
         zIndex: 1,
       }}
@@ -28,7 +28,7 @@ export default function SiteFooter() {
             rel="noopener noreferrer"
             aria-label={s.label}
             className="social-icon"
-            style={{ display: "block", lineHeight: 0, color: "#f5f4f0", opacity: 0.6 }}
+            style={{ display: "block", lineHeight: 0, color: "var(--fg)", opacity: 0.6 }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
               {s.icon}
@@ -45,6 +45,6 @@ const textStyle: React.CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.1em",
   textTransform: "uppercase",
-  color: "#f5f4f0",
+  color: "var(--fg)",
   opacity: 0.35,
 };

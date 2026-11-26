@@ -27,10 +27,10 @@ export default function FilterBar({
               padding: "8px 20px",
               borderRadius: 100,
               border: isActive
-                ? "1px solid #f5f4f0"
-                : "1px solid rgba(245,244,240,0.15)",
-              backgroundColor: isActive ? "#f5f4f0" : "transparent",
-              color: isActive ? "#000000" : "rgba(245,244,240,0.5)",
+                ? "1px solid var(--fg)"
+                : "1px solid rgb(var(--fg-rgb) / 0.15)",
+              backgroundColor: isActive ? "var(--fg)" : "transparent",
+              color: isActive ? "var(--bg)" : "rgb(var(--fg-rgb) / 0.5)",
               fontFamily: "var(--font-body)",
               fontSize: 12,
               letterSpacing: "0.08em",

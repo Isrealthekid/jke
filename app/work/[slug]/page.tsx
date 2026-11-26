@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: Props) {
     projectIndex < projects.length - 1 ? projects[projectIndex + 1] : null;
 
   return (
-    <main style={{ backgroundColor: "#000000", minHeight: "100vh" }}>
+    <main style={{ backgroundColor: "var(--bg)", minHeight: "100vh" }}>
       <ProjectDetail project={project} />
       <ProjectNav prev={prevProject} next={nextProject} />
     </main>

@@ -22,8 +22,8 @@ export default function SocialProof() {
       style={{
         width: "100%",
         padding: "clamp(48px, 8vw, 80px) 0",
-        backgroundColor: "#000000",
-        borderTop: "0.5px solid rgba(255,255,255,0.08)",
+        backgroundColor: "var(--bg)",
+        borderTop: "0.5px solid rgb(var(--fg-rgb) / 0.08)",
         overflow: "hidden",
       }}
     >
@@ -35,7 +35,7 @@ export default function SocialProof() {
           fontSize: 11,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "#f5f4f0",
+          color: "var(--fg)",
           opacity: 0.3,
           marginBottom: 48,
         }}
@@ -48,7 +48,7 @@ export default function SocialProof() {
         <div className="marquee-track-left">
           {[...row1Items, ...row1Items].map((brand, i) => (
             <span key={i} className="marquee-item">
-              <span style={{ fontWeight: 500, color: "#f5f4f0" }}>{brand}</span>
+              <span style={{ fontWeight: 500, color: "var(--fg)" }}>{brand}</span>
             </span>
           ))}
         </div>

@@ -105,7 +105,7 @@ export default function FullscreenMenu() {
             inset: 0,
             height: "100dvh",
             zIndex: 9997,
-            backgroundColor: "#000000",
+            backgroundColor: "var(--bg)",
             display: "flex",
             flexDirection: "column",
             paddingTop: 64,
@@ -184,7 +184,7 @@ export default function FullscreenMenu() {
                           fontFamily: "var(--font-display)",
                           fontSize: LINK_SIZE,
                           lineHeight: 1,
-                          color: "#f5f4f0",
+                          color: "var(--fg)",
                           background: "none",
                           border: "none",
                           padding: "0 0 2px",
@@ -254,9 +254,9 @@ export default function FullscreenMenu() {
                                     padding: "10px 22px",
                                     borderRadius: 999,
                                     border: "1.5px solid",
-                                    borderColor: hovered === child ? "#FF7A00" : "rgba(245,244,240,0.35)",
+                                    borderColor: hovered === child ? "#FF7A00" : "rgb(var(--fg-rgb) / 0.35)",
                                     background: hovered === child ? "#FF7A00" : "transparent",
-                                    color: hovered === child ? "#000" : "#f5f4f0",
+                                    color: hovered === child ? "#000" : "var(--fg)",
                                     textDecoration: "none",
                                     transition: "all 0.25s ease",
                                   }}
@@ -284,7 +284,7 @@ export default function FullscreenMenu() {
                         fontFamily: "var(--font-display)",
                         fontSize: LINK_SIZE,
                         lineHeight: 1,
-                        color: "#f5f4f0",
+                        color: "var(--fg)",
                         textDecoration: "none",
                         paddingBottom: 2,
                       }}
@@ -358,7 +358,7 @@ export default function FullscreenMenu() {
               flexWrap: "wrap",
               gap: 16,
               padding: "24px clamp(20px, 5vw, 48px)",
-              borderTop: "1px solid rgba(245,244,240,0.08)",
+              borderTop: "1px solid rgb(var(--fg-rgb) / 0.08)",
             }}
           >
             {/* Left — Location & year */}
@@ -367,7 +367,7 @@ export default function FullscreenMenu() {
                 fontFamily: "var(--font-body)",
                 fontSize: 11,
                 letterSpacing: "0.1em",
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 opacity: 0.5,
                 textTransform: "uppercase",
               }}
@@ -398,7 +398,7 @@ export default function FullscreenMenu() {
                   fontFamily: "var(--font-body)",
                   fontSize: 11,
                   letterSpacing: "0.1em",
-                  color: "#f5f4f0",
+                  color: "var(--fg)",
                   opacity: 0.5,
                   textTransform: "uppercase",
                 }}
@@ -429,7 +429,7 @@ export default function FullscreenMenu() {
                     fontFamily: "var(--font-body)",
                     fontSize: 11,
                     letterSpacing: "0.1em",
-                    color: "#f5f4f0",
+                    color: "var(--fg)",
                     opacity: 0.5,
                     textDecoration: "none",
                     textTransform: "uppercase",
@@ -457,7 +457,7 @@ export default function FullscreenMenu() {
 /* ------------------------------------------------------------------ */
 /*  Preview panel (what shows on the right when you hover a link)      */
 /* ------------------------------------------------------------------ */
-function Caption({ item, ink = "#ffffff" }: { item: MenuItem; ink?: string }) {
+function Caption({ item, ink = "var(--fg)" }: { item: MenuItem; ink?: string }) {
   const p = item.preview;
   return (
     <div style={{ color: ink }}>
@@ -473,14 +473,14 @@ function Caption({ item, ink = "#ffffff" }: { item: MenuItem; ink?: string }) {
   );
 }
 
-const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#f5f4f0", D = "#2a2a2a";
+const O = "#FF7A00", P = "#C6249B", Y = "#FFD34A", W = "#F5ECDC", D = "#2a2a2a";
 type ClipTile = [string, string, string?];
 const CLIP_SETS: Record<string, ClipTile[]> = {
   Home: [[O,"span 2","Editing"],[P,"span 1"],[Y,"span 1","Film"],[W,"span 1"],[O,"span 1"],[P,"span 2","The Joie TV"],[Y,"span 2","Lagos"],[D,"span 1"],[O,"span 1"]],
   Services: [[P,"span 1"],[O,"span 2","Creative Direction"],[W,"span 1"],[Y,"span 2","Concept & Vision"],[D,"span 1"],[P,"span 1","Mood Boards"],[O,"span 1"],[Y,"span 1"],[P,"span 2","Direction on Set"]],
   "My Works": [[Y,"span 1"],[P,"span 1"],[O,"span 2","Portfolio"],[O,"span 1"],[D,"span 2"],[W,"span 1"],[P,"span 2","Playground"],[Y,"span 1"],[O,"span 1"]],
   Portfolio: [[Y,"span 1"],[P,"span 1","Film"],[O,"span 2","Video Edits"],[O,"span 1"],[D,"span 2","Edits"],[W,"span 1"],[P,"span 2"],[Y,"span 1"],[O,"span 1"]],
-  Playground: [[O,"span 1"],[Y,"span 2","Experiments"],[P,"span 1"],[P,"span 2","Extras"],[W,"span 1"],[O,"span 1"],[D,"span 1"],[O,"span 2","Tests"],[Y,"span 1"]],
+  Playground: [[O,"span 1"],[Y,"span 2","Carousels"],[P,"span 1"],[P,"span 2","Motion"],[W,"span 1"],[O,"span 1"],[D,"span 1"],[O,"span 2","Designs"],[Y,"span 1"]],
   Films: [[D,"span 1"],[O,"span 1"],[P,"span 2","Resonance"],[Y,"span 2","I Love You"],[W,"span 1"],[O,"span 1","Knock Knock"],[P,"span 1"],[Y,"span 1"],[O,"span 2","Wake Up, Eat, Sleep, Repeat"]],
   Contact: [[W,"span 2","Say hello"],[Y,"span 1"],[P,"span 1","Email"],[O,"span 1"],[D,"span 1"],[Y,"span 2","WhatsApp"],[P,"span 2","Instagram"],[O,"span 1"],[W,"span 1"]],
 };
@@ -584,7 +584,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
         style={{
           position: "absolute",
           inset: 0,
-          background: "#0d0d0d",
+          background: "var(--surface)",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
@@ -623,7 +623,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                     lineHeight: 1.05,
                     textAlign: "center",
                     padding: "0 10px",
-                    color: t.bg === "#f5f4f0" || t.bg === "#FFD34A" ? "#000" : "#fff",
+                    color: t.bg === "#F5ECDC" || t.bg === "#FFD34A" ? "#000" : "#fff",
                   }}
                 >
                   {t.label}
@@ -636,7 +636,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
                   height: 0,
                   borderTop: "8px solid transparent",
                   borderBottom: "8px solid transparent",
-                  borderLeft: `13px solid ${t.bg === "#f5f4f0" || t.bg === "#FFD34A" ? "#000" : "#fff"}`,
+                  borderLeft: `13px solid ${t.bg === "#F5ECDC" || t.bg === "#FFD34A" ? "#000" : "#fff"}`,
                   opacity: 0.85,
                 }}
               />
@@ -699,7 +699,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
         style={{
           position: "absolute",
           inset: 0,
-          background: "#0d0d0d",
+          background: "var(--surface)",
           display: "flex",
           flexDirection: "column",
           padding: 28,
@@ -722,7 +722,7 @@ function PreviewPanel({ item }: { item: MenuItem }) {
       style={{
         position: "absolute",
         inset: 0,
-        background: "#0d0d0d",
+        background: "var(--surface)",
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",

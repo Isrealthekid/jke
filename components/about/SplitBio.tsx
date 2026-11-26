@@ -107,7 +107,7 @@ export default function SplitBio() {
             fontSize: 11,
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: "rgba(245,244,240,0.35)",
+            color: "rgb(var(--fg-rgb) / 0.35)",
             display: "block",
             marginBottom: 32,
           }}
@@ -122,7 +122,7 @@ export default function SplitBio() {
             fontSize: "clamp(22px, 2.7vw, 42px)",
             lineHeight: 1.3,
             letterSpacing: "-0.01em",
-            color: "#f5f4f0",
+            color: "var(--fg)",
             margin: 0,
             display: "flex",
             flexWrap: "wrap",

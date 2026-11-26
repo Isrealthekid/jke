@@ -45,7 +45,7 @@ export default function FAQ() {
           fontSize: 11,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.35)",
+          color: "rgb(var(--fg-rgb) / 0.35)",
           display: "block",
           marginBottom: 32,
         }}
@@ -60,7 +60,7 @@ export default function FAQ() {
           <div
             key={i}
             style={{
-              borderTop: "1px solid rgba(245,244,240,0.06)",
+              borderTop: "1px solid rgb(var(--fg-rgb) / 0.06)",
             }}
           >
             <button
@@ -82,7 +82,7 @@ export default function FAQ() {
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: 16,
-                  color: "#f5f4f0",
+                  color: "var(--fg)",
                   flex: 1,
                 }}
               >
@@ -92,7 +92,7 @@ export default function FAQ() {
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: 24,
-                  color: "rgba(245,244,240,0.3)",
+                  color: "rgb(var(--fg-rgb) / 0.3)",
                   flexShrink: 0,
                   transition: "transform 0.3s",
                   transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
@@ -119,7 +119,7 @@ export default function FAQ() {
                       fontFamily: "var(--font-body)",
                       fontSize: 15,
                       lineHeight: 1.7,
-                      color: "rgba(245,244,240,0.55)",
+                      color: "rgb(var(--fg-rgb) / 0.55)",
                       paddingBottom: 20,
                       maxWidth: 640,
                     }}

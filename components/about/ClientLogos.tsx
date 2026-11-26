@@ -25,7 +25,7 @@ export default function ClientLogos() {
           fontSize: 11,
           letterSpacing: "0.15em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.3)",
+          color: "rgb(var(--fg-rgb) / 0.3)",
           marginBottom: 40,
         }}
       >
@@ -58,13 +58,13 @@ export default function ClientLogos() {
           padding: 0 40px;
           font-family: var(--font-display);
           font-size: clamp(20px, 3vw, 36px);
-          color: rgba(245, 244, 240, 0.15);
+          color: rgb(var(--fg-rgb) / 0.15);
           white-space: nowrap;
           transition: color 0.3s;
         }
 
         .brand-marquee-item:hover {
-          color: rgba(245, 244, 240, 0.5);
+          color: rgb(var(--fg-rgb) / 0.5);
         }
 
         @keyframes brand-scroll {

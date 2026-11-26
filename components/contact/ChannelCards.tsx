@@ -120,7 +120,7 @@ export default function ChannelCards() {
             >
               <div className="channel-inner">
                 <div className="channel-face channel-front">
-                  <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style={{ color: "#f5f4f0" }}>
+                  <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true" style={{ color: "var(--fg)" }}>
                     {ch.icon}
                   </svg>
                   <span className="channel-label">{ch.label}</span>

@@ -23,7 +23,7 @@ export default function OnScreenSection() {
           fontSize: 11,
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.45)",
+          color: "rgb(var(--fg-rgb) / 0.45)",
         }}
       >
         Film &amp; video
@@ -35,7 +35,7 @@ export default function OnScreenSection() {
           fontSize: "clamp(48px, 6.4vw, 96px)",
           lineHeight: 1,
           letterSpacing: "-0.01em",
-          color: "#f5f4f0",
+          color: "var(--fg)",
         }}
       >
         On the <span style={{ color: PINK }}>screen</span>

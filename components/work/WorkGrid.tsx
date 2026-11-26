@@ -127,7 +127,7 @@ function WorkTile({
               left: 16,
               fontFamily: "var(--font-display)",
               fontSize: isMobile ? 48 : 80,
-              color: "#f5f4f0",
+              color: "var(--fg)",
               opacity: 0.12,
               lineHeight: 1,
               zIndex: 2,
@@ -198,7 +198,7 @@ function WorkTile({
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 22,
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 margin: 0,
               }}
             >
@@ -208,7 +208,7 @@ function WorkTile({
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 11,
-                color: "rgba(245,244,240,0.5)",
+                color: "rgb(var(--fg-rgb) / 0.5)",
               }}
             >
               {project.role} &middot; {project.year}
@@ -238,7 +238,7 @@ function WorkTile({
                 style={{
                   fontFamily: "var(--font-display)",
                   fontSize: 22,
-                  color: "#f5f4f0",
+                  color: "var(--fg)",
                   margin: 0,
                 }}
               >
@@ -248,7 +248,7 @@ function WorkTile({
                 style={{
                   fontFamily: "var(--font-body)",
                   fontSize: 11,
-                  color: "rgba(245,244,240,0.5)",
+                  color: "rgb(var(--fg-rgb) / 0.5)",
                 }}
               >
                 {project.role} &middot; {project.year}

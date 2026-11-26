@@ -33,7 +33,7 @@ export default function ContactHero() {
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "clamp(56px, 14vw, 160px)",
-              color: "#f5f4f0",
+              color: "var(--fg)",
               lineHeight: 0.95,
               margin: 0,
             }}
@@ -64,7 +64,7 @@ export default function ContactHero() {
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 14,
-                color: "rgba(245,244,240,0.6)",
+                color: "rgb(var(--fg-rgb) / 0.6)",
               }}
             >
               Currently open for new projects starting {currentMonth}
@@ -76,7 +76,7 @@ export default function ContactHero() {
             style={{
               fontFamily: "var(--font-body)",
               fontSize: 13,
-              color: "rgba(245,244,240,0.35)",
+              color: "rgb(var(--fg-rgb) / 0.35)",
               marginTop: 8,
             }}
           >
@@ -97,7 +97,7 @@ export default function ContactHero() {
               fontSize: 11,
               letterSpacing: "0.15em",
               textTransform: "uppercase",
-              color: "rgba(245,244,240,0.35)",
+              color: "rgb(var(--fg-rgb) / 0.35)",
               display: "block",
               marginBottom: 24,
             }}
@@ -113,7 +113,7 @@ export default function ContactHero() {
         style={{
           marginTop: 64,
           paddingTop: 32,
-          borderTop: "1px solid rgba(245,244,240,0.06)",
+          borderTop: "1px solid rgb(var(--fg-rgb) / 0.06)",
           display: "flex",
           flexWrap: "wrap",
           alignItems: "center",
@@ -128,7 +128,7 @@ export default function ContactHero() {
                 style={{
                   width: 1,
                   height: 20,
-                  backgroundColor: "rgba(245,244,240,0.08)",
+                  backgroundColor: "rgb(var(--fg-rgb) / 0.08)",
                 }}
               />
             )}
@@ -143,15 +143,15 @@ export default function ContactHero() {
                 textDecoration: "none",
                 fontFamily: "var(--font-body)",
                 fontSize: 13,
-                color: "rgba(245,244,240,0.4)",
+                color: "rgb(var(--fg-rgb) / 0.4)",
                 transition: "color 0.2s",
               }}
               onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.color = "#f5f4f0";
+                (e.currentTarget as HTMLElement).style.color = "var(--fg)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.color =
-                  "rgba(245,244,240,0.4)";
+                  "rgb(var(--fg-rgb) / 0.4)";
               }}
             >
               <span style={{ fontWeight: 500 }}>{s.platform}</span>

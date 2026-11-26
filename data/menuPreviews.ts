@@ -85,7 +85,7 @@ export const menuItems: MenuItem[] = [
         preview: {
           kind: "clips",
           title: "Playground",
-          blurb: "Experiments and extras.",
+          blurb: "Carousels, designs and motion.",
         },
       },
     ],

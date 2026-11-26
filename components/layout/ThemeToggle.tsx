@@ -26,8 +26,8 @@ export default function ThemeToggle() {
         width: 40,
         height: 40,
         borderRadius: "50%",
-        border: "1px solid rgba(245, 244, 240, 0.15)",
-        background: "rgba(0,0,0, 0.5)",
+        border: "1px solid rgb(var(--fg-rgb) / 0.15)",
+        background: "rgb(var(--bg-rgb) / 0.5)",
         backdropFilter: "blur(8px)",
         WebkitBackdropFilter: "blur(8px)",
         display: "flex",
@@ -35,7 +35,7 @@ export default function ThemeToggle() {
         justifyContent: "center",
         cursor: "none",
         padding: 0,
-        color: "#f5f4f0",
+        color: "var(--fg)",
         transition: "border-color 0.2s",
       }}
       onMouseEnter={(e) => {
@@ -44,7 +44,7 @@ export default function ThemeToggle() {
       }}
       onMouseLeave={(e) => {
         (e.currentTarget as HTMLElement).style.borderColor =
-          "rgba(245, 244, 240, 0.15)";
+          "rgb(var(--fg-rgb) / 0.15)";
       }}
     >
       <AnimatePresence mode="wait" initial={false}>

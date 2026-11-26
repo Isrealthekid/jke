@@ -8,7 +8,7 @@ const label: CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
-  color: "rgba(245,244,240,0.4)",
+  color: "rgb(var(--fg-rgb) / 0.4)",
 };
 
 function Row({ name, value }: { name: string; value: string }) {
@@ -19,7 +19,7 @@ function Row({ name, value }: { name: string; value: string }) {
         style={{
           fontFamily: "var(--font-body)",
           fontSize: 15,
-          color: "#f5f4f0",
+          color: "var(--fg)",
           margin: "4px 0 0",
         }}
       >
@@ -57,12 +57,12 @@ export default function ProjectDetail({ project }: { project: Project }) {
               display: "inline-block",
               padding: "6px 16px",
               borderRadius: 100,
-              border: "1px solid rgba(245,244,240,0.2)",
+              border: "1px solid rgb(var(--fg-rgb) / 0.2)",
               fontFamily: "var(--font-body)",
               fontSize: 11,
               letterSpacing: "0.1em",
               textTransform: "uppercase",
-              color: "rgba(245,244,240,0.65)",
+              color: "rgb(var(--fg-rgb) / 0.65)",
             }}
           >
             {project.category}
@@ -73,7 +73,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
               fontFamily: "var(--font-display)",
               fontSize: "clamp(30px, 3.4vw, 48px)",
               lineHeight: 1.05,
-              color: "#f5f4f0",
+              color: "var(--fg)",
               margin: "20px 0 10px",
             }}
           >
@@ -94,11 +94,11 @@ export default function ProjectDetail({ project }: { project: Project }) {
                   key={tool}
                   style={{
                     padding: "5px 12px",
-                    border: "1px solid rgba(245,244,240,0.15)",
+                    border: "1px solid rgb(var(--fg-rgb) / 0.15)",
                     borderRadius: 20,
                     fontFamily: "var(--font-body)",
                     fontSize: 12,
-                    color: "rgba(245,244,240,0.6)",
+                    color: "rgb(var(--fg-rgb) / 0.6)",
                   }}
                 >
                   {tool}
@@ -145,7 +145,7 @@ export default function ProjectDetail({ project }: { project: Project }) {
                 margin: vertical ? "0 auto" : undefined,
                 borderRadius: 20,
                 overflow: "hidden",
-                background: "#0c0c0c",
+                background: "var(--surface)",
               }}
             >
               {isInstagram ? (

@@ -101,7 +101,7 @@ export default function KineticStatement() {
         alignItems: "center",
         justifyContent: "center",
         padding: "64px clamp(20px, 5vw, 48px)",
-        backgroundColor: "#000000",
+        backgroundColor: "var(--bg)",
         overflow: "hidden",
       }}
     >
@@ -140,7 +140,7 @@ export default function KineticStatement() {
                 className="ks-word-inner"
                 style={{
                   display: "inline-block",
-                  color: isLast ? "#FF7A00" : "#f5f4f0",
+                  color: isLast ? "#FF7A00" : "var(--fg)",
                   willChange: "transform",
                 }}
               >

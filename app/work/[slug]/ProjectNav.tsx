@@ -13,7 +13,7 @@ export default function ProjectNav({ prev, next }: ProjectNavProps) {
     <nav
       className="flex-col md:flex-row gap-6 md:gap-0"
       style={{
-        borderTop: "1px solid rgba(245,244,240,0.08)",
+        borderTop: "1px solid rgb(var(--fg-rgb) / 0.08)",
         padding: "clamp(32px, 6vw, 48px) clamp(20px, 5vw, 48px)",
         display: "flex",
         alignItems: "center",
@@ -44,17 +44,17 @@ export default function ProjectNav({ prev, next }: ProjectNavProps) {
           fontSize: 12,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
-          color: "rgba(245,244,240,0.4)",
+          color: "rgb(var(--fg-rgb) / 0.4)",
           textDecoration: "none",
           transition: "color 0.2s",
           flexShrink: 0,
         }}
         onMouseEnter={(e) => {
-          (e.currentTarget as HTMLElement).style.color = "#f5f4f0";
+          (e.currentTarget as HTMLElement).style.color = "var(--fg)";
         }}
         onMouseLeave={(e) => {
           (e.currentTarget as HTMLElement).style.color =
-            "rgba(245,244,240,0.4)";
+            "rgb(var(--fg-rgb) / 0.4)";
         }}
       >
         Back to all work
@@ -85,7 +85,7 @@ const navLabelStyle: React.CSSProperties = {
   fontSize: 11,
   letterSpacing: "0.12em",
   textTransform: "uppercase",
-  color: "rgba(245,244,240,0.35)",
+  color: "rgb(var(--fg-rgb) / 0.35)",
   marginBottom: 6,
 };
 
@@ -93,6 +93,6 @@ const navTitleStyle: React.CSSProperties = {
   display: "block",
   fontFamily: "var(--font-display)",
   fontSize: 24,
-  color: "#f5f4f0",
+  color: "var(--fg)",
   transition: "color 0.2s",
 };

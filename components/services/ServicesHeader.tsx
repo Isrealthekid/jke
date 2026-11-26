@@ -59,7 +59,7 @@ export default function ServicesHeader() {
           fontSize: "clamp(56px, 8vw, 120px)",
           lineHeight: 1,
           letterSpacing: "-0.02em",
-          color: "#f5f4f0",
+          color: "var(--fg)",
           margin: 0,
           display: "flex",
           flexWrap: "wrap",
@@ -86,7 +86,7 @@ export default function ServicesHeader() {
         style={{
           fontFamily: "var(--font-body)",
           fontSize: 16,
-          color: "#f5f4f0",
+          color: "var(--fg)",
           opacity: 0,
           marginTop: 20,
           maxWidth: 420,

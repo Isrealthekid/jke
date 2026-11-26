@@ -170,7 +170,7 @@ function WorkCard({
                 fontSize: 10,
                 letterSpacing: "0.15em",
                 textTransform: "uppercase",
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 opacity: 0.6,
               }}
             >
@@ -181,7 +181,7 @@ function WorkCard({
               style={{
                 fontFamily: "var(--font-display)",
                 fontSize: 28,
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 marginTop: 6,
                 lineHeight: 1.15,
               }}
@@ -193,7 +193,7 @@ function WorkCard({
               style={{
                 fontFamily: "var(--font-body)",
                 fontSize: 12,
-                color: "#f5f4f0",
+                color: "var(--fg)",
                 opacity: 0.5,
                 marginTop: 8,
                 display: "block",
@@ -327,12 +327,12 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
   if (isMobile) {
     return (
       <>
-      <section style={{ backgroundColor: "#000000", padding: "64px 20px" }}>
+      <section style={{ backgroundColor: "var(--bg)", padding: "64px 20px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 24 }}>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 56, lineHeight: 1, margin: 0, color: "var(--fg)" }}>
             On the <span style={{ color: "#FFD34A" }}>timeline</span>
           </h2>
-          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
+          <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgb(var(--fg-rgb) / 0.3)" }}>
             ({String(selectedProjects.length).padStart(2, "0")})
           </span>
         </div>
@@ -353,9 +353,9 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
                 )}
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 45%)", pointerEvents: "none" }} />
                 <div style={{ position: "absolute", bottom: 16, left: 16, right: 16, pointerEvents: "none" }}>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "#f5f4f0", opacity: 0.6 }}>{project.category}</span>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "#f5f4f0", margin: "4px 0 0" }}>{project.title}</h3>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.5)" }}>{project.year} &middot; {project.role}</span>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--fg)", opacity: 0.6 }}>{project.category}</span>
+                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "var(--fg)", margin: "4px 0 0" }}>{project.title}</h3>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgb(var(--fg-rgb) / 0.5)" }}>{project.year} &middot; {project.role}</span>
                 </div>
               </div>
             </Link>
@@ -376,7 +376,7 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
       style={{
         height: "100vh",
         overflow: "hidden",
-        backgroundColor: "#000000",
+        backgroundColor: "var(--bg)",
         position: "relative",
         borderRadius: "28px 28px 0 0",
         boxShadow: "0 -24px 60px rgba(0,0,0,0.7)",
@@ -402,17 +402,17 @@ export default function SelectedWorks({ overlay }: { overlay?: ReactNode }) {
           }}
         >
           <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(48px, 6.4vw, 96px)", lineHeight: 1, margin: 0, color: "#f5f4f0" }}>
+            <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(48px, 6.4vw, 96px)", lineHeight: 1, margin: 0, color: "var(--fg)" }}>
               On the <span style={{ color: "#FFD34A" }}>timeline</span>
             </h2>
-            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgba(245,244,240,0.3)" }}>
+            <span style={{ fontFamily: "var(--font-body)", fontSize: 11, color: "rgb(var(--fg-rgb) / 0.3)" }}>
               ({String(selectedProjects.length).padStart(2, "0")})
             </span>
           </div>
         </div>
 
         {/* Horizontal progress bar */}
-        <div style={{ width: "100%", height: 1, backgroundColor: "rgba(245,244,240,0.08)" }}>
+        <div style={{ width: "100%", height: 1, backgroundColor: "rgb(var(--fg-rgb) / 0.08)" }}>
           <div
             ref={progressRef}
             style={{ width: "100%", height: "100%", backgroundColor: "#FF7A00", transformOrigin: "left center", transform: "scaleX(0)" }}

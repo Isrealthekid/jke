@@ -18,13 +18,13 @@ export default function SocialBar() {
         gap: 16,
         padding: "12px 18px",
         borderRadius: 14,
-        backgroundColor: "rgba(255,255,255,0.08)",
-        border: "1px solid rgba(255,255,255,0.12)",
+        backgroundColor: "rgb(var(--fg-rgb) / 0.08)",
+        border: "1px solid rgb(var(--fg-rgb) / 0.12)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
         fontFamily: "var(--font-body)",
         fontSize: 13,
-        color: "#f5f4f0",
+        color: "var(--fg)",
       }}
     >
       <span style={{ display: "flex", gap: 10, alignItems: "baseline", minWidth: 0 }}>
@@ -40,7 +40,7 @@ export default function SocialBar() {
             rel="noopener noreferrer"
             aria-label={s.label}
             className="social-icon"
-            style={{ display: "block", lineHeight: 0, color: "#f5f4f0" }}
+            style={{ display: "block", lineHeight: 0, color: "var(--fg)" }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
               {s.icon}

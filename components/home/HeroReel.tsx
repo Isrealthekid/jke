@@ -36,7 +36,7 @@ function rollLetter(e: React.MouseEvent<HTMLSpanElement>) {
 }
 
 const LINK_STYLE: React.CSSProperties = {
-  color: "#ffffff",
+  color: "var(--fg)",
   textDecoration: "none",
 };
 
@@ -79,8 +79,8 @@ export default function HeroReel({ instant = false }: { instant?: boolean } = {}
       style={{
         position: "relative",
         minHeight: "100vh",
-        backgroundColor: "#000000",
-        color: "#ffffff",
+        backgroundColor: "var(--bg)",
+        color: "var(--fg)",
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
@@ -148,7 +148,7 @@ export default function HeroReel({ instant = false }: { instant?: boolean } = {}
           fontWeight: 400,
           fontSize: "9.5vw",
           whiteSpace: "nowrap",
-          color: "#ffffff",
+          color: "var(--fg)",
           lineHeight: 1,
           letterSpacing: "-0.01em",
           margin: 0,
@@ -198,7 +198,7 @@ export default function HeroReel({ instant = false }: { instant?: boolean } = {}
         <Link href="/work" className="hero-link" style={LINK_STYLE}>
           Editing
         </Link>
-        <span aria-hidden="true" style={{ color: "rgba(255,255,255,0.4)" }}>
+        <span aria-hidden="true" style={{ color: "rgb(var(--fg-rgb) / 0.4)" }}>
           ·
         </span>
         <a
